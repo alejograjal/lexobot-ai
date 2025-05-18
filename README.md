@@ -1,3 +1,6 @@
+<div style="text-align:center;">
+  <img src="LexoBot-AI.png" alt="alt text" height="300" width="300" />
+</div>
 
 # 🧠 LexoBot AI
 
@@ -34,8 +37,18 @@ cd lexobot-ai
 Make sure you have Python and FastAPI installed.
 
 ```bash
+# Navigate backend
+cd backend
+
+# Create virtual environment and activate it
+python3.11 -m venv .venv
+source .venv/bin/activate
+
 # Install backend dependencies
 pip install -r requirements.txt
+
+# Execute it
+uvicorn app.main:app --reload
 ```
 
 ### 3. Frontend Setup
