@@ -1,0 +1,69 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+env/
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build / distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+
+# Database files
+*.db
+*.sqlite
+
+# FAISS index (si lo guardas en disco)
+faiss_index/
+
+# Archivos de configuración con credenciales
+config.py
+secrets.py
+settings_local.py
+
+# Archivos generados por el usuario
+*.pdf
+*.csv
+*.xlsx
+*.jsonl
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
