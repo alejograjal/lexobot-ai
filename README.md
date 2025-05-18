@@ -1,6 +1,6 @@
-<div style="text-align:center;">
+<p align="center">
   <img src="LexoBot-AI.png" alt="alt text" height="300" width="300" />
-</div>
+</p>
 
 # 🧠 LexoBot AI
 
