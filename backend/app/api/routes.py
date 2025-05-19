@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException
-from app.services.qa_engine import answer_question
+from app.services.qa_engine import ask_question as qa_engine_ask_question 
 
 router = APIRouter()
 
@@ -10,7 +10,7 @@ class QuestionRequest(BaseModel):
 @router.post("/ask")
 def ask_question(payload: QuestionRequest):
     try:
-        answer = answer_question(payload.question)
+        answer = qa_engine_ask_question(payload.question)
         return {"answer": answer}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

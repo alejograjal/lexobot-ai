@@ -47,6 +47,7 @@ htmlcov/
 # Database files
 *.db
 *.sqlite
+*.sqlite3
 
 # FAISS index (si lo guardas en disco)
 faiss_index/
@@ -67,3 +68,6 @@ settings_local.py
 
 # Windows
 Thumbs.db
+
+# vectorstore
+*.bin
