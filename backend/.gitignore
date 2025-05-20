@@ -53,7 +53,6 @@ htmlcov/
 faiss_index/
 
 # Archivos de configuración con credenciales
-config.py
 secrets.py
 settings_local.py
 
