@@ -1,0 +1,2 @@
+# Mount redis local
+docker-compose --project-name lexobot up -d
