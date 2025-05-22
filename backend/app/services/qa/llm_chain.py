@@ -1,9 +1,6 @@
-from app.core.config import settings
-from langchain_openai import ChatOpenAI
+from app.services.embedder import get_chat_model
 from langchain_core.prompts import PromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
-
-llm = ChatOpenAI(temperature=0, openai_api_key=settings.OPENAI_API_KEY)
 
 prompt = PromptTemplate.from_template("""
 Usa el siguiente contexto para responder la pregunta al final.
@@ -15,12 +12,11 @@ Pregunta:
 {question}
 """.strip())
 
-
-chain = create_stuff_documents_chain(
-    llm=llm,
-    prompt=prompt,
-    document_variable_name="context"
-)
-
-def run_llm_chain(docs, question: str) -> str:
+def run_llm_chain(tenant_id: str, docs, question: str) -> str:
+    llm = get_chat_model(tenant_id)
+    chain = create_stuff_documents_chain(
+        llm=llm,
+        prompt=prompt,
+        document_variable_name="context"
+    )
     return chain.invoke({"context": docs, "question": question})

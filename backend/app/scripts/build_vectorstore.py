@@ -1,17 +1,28 @@
 import os
 import shutil
-from app.core.config import settings
-from app.services.embedder import embedding_model
 from langchain_community.vectorstores import Chroma
+from app.services.embedder import get_embedding_model
 from app.services.loader import load_all_pdfs_and_split
+from app.tenants.tenant_settings import load_tenant_settings, get_tenant_path
 
-if os.path.exists(settings.VECTORSTORE_PATH):
-    shutil.rmtree(settings.VECTORSTORE_PATH)
+def build_vectorstore_for_tenant(tenant_id: str):
+    settings = load_tenant_settings(tenant_id)
+    base_path = get_tenant_path(tenant_id)
 
-chunks = load_all_pdfs_and_split(settings.PDF_FOLDER_PATH)
+    docs_folder = os.path.join(base_path, settings["docs_folder"])
+    vectorstore_path = os.path.join(base_path, settings["vectorstore_path"])
 
-vectorstore = Chroma.from_texts(
-    chunks,
-    embedding=embedding_model,
-    persist_directory=settings.VECTORSTORE_PATH
-)
+    if os.path.exists(vectorstore_path):
+        shutil.rmtree(vectorstore_path)
+
+    chunks = load_all_pdfs_and_split(docs_folder)
+
+    embedding_model = get_embedding_model(tenant_id)
+
+    Chroma.from_texts(
+        chunks,
+        embedding=embedding_model,
+        persist_directory=vectorstore_path
+    )
+
+build_vectorstore_for_tenant("110ec58a-a0f2-4ac4-8393-c866d813b8d1")
