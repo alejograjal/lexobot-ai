@@ -2,12 +2,17 @@ services:
   redis:
     image: redis:7-alpine
     container_name: redis_cache
+    command: redis-server --save 60 1 --loglevel warning --requirepass OVjrcHjZZlFJalyLtivHXW+5iPTdj3JU8G15Q3m2bIs=
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     restart: unless-stopped
-    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - backend
 
 volumes:
   redis_data:
+
+networks:
+  backend:

@@ -6,11 +6,12 @@ router = APIRouter()
 
 class QuestionRequest(BaseModel):
     question: str
+    tenant_id: str
 
 @router.post("/ask")
 def ask_question(payload: QuestionRequest):
     try:
-        answer = qa_engine_ask_question(payload.question)
+        answer = qa_engine_ask_question(payload.tenant_id, payload.question)
         return {"answer": answer}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

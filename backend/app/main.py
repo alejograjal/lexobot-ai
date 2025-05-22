@@ -8,4 +8,4 @@ app.include_router(router)
 
 @app.get("/")
 def root():
-    return {"message": "Assistant is running."}
+    return {"message": "Lexobot AI Assistant is running."}

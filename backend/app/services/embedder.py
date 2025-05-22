@@ -1,10 +1,16 @@
-from app.core.config import settings
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from app.tenants.tenant_settings import load_tenant_settings
 
-embedding_model = OpenAIEmbeddings(
-    model=settings.EMBEDDING_MODEL,
-    openai_api_key=settings.OPENAI_API_KEY
-)
+def get_embedding_model(tenant_id: str):
+    conf = load_tenant_settings(tenant_id)
+    return OpenAIEmbeddings(
+        model=conf.get("embedding_model", "text-embedding-3-small"),
+        openai_api_key=conf["openai_api_key"]
+    )
 
-def embed_chunks(chunks):
-    return embedding_model.embed_documents(chunks)
+def get_chat_model(tenant_id: str):
+    conf = load_tenant_settings(tenant_id)
+    return ChatOpenAI(
+        temperature=0,
+        openai_api_key=conf["openai_api_key"]
+    )
