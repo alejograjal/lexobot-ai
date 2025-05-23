@@ -1,14 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
 import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 import { sendQuestion } from '@/lib/api'
 import { Message } from '@/types/message'
 import { useSearchParams } from 'next/navigation'
+import { useState, useRef, useEffect, Suspense } from 'react'
 
-export default function ChatContainer() {
+export default function ChatContainerWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    }>
+      <ChatContainer />
+    </Suspense>
+  )
+}
+
+function ChatContainer() {
   const searchParams = useSearchParams()
   const [messages, setMessages] = useState<Message[]>([])
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
