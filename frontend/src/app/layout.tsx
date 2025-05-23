@@ -22,12 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className="relative flex flex-col items-center justify-center w-full min-h-screen sm:px-6 lg:px-8">
+          <main className="relative flex flex-col items-center justify-center w-full min-h-screen p-1 sm:px-6 lg:px-8">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-400/20 via-transparent to-transparent blur-2xl" />
             <div className="absolute top-4 right-4 z-20">
               <ThemeToggle />
             </div>
-            <div className="relative w-48 h-36 sm:w-64 sm:h-48 md:w-72 md:h-56">
+            <div className="relative w-48 h-36 sm:w-64 sm:h-48 md:w-[30vw] md:h-[10rem]">
               <Image
                 src="/LexoBot-AI.png"
                 alt="LexoBot-AI Logo"

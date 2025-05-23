@@ -6,14 +6,29 @@ import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 import { sendQuestion } from '@/lib/api'
 import { Message } from '@/types/message'
-
-const tenant_id = '110ec58a-a0f2-4ac4-8393-c866d813b8d1'
+import { useSearchParams } from 'next/navigation'
 
 export default function ChatContainer() {
+  const searchParams = useSearchParams()
   const [messages, setMessages] = useState<Message[]>([])
-  const bottomRef = useRef<HTMLDivElement | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+
+  const tenant_id = searchParams.get('tenant_id')
+  const isValidTenant = tenant_id && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(tenant_id)
+
+  useEffect(() => {
+    if (!isValidTenant) {
+      setMessages([{
+        role: 'ai',
+        text: 'Error: Identificador de tenant inválido o faltante en la URL. Por favor, accede a través del enlace correcto.'
+      }])
+    }
+  }, [isValidTenant])
+
 
   const handleSend = async (question: string) => {
+    if (!isValidTenant) return
+
     const userMessage: Message = { role: 'user', text: question }
     setMessages(prev => [...prev, userMessage])
     try {
@@ -21,17 +36,22 @@ export default function ChatContainer() {
       const aiMessage: Message = { role: 'ai', text: response.answer }
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
+      console.error('Error al enviar la pregunta:', error)
       setMessages(prev => [...prev, { role: 'ai', text: 'Error al obtener respuesta.' }])
     }
   }
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    scrollToBottom()
   }, [messages])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   const messagesAreaClass = messages.length === 0
     ? 'h-0 overflow-hidden'
-    : 'max-h-[50vh] md:max-h-[45vh] h-auto overflow-y-auto'
+    : 'max-h-[50vh] md:max-h-[40vh] h-auto overflow-y-auto'
 
   const handleClear = () => {
     setMessages([])
@@ -58,9 +78,9 @@ export default function ChatContainer() {
 
         <div className={`${messagesAreaClass} px-4 space-y-4 text-sm md:text-base`}>
           {messages.map((msg, idx) => (
-            <ChatMessage key={idx} message={msg} />
+            <ChatMessage key={idx} message={msg} onTyping={idx === messages.length - 1 && msg.role === 'ai' ? scrollToBottom : undefined} />
           ))}
-          <div ref={bottomRef} />
+          <div ref={messagesEndRef} />
         </div>
       </div>
     </>
