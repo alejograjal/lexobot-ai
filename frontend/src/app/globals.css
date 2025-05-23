@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --muted: #f4f4f5;
+  --accent: #f0f9ff;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+}
+
+.dark {
+  --background: #111111;
+  --foreground: #ffffff;
+  --muted: #1f2937;
+  --accent: #1e3a8a;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
