@@ -1,10 +1,12 @@
 <p align="center">
-  <img src="LexoBot-AI.png" alt="alt text" height="300" width="300" />
+  <img src="LexoBot-AI.png" alt="alt text" height="500" width="700" />
 </p>
 
 # 🧠 LexoBot AI
 
 LexoBot AI is an intelligent assistant designed to make it easy for residents and administrators of condominiums or residential communities to consult internal regulations and rules of coexistence. Powered by open-source artificial intelligence, it allows users to ask questions in natural language and receive fast, accurate, and user-friendly answers based on uploaded documents.
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/alejograjal/lexobot-ai)
 
 ## 🚀 Key Features
 - 📄 Upload of regulation documents restricted to superusers.
