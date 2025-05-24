@@ -61,6 +61,10 @@ export default function ChatInput({ onSend }: { onSend: (q: string) => Promise<v
                     p-2 text-sm
                     ${isSending ? 'opacity-70 cursor-not-allowed' : ''}
                 `}
+                style={{
+                    transform: 'translateZ(0)',
+                    fontSize: '16px !important'
+                }}
             />
             <button
                 type="button"

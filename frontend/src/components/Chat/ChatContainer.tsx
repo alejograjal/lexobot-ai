@@ -63,7 +63,7 @@ function ChatContainer() {
 
   const messagesAreaClass = messages.length === 0
     ? 'h-0 overflow-hidden'
-    : 'max-h-[50vh] md:max-h-[40vh] h-auto overflow-y-auto'
+    : 'flex-1 min-h-0 overflow-y-auto'
 
   const handleClear = () => {
     setMessages([])
@@ -82,17 +82,16 @@ function ChatContainer() {
         🧹 Limpiar chat
       </button>
 
-      <div className="flex flex-col border rounded-md overflow-hidden w-full max-w-4xl mx-auto">
-
-        <div className="border-b md:px-4 md:py-2 bg-background">
-          <ChatInput onSend={handleSend} />
-        </div>
-
-        <div className={`${messagesAreaClass} px-4 space-y-4 text-sm md:text-base`}>
+      <div className="flex flex-col h-full overflow-hidden w-full mx-auto">
+        <div className={`${messagesAreaClass} border-t px-4 space-y-4 text-sm md:text-base`}>
           {messages.map((msg, idx) => (
             <ChatMessage key={idx} message={msg} onTyping={idx === messages.length - 1 && msg.role === 'ai' ? scrollToBottom : undefined} />
           ))}
           <div ref={messagesEndRef} />
+        </div>
+
+        <div className="border-t pt-2 md:py-2 bg-background">
+          <ChatInput onSend={handleSend} />
         </div>
       </div>
     </>
