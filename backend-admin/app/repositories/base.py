@@ -32,7 +32,6 @@ class BaseRepository(Generic[ModelType]):
 
     async def create(self, db: AsyncSession, obj_in: dict) -> ModelType:
         obj = self.model(**obj_in)
-        print(f"Creating {self.model.__name__} with data: {obj_in}")
         db.add(obj)
         await db.commit()
         await db.refresh(obj)

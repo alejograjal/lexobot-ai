@@ -64,8 +64,6 @@ class AuthService:
         user = await self.user_service.get_by_id(db, int(payload["sub"]))
         if not user:
             raise InvalidTokenError()
-        
-        print(f"User: {user.role.name}")
 
         access_token = SecurityHandler.create_access_token(
             subject=str(user.id),
@@ -77,8 +75,6 @@ class AuthService:
                 "username": user.username
             }
         )
-
-        print(f"Creating new refresh token for user {access_token}")
 
         new_refresh_token = SecurityHandler.create_refresh_token(
             subject=str(user.id)
