@@ -8,11 +8,11 @@ erDiagram
         string phone
         string billing_email
         int managed_tenants_count
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     tenants {
@@ -22,22 +22,22 @@ erDiagram
         string contact_name
         string contact_email
         int client_count
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     plan_categories {
         int id PK
         string name
         string description
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     plans {
@@ -46,22 +46,22 @@ erDiagram
         string name
         int max_tenants
         decimal base_price
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     roles {
         int id PK
         string name UK
         string description
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     users {
@@ -73,22 +73,22 @@ erDiagram
         string username UK
         string password_hash
         int role_id FK
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     company_tenant_assignments {
         int id PK
         int company_id FK
         int tenant_id FK
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     tenant_documents {
@@ -96,28 +96,36 @@ erDiagram
         int tenant_id FK
         string document_name
         string file_path
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
     }
 
     company_accesses {
         int id PK
         int company_id FK
         string openai_api_key UK
-        datetime issue_at
-        datetime expires_at
+        datetime_tz issue_at "with timezone"
+        datetime_tz expires_at "with timezone"
         int plan_id FK
-        datetime plan_acquisition_date
-        datetime plan_expiration_date
+        datetime_tz plan_acquisition_date "with timezone"
+        datetime_tz plan_expiration_date "with timezone"
         boolean auto_renewal
-        int created_by
-        datetime created_at
-        int updated_by
-        datetime updated_at
-        boolean is_active
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    login_attempts {
+        int id PK
+        int user_id FK
+        string ip_address "not null"
+        int attempts_count "not null, default 1"
+        datetime_tz last_attempt "with timezone"
     }
 
     companies ||--o{ company_tenant_assignments : has
@@ -127,3 +135,4 @@ erDiagram
     roles ||--o{ users : has
     plans ||--o{ company_accesses : subscribed_to
     tenants ||--o{ tenant_documents : has
+    users ||--o{ login_attempts : has
