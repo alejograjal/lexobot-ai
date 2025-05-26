@@ -12,5 +12,6 @@ def get_chat_model(tenant_id: str):
     conf = load_tenant_settings(tenant_id)
     return ChatOpenAI(
         temperature=0,
-        openai_api_key=conf["openai_api_key"]
+        openai_api_key=conf["openai_api_key"],
+        model=conf.get("chat_model", "gpt-3.5-turbo")
     )

@@ -1,0 +1,129 @@
+erDiagram
+    companies {
+        int id PK
+        string name
+        string email
+        string legal_id UK
+        string address
+        string phone
+        string billing_email
+        int managed_tenants_count
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    tenants {
+        int id PK
+        uuid external_id UK
+        string name
+        string contact_name
+        string contact_email
+        int client_count
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    plan_categories {
+        int id PK
+        string name
+        string description
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    plans {
+        int id PK
+        int plan_category_id FK
+        string name
+        int max_tenants
+        decimal base_price
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    roles {
+        int id PK
+        string name UK
+        string description
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    users {
+        int id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone_number
+        string username UK
+        string password_hash
+        int role_id FK
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    company_tenant_assignments {
+        int id PK
+        int company_id FK
+        int tenant_id FK
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    tenant_documents {
+        int id PK
+        int tenant_id FK
+        string document_name
+        string file_path
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    company_accesses {
+        int id PK
+        int company_id FK
+        string openai_api_key UK
+        datetime issue_at
+        datetime expires_at
+        int plan_id FK
+        datetime plan_acquisition_date
+        datetime plan_expiration_date
+        boolean auto_renewal
+        int created_by
+        datetime created_at
+        int updated_by
+        datetime updated_at
+        boolean is_active
+    }
+
+    companies ||--o{ company_tenant_assignments : has
+    tenants ||--o{ company_tenant_assignments : belongs_to
+    companies ||--o{ company_accesses : has
+    plan_categories ||--o{ plans : has
+    roles ||--o{ users : has
+    plans ||--o{ company_accesses : subscribed_to
+    tenants ||--o{ tenant_documents : has

@@ -1,4 +1,16 @@
 {
   "python.pythonPath": ".venv/bin/python",
   "editor.formatOnSave": true,
+  "cSpell.words": [
+    "backref",
+    "lexobot",
+    "nullable",
+    "onupdate",
+    "postgres",
+    "postgresql"
+  ],
+  "files.associations": {
+    "*.mmd": "mermaid",
+    "*.mermaid": "mermaid"
+  },
 }
