@@ -1,9 +1,9 @@
 import os
 import shutil
+from app.services import get_embedding_model
+from app.services import load_all_pdfs_and_split
 from langchain_community.vectorstores import Chroma
-from app.services.embedder import get_embedding_model
-from app.services.loader import load_all_pdfs_and_split
-from app.tenants.tenant_settings import load_tenant_settings, get_tenant_path
+from app.tenants import load_tenant_settings, get_tenant_path
 
 def build_vectorstore_for_tenant(tenant_id: str):
     settings = load_tenant_settings(tenant_id)

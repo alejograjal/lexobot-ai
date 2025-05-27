@@ -1,24 +1,34 @@
 from fastapi import FastAPI
+from app.core import settings
+from app.api import api_router
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import router
-from app.core.config import settings
 
-app = FastAPI(title=settings.FASTAPI_TITLE)
+app = FastAPI(
+    title=settings.FASTAPI_TITLE,
+    description="Lexobot AI Assistant API",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
+)
 
-origins = [
-    "http://localhost:3000",
-]
-
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(router)
+# Include API router
+app.include_router(api_router)
 
-@app.get("/")
+@app.get("/", tags=["Health"])
 def root():
-    return {"message": "Lexobot AI Assistant is running."}
+    """Health check endpoint"""
+    return {
+        "message": "Lexobot AI Assistant is running.",
+        "version": "1.0.0",
+        "status": "healthy"
+    }

@@ -1,5 +1,5 @@
+from app.tenants import load_tenant_settings
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from app.tenants.tenant_settings import load_tenant_settings
 
 def get_embedding_model(tenant_id: str):
     conf = load_tenant_settings(tenant_id)
@@ -11,7 +11,7 @@ def get_embedding_model(tenant_id: str):
 def get_chat_model(tenant_id: str):
     conf = load_tenant_settings(tenant_id)
     return ChatOpenAI(
-        temperature=0,
+        temperature=0.5,
         openai_api_key=conf["openai_api_key"],
         model=conf.get("chat_model", "gpt-3.5-turbo")
     )

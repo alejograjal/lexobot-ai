@@ -1,7 +1,7 @@
 import os
 import json
 from pathlib import Path
-from app.core.config import settings
+from app.core import settings
 
 def create_tenant(client_name: str, tenant_id: str, openai_api_key: str):
     tenant_dir = Path(settings.TENANT_BASE_PATH) / tenant_id

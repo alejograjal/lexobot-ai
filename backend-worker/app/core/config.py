@@ -10,5 +10,6 @@ class Settings:
     REDIS_PASSWORD: str = os.getenv("REDIS_PASSWORD")
     FASTAPI_TITLE: str = os.getenv("FASTAPI_TITLE", "Lexobot AI Assistant")
     TENANT_BASE_PATH = os.getenv("TENANT_BASE_PATH")
+    CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")
 
 settings = Settings()

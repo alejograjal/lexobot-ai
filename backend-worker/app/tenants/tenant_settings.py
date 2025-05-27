@@ -1,6 +1,6 @@
 import os
 import json
-from app.core.config import settings
+from app.core import settings
 
 def get_tenant_path(tenant_id: str) -> str:
     return os.path.join(settings.TENANT_BASE_PATH, tenant_id)

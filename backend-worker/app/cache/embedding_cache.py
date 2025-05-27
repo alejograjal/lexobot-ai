@@ -1,6 +1,6 @@
 import json
 import redis
-from app.core.config import settings
+from app.core import settings
 from app.services.embedder import get_embedding_model
 
 redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB, password=settings.REDIS_PASSWORD)

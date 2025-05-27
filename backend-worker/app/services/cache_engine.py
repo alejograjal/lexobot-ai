@@ -1,9 +1,9 @@
 import os
 import chromadb
 from langchain_chroma import Chroma
-from app.services.embedder import get_embedding_model
-from app.utils.filesystem import is_path_size_over_limit
-from app.tenants.tenant_settings import load_tenant_settings, get_tenant_path
+from .embedder import get_embedding_model
+from app.utils import is_path_size_over_limit
+from app.tenants import load_tenant_settings, get_tenant_path
 
 collection_name = "langchain"
 QA_CACHE_MAX_SIZE_MB = 200

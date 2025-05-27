@@ -1,7 +1,6 @@
 import os
-from app.utils.file import extract_text_from_pdf
+from app.utils import extract_text_from_pdf
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from app.core.config import settings
 
 def load_all_pdfs_and_split(folder_path: str):
     all_text = ""

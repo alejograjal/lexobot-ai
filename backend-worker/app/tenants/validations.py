@@ -1,7 +1,6 @@
 from fastapi import HTTPException
-from app.core.config import settings
 
-from app.tenants.tenant_settings import load_tenant_settings
+from app.tenants import load_tenant_settings
 
 def validate_tenant_exists(tenant_id: str) -> None:
     try:
