@@ -6,7 +6,9 @@ import ChatMessage from './ChatMessage'
 import { sendQuestion } from '@/lib/api'
 import { Message } from '@/types/message'
 import { useSearchParams } from 'next/navigation'
+import { useSessionId } from '@/hooks/useSessionId'
 import { useState, useRef, useEffect, Suspense } from 'react'
+
 
 export default function ChatContainerWrapper() {
   return (
@@ -23,6 +25,7 @@ export default function ChatContainerWrapper() {
 function ChatContainer() {
   const searchParams = useSearchParams()
   const [messages, setMessages] = useState<Message[]>([])
+  const { sessionId, resetSession } = useSessionId()
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
   const tenant_id = searchParams.get('tenant_id')
@@ -44,7 +47,7 @@ function ChatContainer() {
     const userMessage: Message = { role: 'user', text: question }
     setMessages(prev => [...prev, userMessage])
     try {
-      const response = await sendQuestion(question, tenant_id)
+      const response = await sendQuestion(question, tenant_id, sessionId)
       const aiMessage: Message = { role: 'ai', text: response.answer }
       setMessages(prev => [...prev, aiMessage])
     } catch (error) {
@@ -67,6 +70,7 @@ function ChatContainer() {
 
   const handleClear = () => {
     setMessages([])
+    resetSession()
   }
 
   return (
