@@ -12,11 +12,11 @@ def ask_question(tenant_id: str, session_id: str, question: str) -> str:
         else:
             return "No tengo las fuentes guardadas para esa respuesta."
 
-    if cached_response:
-        if sources:
-            fuentes_texto = "\n\nFuentes:\n" + "\n".join(sources)
-            return cached_response + fuentes_texto
-        return cached_response
+    # if cached_response:
+    #     if sources:
+    #         fuentes_texto = "\n\nFuentes:\n" + "\n".join(sources)
+    #         return cached_response + fuentes_texto
+    #     return cached_response
     
     docs = retrieve_relevant_docs(tenant_id, question)
     response = run_llm_chain(tenant_id, session_id, docs, question)
