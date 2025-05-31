@@ -16,6 +16,7 @@ from .security import SecurityConfig, SecurityHandler
 
 # Context Management
 from .context import current_user, UserContext
+from .user_context_service import get_current_username, get_current_role
 
 # Middleware
 from .middleware import AuditMiddleware
@@ -65,6 +66,8 @@ __all__ = [
     # Context
     "current_user",
     "UserContext",
+    "get_current_username",
+    "get_current_role",
     
     # Middleware
     "AuditMiddleware",

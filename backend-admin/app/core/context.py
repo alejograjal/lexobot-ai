@@ -4,12 +4,13 @@ from contextvars import ContextVar
 current_user: ContextVar[Optional[str]] = ContextVar('current_user', default=None)
 
 class UserContext:
-    def __init__(self, username: str):
+    def __init__(self, username: str, role: str):
         self.username = username
+        self.role = role
         self.token = None
 
     def __enter__(self):
-        self.token = current_user.set(self.username)
+        self.token = current_user.set((self.username, self.role))
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

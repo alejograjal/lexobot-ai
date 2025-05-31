@@ -14,6 +14,9 @@ from .user_service import UserService
 # Business Domain Services
 from .company_service import CompanyService
 
+# Company Access Services
+from .company_access_service import CompanyAccessService
+
 __all__ = [
     # Authentication & Security
     "AuthService",
@@ -24,4 +27,7 @@ __all__ = [
     
     # Business Domain
     "CompanyService"
+
+    # Company Access
+    "CompanyAccessService"
 ]

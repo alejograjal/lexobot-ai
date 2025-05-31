@@ -27,6 +27,12 @@ from .user_schema import (
     PasswordValidator
 )
 
+from .company_access_schema import (
+    CompanyAccessCreate,
+    CompanyAccessUpdate,
+    CompanyAccessResponse
+)
+
 __all__ = [
     # Authentication
     "LoginRequest",
@@ -45,4 +51,8 @@ __all__ = [
     "UserUpdate",
     "UserResponse",
     "PasswordValidator"
+
+    # Company Access
+    "CompanyAccessCreate",
+    "CompanyAccessResponse"
 ]

@@ -1,6 +1,8 @@
 from typing import Optional
+from app.core import UserRole
 from app.db.models import User
 from app.core import SecurityHandler
+from app.core import get_current_role
 from app.repositories import UserRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas import UserCreate, UserUpdate, PasswordValidator
@@ -20,6 +22,11 @@ class UserService:
         return await self.repository.get_by_username(db, username)
 
     async def create_user(self, db: AsyncSession, user_data: UserCreate) -> User:
+        user_role = get_current_role()
+
+        if user_role.lower() == UserRole.COMPANY.value.lower() and user_data.role_id in [ UserRole.COMPANY.value, UserRole.ADMINISTRATOR.value ]:
+            raise ValidationException("You are not allowed to assign this role.")
+
         if not PasswordValidator.validate_password_pattern(user_data.password):
             raise ValidationException(
                 "Password must contain at least one uppercase letter, "
@@ -51,6 +58,11 @@ class UserService:
 
         update_data = user_data.dict(exclude_unset=True)
 
+        if current_user.role_id != update_data.role_id:
+            user_role = get_current_role()
+            if user_role.lower() == UserRole.COMPANY.value.lower() and update_data.role_id in [UserRole.COMPANY.value, UserRole.ADMINISTRATOR.value]:
+                raise ValidationException("You are not allowed to assign this role.")
+
         if user_data.password and not PasswordValidator.validate_password_pattern(user_data.password):
             raise ValidationException(
                 "Password must contain at least one uppercase letter, "
@@ -72,3 +84,16 @@ class UserService:
             del update_data["password"]
         
         return await self.repository.update(db, user_id, update_data)
+    
+    async def delete_user(self, db: AsyncSession, user_id: int) -> None:
+        current_user = await self.repository.get_by_id(db, user_id)
+        if not current_user:
+            raise NotFoundException("User", user_id)
+        
+        if current_user.role_id == UserRole.ADMINISTRATOR.value:
+            raise ValidationException("You cannot delete an administrator user.")
+        
+        if current_user.role_id == UserRole.COMPANY.value and get_current_role().lower() == UserRole.COMPANY.value.lower():
+            raise ValidationException("You cannot delete a company user.")
+        
+        await self.repository.delete(db, user_id)

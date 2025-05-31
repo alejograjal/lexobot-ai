@@ -1,6 +1,6 @@
-from app.core import current_user
 from datetime import datetime, timezone
 from sqlalchemy.orm import declarative_base
+from app.core.user_context_service import get_current_username
 from sqlalchemy import Column, Integer, Boolean, String, DateTime, func, true, event
 
 Base = declarative_base()
@@ -18,19 +18,11 @@ class BaseModel(Base):
 @event.listens_for(BaseModel, 'before_insert', propagate=True)
 def set_created_values(mapper, connection, target):
     """Automatically set created_by and created_at from JWT context"""
-    username = current_user.get()
-    if not username:
-        raise ValueError("No user context found - JWT required")
-    
-    target.created_by = username
+    target.created_by = get_current_username()
     target.created_at = datetime.now(timezone.utc)
 
 @event.listens_for(BaseModel, 'before_update', propagate=True)
 def set_updated_values(mapper, connection, target):
     """Automatically set updated_by and updated_at from JWT context"""
-    username = current_user.get()
-    if not username:
-        raise ValueError("No user context found - JWT required")
-    
-    target.updated_by = username
+    target.updated_by = get_current_username()
     target.updated_at = datetime.now(timezone.utc)

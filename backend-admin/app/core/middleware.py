@@ -11,8 +11,8 @@ class AuditMiddleware(BaseHTTPMiddleware):
             token = auth.split(' ')[1]
             payload = SecurityHandler.verify_token(token)
             
-            if payload and payload.get("username"):
-                with UserContext(payload["username"]):
+            if payload and payload.get("username") and payload.get("role", {}).get("name"):
+                with UserContext(payload["username"], payload["role"]["name"]):
                     response = await call_next(request)
                     return response
         
