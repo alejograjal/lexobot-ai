@@ -8,7 +8,7 @@ from app.core import require_company_or_admin, require_any_role
 
 router = APIRouter(
     prefix="/users",
-    tags=["users"],
+    tags=["Users"],
     dependencies=[Depends(require_company_or_admin)]
 )
 

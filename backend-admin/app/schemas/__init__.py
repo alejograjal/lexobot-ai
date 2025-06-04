@@ -33,6 +33,46 @@ from .company_access_schema import (
     CompanyAccessResponse
 )
 
+from .plan_category_schema import (
+    PlanCategoryBase,
+    PlanCategoryCreate,
+    PlanCategoryUpdate,
+    PlanCategoryResponse
+)
+
+from .company_tenant_assignment_schema import (
+    CompanyTenantAssignmentCreate,
+    CompanyTenantAssignmentBulkSync
+)
+
+from .plan_schema import (
+    PlanBase,
+    PlanCreate,
+    PlanUpdate,
+    PlanResponse
+)
+
+from .tenant_schema import (
+    TenantBase,
+    TenantCreate,
+    TenantUpdate,
+    TenantResponse
+)
+
+from .tenant_document_schema import (
+    TenantDocumentBase,
+    TenantDocumentCreate,
+    TenantDocumentUpdate,
+    TenantDocumentResponse
+)
+
+from .role_schema import (
+    RoleBase,
+    RoleCreate,
+    RoleUpdate,
+    RoleResponse
+)
+
 __all__ = [
     # Authentication
     "LoginRequest",
@@ -55,4 +95,38 @@ __all__ = [
     # Company Access
     "CompanyAccessCreate",
     "CompanyAccessResponse"
+
+    # Plan Category
+    "PlanCategoryBase",
+    "PlanCategoryCreate",
+    "PlanCategoryUpdate",
+    "PlanCategoryResponse"
+
+    # Company Tenant Assignment
+    "CompanyTenantAssignmentCreate",
+    "CompanyTenantAssignmentBulkSync"
+
+    # Plan
+    "PlanBase",
+    "PlanCreate",
+    "PlanUpdate",
+    "PlanResponse"
+
+    # Tenant
+    "TenantBase",
+    "TenantCreate",
+    "TenantUpdate",
+    "TenantResponse"
+
+    # Tenant Document
+    "TenantDocumentBase",
+    "TenantDocumentCreate",
+    "TenantDocumentUpdate",
+    "TenantDocumentResponse"
+
+    # Role
+    "RoleBase",
+    "RoleCreate",
+    "RoleUpdate",
+    "RoleResponse"
 ]

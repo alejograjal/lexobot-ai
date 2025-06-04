@@ -8,7 +8,7 @@ from app.schemas import CompanyCreate, CompanyUpdate, CompanyResponse
 
 router = APIRouter(
     prefix="/companies",
-    tags=["companies"],
+    tags=["Companies"],
     dependencies=[Depends(require_administrator)]
 )
 

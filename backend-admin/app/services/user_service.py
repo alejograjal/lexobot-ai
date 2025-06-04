@@ -13,7 +13,10 @@ class UserService:
         self.repository = UserRepository()
 
     async def get_by_id(self, db: AsyncSession, user_id: int) -> Optional[User]:
-        return await self.repository.get_by_id(db, user_id, False)
+        user = await self.repository.get_by_id(db, user_id)
+        if not user:
+            raise NotFoundException(f"Company access", user_id)
+        return user
 
     async def get_by_username(self, db: AsyncSession, username: str) -> Optional[User]:
         """

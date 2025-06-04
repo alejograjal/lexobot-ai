@@ -6,7 +6,7 @@ from app.schemas import LoginRequest, TokenResponse, RefreshTokenRequest
 
 router = APIRouter(
     prefix="/auth",
-    tags=["authentication"]
+    tags=["Authentication"]
 )
 
 auth_service = AuthService()

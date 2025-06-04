@@ -17,6 +17,18 @@ from .company_service import CompanyService
 # Company Access Services
 from .company_access_service import CompanyAccessService
 
+from .plan_category_service import PlanCategoryService
+
+from .company_tenant_assignment_service import CompanyTenantAssignmentService
+
+from .plan_service import PlanService
+
+from .tenant_service import TenantService
+
+from .tenant_document_service import TenantDocumentService
+
+from .role_service import RoleService
+
 __all__ = [
     # Authentication & Security
     "AuthService",
@@ -30,4 +42,22 @@ __all__ = [
 
     # Company Access
     "CompanyAccessService"
+
+    # Plan Category
+    "PlanCategoryService"
+
+    # Company Tenant Assignment
+    "CompanyTenantAssignmentService"
+
+    # Plan
+    "PlanService"
+
+    # Tenant
+    "TenantService"
+
+    # Tenant Document
+    "TenantDocumentService"
+
+    # Role
+    "RoleService"
 ]

@@ -22,12 +22,18 @@ class CompanyService:
         return await self.repository.create(db, company_data.dict())
 
     async def get_company(self, db: AsyncSession, company_id: int, include_inactive: bool = False) -> Optional[Company]:
-        return await self.repository.get_by_id(db, company_id, include_inactive)
+        company = await self.repository.get_by_id(db, company_id, include_inactive)
+        if not company:
+            raise NotFoundException(f"Company access", company_id)
+        return company
 
     async def get_companies(self, db: AsyncSession, include_inactive: bool = False) -> List[Company]:
         return await self.repository.get_all(db, include_inactive)
 
     async def update_company(self, db: AsyncSession, company_id: int, company_data: CompanyUpdate) -> Optional[Company]:
+        if not await self.repository.exists(db, company_id):
+            raise NotFoundException(f"Company access", company_id)
+        
         if company_data.legal_id:
             existing = await self.repository.get_by_legal_id(db, company_data.legal_id)
             if existing and existing.id != company_id:
