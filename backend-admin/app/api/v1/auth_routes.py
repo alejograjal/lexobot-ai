@@ -1,8 +1,8 @@
 from app.db import get_db
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.services import AuthService
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, Request
-from app.schemas import LoginRequest, TokenResponse, RefreshTokenRequest
+from app.schemas import LoginRequest, TokenResponse, RefreshTokenRequest, ErrorResponse, common_errors
 
 router = APIRouter(
     prefix="/auth",
@@ -11,7 +11,7 @@ router = APIRouter(
 
 auth_service = AuthService()
 
-@router.post("/login", response_model=TokenResponse)
+@router.post("/login", response_model=TokenResponse, responses={**common_errors})
 async def login(
     credentials: LoginRequest,
     request: Request,
@@ -27,7 +27,10 @@ async def login(
         request=request
     )
 
-@router.post("/refresh", response_model=TokenResponse)
+@router.post("/refresh", response_model=TokenResponse, responses={
+    500: {"model": ErrorResponse, "description": "Internal server error"},
+    401: {"model": ErrorResponse, "description": "Unauthorized"},
+})
 async def refresh_token(refresh_token: RefreshTokenRequest, db: AsyncSession = Depends(get_db)):
     """
     Get a new access token using a refresh token

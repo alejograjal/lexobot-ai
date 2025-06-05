@@ -2,9 +2,43 @@ import logging
 from fastapi import Request, status
 from .exceptions import AppException
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from starlette.authentication import AuthenticationError
+from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
+from app.schemas import ValidationErrorDetail, ErrorObject, ErrorResponse 
 
 logger = logging.getLogger(__name__)
+
+async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    """
+    Handles validation errors from FastAPI and formats them like the other application errors.
+    """
+    details = [ValidationErrorDetail(**error) for error in exc.errors()]
+
+    error_response = ErrorResponse(
+        error=ErrorObject(
+            code="VALIDATION_ERROR",
+            message="Validation failed",
+            status=HTTP_422_UNPROCESSABLE_ENTITY,
+            path=request.url.path,
+            details=details
+        )
+    )
+
+    logger.warning(
+        "Validation error",
+        extra={
+            "errors": exc.errors(),
+            "request_method": request.method,
+            "request_url": str(request.url),
+            "client_host": request.client.host
+        }
+    )
+
+    return JSONResponse(
+        status_code=HTTP_422_UNPROCESSABLE_ENTITY,
+        content=error_response.dict()
+    )
 
 async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
     """

@@ -4,7 +4,7 @@ from app.services import CompanyService
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core import require_administrator, require_any_role
-from app.schemas import CompanyCreate, CompanyUpdate, CompanyResponse
+from app.schemas import CompanyCreate, CompanyUpdate, CompanyResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
 
 router = APIRouter(
     prefix="/companies",
@@ -14,7 +14,11 @@ router = APIRouter(
 
 company_service = CompanyService()
 
-@router.post("/", response_model=CompanyResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=CompanyResponse, status_code=status.HTTP_201_CREATED, responses={
+    **common_errors,
+    **validation_error,
+    **duplicate_entry_error
+})
 async def create_company(
     company_data: CompanyCreate,
     db: AsyncSession = Depends(get_db)
@@ -22,7 +26,10 @@ async def create_company(
     """Create a new company"""
     return await company_service.create_company(db, company_data)
 
-@router.get("/{company_id}", response_model=CompanyResponse, dependencies=[Depends(require_any_role)])
+@router.get("/{company_id}", response_model=CompanyResponse, dependencies=[Depends(require_any_role)], responses={
+    **common_errors,
+    **not_found_error
+})
 async def get_company(
     company_id: int,
     include_inactive: bool = False,
@@ -31,7 +38,7 @@ async def get_company(
     """Get a company by ID"""
     return await company_service.get_company(db, company_id, include_inactive)
 
-@router.get("/", response_model=List[CompanyResponse])
+@router.get("/", response_model=List[CompanyResponse], responses={**common_errors})
 async def get_companies(
     include_inactive: bool = False,
     db: AsyncSession = Depends(get_db)
@@ -39,7 +46,12 @@ async def get_companies(
     """Get all companies"""
     return await company_service.get_companies(db, include_inactive)
 
-@router.patch("/{company_id}", response_model=CompanyResponse)
+@router.patch("/{company_id}", response_model=CompanyResponse, responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error,
+    **duplicate_entry_error
+})
 async def update_company(
     company_id: int,
     company_data: CompanyUpdate,
@@ -48,7 +60,11 @@ async def update_company(
     """Update a company"""
     return await company_service.update_company(db, company_id, company_data)
 
-@router.delete("/{company_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{company_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
 async def delete_company(
     company_id: int,
     db: AsyncSession = Depends(get_db)

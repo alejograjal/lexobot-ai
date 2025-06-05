@@ -73,6 +73,16 @@ from .role_schema import (
     RoleResponse
 )
 
+from .error_response_schema import (
+    ErrorResponse,
+    ErrorObject,
+    ValidationErrorDetail,
+    common_errors,
+    not_found_error,
+    validation_error,
+    duplicate_entry_error
+)
+
 __all__ = [
     # Authentication
     "LoginRequest",
@@ -129,4 +139,13 @@ __all__ = [
     "RoleCreate",
     "RoleUpdate",
     "RoleResponse"
+
+    # Error Response
+    "ErrorResponse",
+    "ErrorObject",
+    "ValidationErrorDetail",
+    "common_errors",
+    "not_found_error",
+    "validation_error",
+    "duplicate_entry_error"
 ]

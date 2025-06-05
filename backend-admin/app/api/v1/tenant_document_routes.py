@@ -4,7 +4,7 @@ from app.core import require_administrator
 from fastapi import APIRouter, Depends, status
 from app.services import TenantDocumentService
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas import (TenantDocumentCreate, TenantDocumentUpdate, TenantDocumentResponse)
+from app.schemas import TenantDocumentCreate, TenantDocumentUpdate, TenantDocumentResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
 
 router = APIRouter(
     prefix="/tenants/{tenant_id}/documents",
@@ -14,7 +14,10 @@ router = APIRouter(
 
 document_service = TenantDocumentService()
 
-@router.get("", response_model=List[TenantDocumentResponse], status_code=status.HTTP_200_OK, summary="List tenant documents")
+@router.get("", response_model=List[TenantDocumentResponse], status_code=status.HTTP_200_OK, summary="List tenant documents", responses={
+    **common_errors,
+    **not_found_error,
+})
 async def list_documents(
     tenant_id: int,
     db: AsyncSession = Depends(get_db)
@@ -22,7 +25,12 @@ async def list_documents(
     """List all documents for a tenant"""
     return await document_service.get_tenant_documents(db, tenant_id)
 
-@router.post("/", response_model=TenantDocumentResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=TenantDocumentResponse, status_code=status.HTTP_201_CREATED, responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error,
+    **duplicate_entry_error,
+})
 async def create_document(
     tenant_id: int,
     document_data: TenantDocumentCreate,
@@ -36,7 +44,11 @@ async def create_document(
     response_model=List[TenantDocumentResponse],
     status_code=status.HTTP_200_OK,
     summary="Bulk update tenant documents",
-    description="Replace all documents for a tenant with a new list"
+    description="Replace all documents for a tenant with a new list",
+    responses={
+        **common_errors,
+        **validation_error
+    }
 )
 async def bulk_update_tenant_documents(
     tenant_id: int,
@@ -49,16 +61,24 @@ async def bulk_update_tenant_documents(
     """
     return await document_service.bulk_update_tenant_documents(db, tenant_id, document_data)
 
-@router.get("/{document_id}", response_model=TenantDocumentResponse)
+@router.get("/{document_id}", response_model=TenantDocumentResponse, responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
 async def get_document(
     tenant_id: int,
     document_id: int,
     db: AsyncSession = Depends(get_db)
 ) -> TenantDocumentResponse:
     """Get a specific document"""
-    return await document_service.get_document(db, document_id)
+    return await document_service.get_document(db, tenant_id, document_id)
 
-@router.patch("/{document_id}", response_model=TenantDocumentResponse)
+@router.patch("/{document_id}", response_model=TenantDocumentResponse, responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
 async def update_document(
     tenant_id: int,
     document_id: int,
@@ -68,7 +88,11 @@ async def update_document(
     """Update a document's information"""
     return await document_service.update_document(db, tenant_id, document_id, document_data)
 
-@router.delete("/{document_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{document_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
 async def delete_document(
     tenant_id: int,
     document_id: int,

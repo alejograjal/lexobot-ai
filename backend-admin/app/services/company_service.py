@@ -32,7 +32,7 @@ class CompanyService:
 
     async def update_company(self, db: AsyncSession, company_id: int, company_data: CompanyUpdate) -> Optional[Company]:
         if not await self.repository.exists(db, company_id):
-            raise NotFoundException(f"Company access", company_id)
+            raise NotFoundException(f"Company", company_id)
         
         if company_data.legal_id:
             existing = await self.repository.get_by_legal_id(db, company_data.legal_id)
@@ -55,4 +55,7 @@ class CompanyService:
         return company
 
     async def delete_company(self, db: AsyncSession, company_id: int) -> bool:
+        if not await self.repository.exists(db, company_id):
+            raise NotFoundException(f"Company", company_id)
+        
         return await self.repository.delete(db, company_id)

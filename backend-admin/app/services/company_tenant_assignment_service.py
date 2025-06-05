@@ -1,8 +1,8 @@
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.models import CompanyTenantAssignment
-from app.core import DuplicateEntryError, NotFoundException
 from app.repositories import CompanyTenantAssignmentRepository
+from app.core import DuplicateEntryError, NotFoundException, ValidationException
 from app.schemas import CompanyTenantAssignmentCreate, CompanyTenantAssignmentBulkSync
 
 class CompanyTenantAssignmentService:
@@ -28,6 +28,9 @@ class CompanyTenantAssignmentService:
         Sync all tenant assignments for a company in a single transaction.
         Removes existing assignments and creates new ones atomically.
         """
+        if not CompanyTenantAssignmentBulkSync.tenant_ids:
+            raise ValidationException("Document list cannot be empty")
+
         async with self.repository.transaction(db) as session:
             existing_assignments = await self.repository.get_by_company(session, dto.company_id)
             for assignment in existing_assignments:

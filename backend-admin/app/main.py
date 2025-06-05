@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from app.api import api_router
-from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.authentication import AuthenticationError
+from fastapi.exceptions import HTTPException, RequestValidationError
 from app.core import (
     settings,
     app_exception_handler,
     general_exception_handler,
+    validation_exception_handler,
     authentication_handler,
     AppException,
     AuditMiddleware
@@ -24,10 +25,11 @@ def create_app() -> FastAPI:
     )
 
     # Configure exception handlers
+    app.add_exception_handler(RequestValidationError, validation_exception_handler)
     app.add_exception_handler(AppException, app_exception_handler)
+    app.add_exception_handler(AuthenticationError, authentication_handler)
     app.add_exception_handler(Exception, general_exception_handler)
     app.add_exception_handler(HTTPException, authentication_handler)
-    app.add_exception_handler(AuthenticationError, authentication_handler)
 
     # Add middlewares
     app.add_middleware(AuditMiddleware)

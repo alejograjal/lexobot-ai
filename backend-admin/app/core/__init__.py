@@ -28,7 +28,8 @@ from .enums import UserRole
 from .error_handlers import (
     app_exception_handler,
     general_exception_handler,
-    authentication_handler
+    authentication_handler,
+    validation_exception_handler
 )
 
 # Permissions
@@ -79,6 +80,7 @@ __all__ = [
     "app_exception_handler",
     "general_exception_handler",
     "authentication_handler",
+    "validation_exception_handler",
     
     # Permissions
     "require_administrator",
