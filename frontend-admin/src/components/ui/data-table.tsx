@@ -1,12 +1,12 @@
 "use client"
 
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { ErrorProcess } from "../Shared/ErrorProcess"
 import { CircularLoadingProgress } from "../Shared/CircularLoadingProgress"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table"
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -23,12 +23,27 @@ export function DataTable<TData, TValue>({
     error,
     onRowClick
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = useState<SortingState>([])
+    const [sorting, setSorting] = useState<SortingState>([{ id: "id", desc: true }])
     const [globalFilter, setGlobalFilter] = useState("")
+
+    const normalizedColumns = useMemo(() => {
+        return columns.map((col, index) => {
+            if (!("id" in col)) {
+                const fallbackId =
+                    "accessorKey" in col && col.accessorKey
+                        ? col.accessorKey.toString()
+                        : typeof col.header === "string"
+                            ? col.header.toLowerCase().replace(/\s+/g, "_")
+                            : `col_${index}`
+                return { ...col, id: fallbackId }
+            }
+            return col
+        })
+    }, [columns])
 
     const table = useReactTable({
         data,
-        columns,
+        columns: normalizedColumns,
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),

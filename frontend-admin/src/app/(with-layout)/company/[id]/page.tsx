@@ -7,8 +7,10 @@ import { useParams } from "next/navigation"
 import { Page } from "@/components/Shared/Page"
 import { formatErrorMessage } from "@/lib/utils"
 import { UseSnackbar } from "@/stores/UseSnackbar"
+import { DeleteCompany } from "./DeleteCompany"
 import { PageHeader } from "@/components/Shared/PageHeader"
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks"
+import { UsePutCompany } from "@/hooks/api/lexobot-ai/company/UsePutCompany"
 import { CompanyForm } from "@/app/(with-layout)/company/components/CompanyForm"
 import { UseGetCompanyById } from "@/hooks/api/lexobot-ai/company/UseGetCompanyById"
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress"
@@ -36,13 +38,10 @@ export default function UpdateCompanyPage() {
 
     const { data, isLoading, isError, error: errorAPI } = UseGetCompanyById(companyId)
 
-    // const { mutate: putCompany } = UsePutCompany(
-    //     UseMutationCallbacks(
-    //         'Compañia actualizada correctamente',
-    //         '/company',
-    //         closeLoading
-    //     )
-    // )
+    const { mutate: putCompany } = UsePutCompany({
+        companyId: Number(companyId),
+        ...UseMutationCallbacks('Compañia actualizada correctamente', '/company', closeLoading)
+    })
 
     useEffect(() => {
         if (isError) {
@@ -53,12 +52,8 @@ export default function UpdateCompanyPage() {
     }, [isError, errorAPI, router, setSnackbarMessage])
 
     const handleSubmit = (data: CompanyUpdate) => {
-        // if (!companyId) return
-
-        // setLoading(true)
-
-        // // Enviar PUT con ID y datos
-        // putCompany({ companyId: Number(companyId), ...data })
+        setLoading(true)
+        putCompany({ ...data })
     }
 
     return (
@@ -67,8 +62,10 @@ export default function UpdateCompanyPage() {
                 <PageHeader
                     title={`Editar compañia ${data?.name}`}
                     subtitle="Actualice los campos que desee"
+                    actionButton={<DeleteCompany companyId={Number(companyId)} companyName={data?.name!} />}
                 />
             }
+
         >
             {isLoading ? (
                 <CircularLoadingProgress />
@@ -80,6 +77,7 @@ export default function UpdateCompanyPage() {
                     onloading={loading}
                 />
             )}
+
         </Page>
     )
 }
