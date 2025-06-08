@@ -40,9 +40,16 @@ export const UsePutCompany = ({
             return data;
         },
         onSuccess: async (data: CompanyResponse, variables: CompanyUpdate) => {
-            await queryClient.invalidateQueries({
-                queryKey: ['GetCompanies']
-            })
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: ['GetCompany', companyId.toString()],
+                    exact: true
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: ['GetCompanies'],
+                    exact: false
+                })
+            ]);
             onSuccess?.(data, variables)
         },
         onError: (errorAPI: ApiError, _) => {

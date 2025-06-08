@@ -11,14 +11,14 @@ export const UseMutationCallbacks = (successMessage: string, redirectTo: string,
     const setSnackbarMessage = UseSnackbar((state) => state.setMessage);
 
     return {
-        onSuccess: () => {
+        onSuccess: (data: unknown, _variables: unknown) => {
             setSnackbarMessage(successMessage, 'success');
             router.replace(redirectTo);
         },
-        onError: (data: ErrorDetail) => {
+        onError: (data: ErrorDetail, _variables: unknown) => {
             setSnackbarMessage(formatErrorMessage(data), 'error');
         },
-        onSettled: () => {
+        onSettled: (_data: unknown, _error: unknown, _variables: unknown) => {
             onSettledCallback?.();
         },
     };
