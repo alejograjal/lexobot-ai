@@ -15,3 +15,6 @@ class RoleUpdate(BaseModel):
 class RoleResponse(RoleBase):
     id: int
     is_active: bool
+
+class RoleResponseProfile(RoleBase):
+    id: int

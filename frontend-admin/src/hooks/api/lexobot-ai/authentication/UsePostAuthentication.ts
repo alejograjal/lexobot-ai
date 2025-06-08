@@ -32,8 +32,9 @@ export const UsePostAuthentication = ({
             return data;
         },
         onSuccess,
-        onError: (error: ApiError, _) => {
-            onError?.(error.data as ErrorDetail, _)
+        onError: (errorAPI: ApiError, _) => {
+            const { error } = errorAPI.data
+            onError?.(error as ErrorDetail, _)
         }
     })
 }

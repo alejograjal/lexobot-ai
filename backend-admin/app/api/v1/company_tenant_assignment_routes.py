@@ -13,7 +13,7 @@ router = APIRouter(
 
 company_tenant_assignment_service = CompanyTenantAssignmentService()
 
-@router.post("/", status_code=status.HTTP_201_CREATED, responses={
+@router.post("", status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **duplicate_entry_error,
 })
@@ -24,7 +24,7 @@ async def create_assignment(
     """Create a new company-tenant assignment"""
     return await company_tenant_assignment_service.create(db, assignment_data)
 
-@router.delete("/", status_code=status.HTTP_204_NO_CONTENT, responses={
+@router.delete("", status_code=status.HTTP_204_NO_CONTENT, responses={
     **common_errors,
     **not_found_error
 })

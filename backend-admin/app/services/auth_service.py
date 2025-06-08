@@ -32,7 +32,7 @@ class AuthService:
         if not SecurityHandler.verify_password(password, user.password_hash):
             await self.login_attempt_service.increment_attempts(db, user.id, ip_address)
             raise InvalidCredentialsError()
-
+        
         access_token = SecurityHandler.create_access_token(
             subject=str(user.id),
             additional_data={
@@ -40,7 +40,9 @@ class AuthService:
                     "id": user.role.id,
                     "name": user.role.name
                 },
-                "username": user.username
+                "username": user.username,
+                "email": user.email,
+                "full_name": f"{user.first_name} {user.last_name}"
             }
         )
         refresh_token = SecurityHandler.create_refresh_token(
@@ -72,7 +74,9 @@ class AuthService:
                     "id": user.role.id,
                     "name": user.role.name
                 },
-                "username": user.username
+                "username": user.username,
+                "email": user.email,
+                "full_name": f"{user.first_name} {user.last_name}"
             }
         )
 

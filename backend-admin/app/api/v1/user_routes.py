@@ -14,7 +14,7 @@ router = APIRouter(
 
 user_service = UserService()
 
-@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **validation_error,
     **duplicate_entry_error
@@ -37,7 +37,7 @@ async def get_user(
     """Get a user by ID"""
     return await user_service.get_by_id(db, user_id)
 
-@router.get("/", response_model=List[UserResponse], responses={**common_errors})
+@router.get("", response_model=List[UserResponse], responses={**common_errors})
 async def get_users(
     db: AsyncSession = Depends(get_db)
 ) -> List[UserResponse]:

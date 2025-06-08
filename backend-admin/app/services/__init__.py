@@ -29,6 +29,8 @@ from .tenant_document_service import TenantDocumentService
 
 from .role_service import RoleService
 
+from .me_service import MeService
+
 __all__ = [
     # Authentication & Security
     "AuthService",
@@ -60,4 +62,7 @@ __all__ = [
 
     # Role
     "RoleService"
+
+    # Me
+    "MeService"
 ]

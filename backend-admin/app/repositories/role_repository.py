@@ -9,7 +9,7 @@ class RoleRepository(BaseRepository[Role]):
         super().__init__(Role)
 
     async def get_by_name(self, db: AsyncSession, name: str) -> Optional[Role]:
-        stmt = select(Role).where(Role.name == name and Role.is_active == True)
+        stmt = select(Role).where(Role.name == name, Role.is_active == True)
         result = await db.execute(stmt)
         return result.scalar_one_or_none()
 

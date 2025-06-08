@@ -49,7 +49,7 @@ from .exceptions import (
     DuplicateEntryError,
     AccountLockedError,
     InsufficientPermissionsError,
-    AuthenticationError,
+    AppAuthException,
     InvalidCredentialsError,
     ForbiddenError,
     ValidationException,
@@ -80,7 +80,7 @@ __all__ = [
     "app_exception_handler",
     "general_exception_handler",
     "authentication_handler",
-    "validation_exception_handler",
+    "validation_exception_handler"
     
     # Permissions
     "require_administrator",
@@ -96,7 +96,7 @@ __all__ = [
     "DuplicateEntryError",
     "AccountLockedError",
     "InsufficientPermissionsError",
-    "AuthenticationError",
+    "AppAuthException",
     "InvalidCredentialsError",
     "ForbiddenError",
     "ValidationException",

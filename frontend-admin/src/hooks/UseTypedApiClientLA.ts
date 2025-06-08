@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { paths } from "@api/clients/lexobot-ai/api";
 import { Fetcher, Middleware, type TypedFetch } from "openapi-typescript-fetch";
 
@@ -34,10 +35,10 @@ export const UseTypedApiClientBS = <
     method: MethodT
     disableAuth?: boolean
 }): TypedFetch<paths[PathT][MethodT]> => {
-    const token = '';
+    const token = Cookies.get('access_token');
     const fetcher = Fetcher.for<paths>();
     fetcher.configure({
-        baseUrl: process.env.NEXT_PUBLIC_API_WEB_STACK_BASE_URL,
+        baseUrl: process.env.NODE_ENV === 'development' ? '' : process.env.NEXT_PUBLIC_API_WEB_STACK_BASE_URL,
         init: {
             headers: getHeaders(disableAuth, token ?? ''),
         },

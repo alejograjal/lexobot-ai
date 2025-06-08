@@ -15,7 +15,8 @@ class PlanCategoryService:
     async def update(self, db: AsyncSession, plan_category_id: int, obj_in: PlanCategoryUpdate) -> PlanCategory:
         if not await self.repository.exists(db, plan_category_id):
             raise NotFoundException(f"Plan Category", plan_category_id)
-        return await self.repository.update(db, id, obj_in.model_dump(exclude_unset=True))
+        
+        return await self.repository.update(db, plan_category_id, obj_in.model_dump(exclude_unset=True))
 
     async def get_by_id(self, db: AsyncSession, id: int) -> PlanCategory:
         category = await self.repository.get_by_id(db, id)

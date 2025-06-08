@@ -13,9 +13,7 @@ class CompanyTenantAssignmentRepository(BaseRepository[CompanyTenantAssignment])
             CompanyTenantAssignment.company_id == company_id
         )
         await db.execute(stmt)
-        await db.commit()
 
     async def bulk_create(self, db: AsyncSession, items: List[dict]) -> None:
         objs = [CompanyTenantAssignment(**item) for item in items]
         db.add_all(objs)
-        await db.commit()

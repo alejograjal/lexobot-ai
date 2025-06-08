@@ -11,7 +11,7 @@
     "lexobot-ai-admin:update-local": "curl -s http://127.0.0.1:8000/openapi.json -o ./src/api/clients/lexobot-ai/spec.json && sed -i '' 's/; x-api-version=[0-9]*//' ./src/api/clients/lexobot-ai/spec.json && npx openapi-typescript ./src/api/clients/lexobot-ai/spec.json -o ./src/api/clients/lexobot-ai/api.d.ts --bare"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.1.0",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.14",
@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.80.5",
+    "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
@@ -37,6 +38,7 @@
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.6.1",
+    "zod": "^3.25.56",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

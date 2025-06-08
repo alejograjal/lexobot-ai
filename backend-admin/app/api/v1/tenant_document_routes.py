@@ -25,7 +25,7 @@ async def list_documents(
     """List all documents for a tenant"""
     return await document_service.get_tenant_documents(db, tenant_id)
 
-@router.post("/", response_model=TenantDocumentResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=TenantDocumentResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **not_found_error,
     **validation_error,

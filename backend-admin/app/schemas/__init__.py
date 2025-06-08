@@ -24,6 +24,7 @@ from .user_schema import (
     UserCreate,
     UserUpdate,
     UserResponse,
+    UserProfile,
     PasswordValidator
 )
 
@@ -70,7 +71,8 @@ from .role_schema import (
     RoleBase,
     RoleCreate,
     RoleUpdate,
-    RoleResponse
+    RoleResponse,
+    RoleResponseProfile
 )
 
 from .error_response_schema import (
@@ -100,6 +102,7 @@ __all__ = [
     "UserCreate",
     "UserUpdate",
     "UserResponse",
+    "UserProfile",
     "PasswordValidator"
 
     # Company Access
@@ -138,7 +141,8 @@ __all__ = [
     "RoleBase",
     "RoleCreate",
     "RoleUpdate",
-    "RoleResponse"
+    "RoleResponse",
+    "RoleResponseProfile"
 
     # Error Response
     "ErrorResponse",

@@ -3,7 +3,7 @@ from .context import current_user
 def get_current_username() -> str:
     user_info = current_user.get()
     if not user_info:
-        raise ValueError("No user context found")
+        return "api-lexobot"
     return user_info[0]
 
 def get_current_role() -> str:

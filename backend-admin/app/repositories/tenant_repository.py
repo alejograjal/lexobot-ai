@@ -1,7 +1,6 @@
 from typing import Optional
-from sqlalchemy import exists
 from .base import BaseRepository
-from sqlalchemy.future import select
+from sqlalchemy import exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.models import Tenant, CompanyTenantAssignment
 

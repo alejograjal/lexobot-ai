@@ -4,6 +4,7 @@ This module imports and exposes all route modules for the v1 API.
 """
 
 from fastapi import APIRouter
+from .me_routes import router as me_router
 from .plan_routes import router as plan_router
 from .auth_routes import router as auth_router
 from .user_routes import router as user_router
@@ -17,6 +18,7 @@ from .company_tenant_assignment_routes import router as company_tenant_assignmen
 
 v1_router = APIRouter(prefix="/v1")
 
+v1_router.include_router(me_router)
 v1_router.include_router(auth_router)
 v1_router.include_router(company_access_router)
 v1_router.include_router(company_router)

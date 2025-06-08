@@ -20,6 +20,7 @@ class TenantDocumentService:
         document = await self.repository.get_by_id(db, document_id)
         if not document:
             raise NotFoundException("Document", document_id)
+        
         if document.tenant_id != tenant_id:
             raise ValidationException("Document does not belong to tenant")
         
@@ -48,13 +49,13 @@ class TenantDocumentService:
         if not document_data:
             raise ValidationException("Document list cannot be empty")
 
-        async with self.repository.transaction(db) as session:
-            existing_docs = await self.repository.get_by_tenant(session, tenant_id)
+        async with db.begin():
+            existing_docs = await self.repository.get_by_tenant(db, tenant_id)
             for doc in existing_docs:
-                await self.repository.remove(session, doc.id)
+                await self.repository.remove(db, doc.id)
 
-            doc_dicts = [d.model_dump() for d in document_data]
-            return await self.repository.bulk_create(session, doc_dicts)
+            doc_dicts = [d.dict() for d in document_data]
+            return await self.repository.bulk_create(db, doc_dicts)
 
     async def get_tenant_documents(self, db: AsyncSession, tenant_id: int) -> List[TenantDocument]:
         await self._validate_tenant_exists(db, tenant_id)

@@ -1,6 +1,7 @@
 import re
 from typing import Optional, Annotated
-from pydantic import BaseModel, EmailStr, Field
+from .role_schema import RoleResponseProfile
+from pydantic import BaseModel, EmailStr, Field, computed_field
 
 PASSWORD_PATTERN = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$"
 
@@ -41,5 +42,17 @@ class UserResponse(UserBase):
     id: int
     is_active: bool
 
-    class Config:
-        from_attributes = True
+
+class UserProfile(BaseModel):
+    id: int
+    username: str
+    first_name: str
+    last_name: str
+    email: EmailStr
+    phone_number: Optional[str] = None
+    role: RoleResponseProfile
+
+    @computed_field
+    @property
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"

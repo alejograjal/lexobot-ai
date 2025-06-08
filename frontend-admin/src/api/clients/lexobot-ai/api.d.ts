@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+    "/api/v1/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Profile
+         * @description Get current user profile
+         */
+        get: operations["get_profile_api_v1_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/login": {
         parameters: {
             query?: never;
@@ -44,7 +64,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/companies/{company_id}/accesses/": {
+    "/api/v1/companies/{company_id}/accesses": {
         parameters: {
             query?: never;
             header?: never;
@@ -52,10 +72,10 @@ export interface paths {
             cookie?: never;
         };
         /** List Accesses */
-        get: operations["list_accesses_api_v1_companies__company_id__accesses__get"];
+        get: operations["list_accesses_api_v1_companies__company_id__accesses_get"];
         put?: never;
         /** Create Access */
-        post: operations["create_access_api_v1_companies__company_id__accesses__post"];
+        post: operations["create_access_api_v1_companies__company_id__accesses_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -81,7 +101,7 @@ export interface paths {
         patch: operations["update_access_api_v1_companies__company_id__accesses__access_id__patch"];
         trace?: never;
     };
-    "/api/v1/companies/": {
+    "/api/v1/companies": {
         parameters: {
             query?: never;
             header?: never;
@@ -92,13 +112,13 @@ export interface paths {
          * Get Companies
          * @description Get all companies
          */
-        get: operations["get_companies_api_v1_companies__get"];
+        get: operations["get_companies_api_v1_companies_get"];
         put?: never;
         /**
          * Create Company
          * @description Create a new company
          */
-        post: operations["create_company_api_v1_companies__post"];
+        post: operations["create_company_api_v1_companies_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -133,7 +153,7 @@ export interface paths {
         patch: operations["update_company_api_v1_companies__company_id__patch"];
         trace?: never;
     };
-    "/api/v1/company-tenant-assignments/": {
+    "/api/v1/company-tenant-assignments": {
         parameters: {
             query?: never;
             header?: never;
@@ -146,12 +166,12 @@ export interface paths {
          * Create Assignment
          * @description Create a new company-tenant assignment
          */
-        post: operations["create_assignment_api_v1_company_tenant_assignments__post"];
+        post: operations["create_assignment_api_v1_company_tenant_assignments_post"];
         /**
          * Delete Assignment
          * @description Delete a specific company-tenant assignment
          */
-        delete: operations["delete_assignment_api_v1_company_tenant_assignments__delete"];
+        delete: operations["delete_assignment_api_v1_company_tenant_assignments_delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -214,7 +234,7 @@ export interface paths {
         patch: operations["update_plan_category_api_v1_plan_categories__category_id__patch"];
         trace?: never;
     };
-    "/api/v1/plans/": {
+    "/api/v1/plans": {
         parameters: {
             query?: never;
             header?: never;
@@ -225,13 +245,13 @@ export interface paths {
          * Get All Plans
          * @description Get all plans
          */
-        get: operations["get_all_plans_api_v1_plans__get"];
+        get: operations["get_all_plans_api_v1_plans_get"];
         put?: never;
         /**
          * Create Plan
          * @description Create a new plan
          */
-        post: operations["create_plan_api_v1_plans__post"];
+        post: operations["create_plan_api_v1_plans_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -266,7 +286,7 @@ export interface paths {
         patch: operations["update_plan_api_v1_plans__plan_id__patch"];
         trace?: never;
     };
-    "/api/v1/roles/": {
+    "/api/v1/roles": {
         parameters: {
             query?: never;
             header?: never;
@@ -277,13 +297,13 @@ export interface paths {
          * Get All Roles
          * @description List all roles
          */
-        get: operations["get_all_roles_api_v1_roles__get"];
+        get: operations["get_all_roles_api_v1_roles_get"];
         put?: never;
         /**
          * Create Role
          * @description Create a new role
          */
-        post: operations["create_role_api_v1_roles__post"];
+        post: operations["create_role_api_v1_roles_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -331,27 +351,11 @@ export interface paths {
          */
         get: operations["list_documents_api_v1_tenants__tenant_id__documents_get"];
         put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/tenants/{tenant_id}/documents/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
         /**
          * Create Document
          * @description Create a new document for a tenant
          */
-        post: operations["create_document_api_v1_tenants__tenant_id__documents__post"];
+        post: operations["create_document_api_v1_tenants__tenant_id__documents_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -406,7 +410,7 @@ export interface paths {
         patch: operations["update_document_api_v1_tenants__tenant_id__documents__document_id__patch"];
         trace?: never;
     };
-    "/api/v1/tenants/": {
+    "/api/v1/tenants": {
         parameters: {
             query?: never;
             header?: never;
@@ -414,10 +418,10 @@ export interface paths {
             cookie?: never;
         };
         /** List Tenants */
-        get: operations["list_tenants_api_v1_tenants__get"];
+        get: operations["list_tenants_api_v1_tenants_get"];
         put?: never;
         /** Create Tenant */
-        post: operations["create_tenant_api_v1_tenants__post"];
+        post: operations["create_tenant_api_v1_tenants_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -443,7 +447,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/users/": {
+    "/api/v1/users": {
         parameters: {
             query?: never;
             header?: never;
@@ -454,13 +458,13 @@ export interface paths {
          * Get Users
          * @description Get all users
          */
-        get: operations["get_users_api_v1_users__get"];
+        get: operations["get_users_api_v1_users_get"];
         put?: never;
         /**
          * Create User
          * @description Create a new user
          */
-        post: operations["create_user_api_v1_users__post"];
+        post: operations["create_user_api_v1_users_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -783,6 +787,15 @@ export interface components {
             /** Is Active */
             is_active: boolean;
         };
+        /** RoleResponseProfile */
+        RoleResponseProfile: {
+            /** Name */
+            name: string;
+            /** Description */
+            description?: string | null;
+            /** Id */
+            id: number;
+        };
         /** RoleUpdate */
         RoleUpdate: {
             /** Name */
@@ -906,6 +919,27 @@ export interface components {
              */
             password: string;
         };
+        /** UserProfile */
+        UserProfile: {
+            /** Id */
+            id: number;
+            /** Username */
+            username: string;
+            /** First Name */
+            first_name: string;
+            /** Last Name */
+            last_name: string;
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** Phone Number */
+            phone_number?: string | null;
+            role: components["schemas"]["RoleResponseProfile"];
+            /** Full Name */
+            readonly full_name: string;
+        };
         /** UserResponse */
         UserResponse: {
             /** First Name */
@@ -978,6 +1012,53 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    get_profile_api_v1_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserProfile"] | null;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     login_api_v1_auth_login_post: {
         parameters: {
             query?: never;
@@ -1089,7 +1170,7 @@ export interface operations {
             };
         };
     };
-    list_accesses_api_v1_companies__company_id__accesses__get: {
+    list_accesses_api_v1_companies__company_id__accesses_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1156,7 +1237,7 @@ export interface operations {
             };
         };
     };
-    create_access_api_v1_companies__company_id__accesses__post: {
+    create_access_api_v1_companies__company_id__accesses_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -1433,7 +1514,7 @@ export interface operations {
             };
         };
     };
-    get_companies_api_v1_companies__get: {
+    get_companies_api_v1_companies_get: {
         parameters: {
             query?: {
                 include_inactive?: boolean;
@@ -1491,7 +1572,7 @@ export interface operations {
             };
         };
     };
-    create_company_api_v1_companies__post: {
+    create_company_api_v1_companies_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -1774,7 +1855,7 @@ export interface operations {
             };
         };
     };
-    create_assignment_api_v1_company_tenant_assignments__post: {
+    create_assignment_api_v1_company_tenant_assignments_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -1843,7 +1924,7 @@ export interface operations {
             };
         };
     };
-    delete_assignment_api_v1_company_tenant_assignments__delete: {
+    delete_assignment_api_v1_company_tenant_assignments_delete: {
         parameters: {
             query: {
                 company_id: number;
@@ -2279,7 +2360,7 @@ export interface operations {
             };
         };
     };
-    get_all_plans_api_v1_plans__get: {
+    get_all_plans_api_v1_plans_get: {
         parameters: {
             query?: {
                 include_inactive?: boolean;
@@ -2337,7 +2418,7 @@ export interface operations {
             };
         };
     };
-    create_plan_api_v1_plans__post: {
+    create_plan_api_v1_plans_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -2602,7 +2683,7 @@ export interface operations {
             };
         };
     };
-    get_all_roles_api_v1_roles__get: {
+    get_all_roles_api_v1_roles_get: {
         parameters: {
             query?: {
                 include_inactive?: boolean;
@@ -2660,7 +2741,7 @@ export interface operations {
             };
         };
     };
-    create_role_api_v1_roles__post: {
+    create_role_api_v1_roles_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -3010,7 +3091,7 @@ export interface operations {
             };
         };
     };
-    create_document_api_v1_tenants__tenant_id__documents__post: {
+    create_document_api_v1_tenants__tenant_id__documents_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -3358,7 +3439,7 @@ export interface operations {
             };
         };
     };
-    list_tenants_api_v1_tenants__get: {
+    list_tenants_api_v1_tenants_get: {
         parameters: {
             query?: {
                 include_inactive?: boolean;
@@ -3416,7 +3497,7 @@ export interface operations {
             };
         };
     };
-    create_tenant_api_v1_tenants__post: {
+    create_tenant_api_v1_tenants_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -3699,7 +3780,7 @@ export interface operations {
             };
         };
     };
-    get_users_api_v1_users__get: {
+    get_users_api_v1_users_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -3746,7 +3827,7 @@ export interface operations {
             };
         };
     };
-    create_user_api_v1_users__post: {
+    create_user_api_v1_users_post: {
         parameters: {
             query?: never;
             header?: never;

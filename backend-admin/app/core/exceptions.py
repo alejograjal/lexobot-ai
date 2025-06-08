@@ -22,7 +22,7 @@ class DuplicateEntryError(AppException):
             status_code=status.HTTP_400_BAD_REQUEST
         )
 
-class AuthenticationError(AppException):
+class AppAuthException(AppException):
     """Base class for authentication errors"""
     def __init__(self, detail: str):
         super().__init__(
@@ -31,9 +31,9 @@ class AuthenticationError(AppException):
             detail=detail
         )
 
-class InvalidCredentialsError(AuthenticationError):
+class InvalidCredentialsError(AppAuthException):
     def __init__(self):
-        super().__init__(detail="Invalid credentials")
+        super().__init__(detail="Invalid username or password")
 
 class ForbiddenError(AppException):
     """Base class for forbidden access errors"""

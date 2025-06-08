@@ -14,12 +14,14 @@ class TenantService:
         existing = await self.repository.get_by_name(db, data.name)
         if existing:
             raise DuplicateEntryError("Tenant", "name")
+        
         return await self.repository.create(db, {**data.dict(), "external_id": uuid.uuid4()})
 
     async def get(self, db: AsyncSession, tenant_id: int, include_inactive: bool = False) -> Tenant:
         tenant = await self.repository.get_by_id(db, tenant_id, include_inactive)
         if not tenant:
             raise NotFoundException("Tenant", tenant_id)
+        
         return tenant
 
     async def get_all(self, db: AsyncSession, include_inactive: bool = False) -> List[Tenant]:
@@ -37,6 +39,7 @@ class TenantService:
         tenant = await self.repository.update(db, tenant_id, data.dict(exclude_unset=True))
         if not tenant:
             raise NotFoundException("Tenant", tenant_id)
+        
         return tenant
 
     async def delete(self, db: AsyncSession, tenant_id: int) -> bool:

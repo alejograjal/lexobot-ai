@@ -35,6 +35,4 @@ class LoginAttemptRepository(BaseRepository[LoginAttempt]):
             )
             db.add(attempt)
 
-        await db.commit()
-        await db.refresh(attempt)
         return attempt

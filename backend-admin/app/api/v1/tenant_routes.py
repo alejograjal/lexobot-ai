@@ -13,7 +13,7 @@ router = APIRouter(
 )
 service = TenantService()
 
-@router.post("/", response_model=TenantResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=TenantResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **validation_error,
     **duplicate_entry_error
@@ -21,7 +21,7 @@ service = TenantService()
 async def create_tenant(data: TenantCreate, db: AsyncSession = Depends(get_db)):
     return await service.create(db, data)
 
-@router.get("/", response_model=List[TenantResponse], responses={**common_errors})
+@router.get("", response_model=List[TenantResponse], responses={**common_errors})
 async def list_tenants(include_inactive: bool = False, db: AsyncSession = Depends(get_db)):
     return await service.get_all(db, include_inactive)
 

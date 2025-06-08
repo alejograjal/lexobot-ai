@@ -1,13 +1,14 @@
+from typing import Optional
 from .base import BaseRepository
 from sqlalchemy import select, exists, and_
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.models import Plan, CompanyAccess
+from sqlalchemy.ext.asyncio import AsyncSession
 
 class PlanRepository(BaseRepository[Plan]):
     def __init__(self):
         super().__init__(Plan, relationships=["plan_category"])
 
-    async def get_by_name_and_category(self, db: AsyncSession, name: str, plan_category_id: int) -> Plan | None:
+    async def get_by_name_and_category(self, db: AsyncSession, name: str, plan_category_id: int) -> Optional[Plan]:
         stmt = select(Plan).where(
             and_(
                 Plan.name == name,

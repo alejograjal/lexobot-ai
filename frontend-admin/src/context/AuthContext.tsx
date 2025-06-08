@@ -2,13 +2,15 @@
 
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { UserProfile } from '@/types/lexobot-ai';
+import { formatErrorMessage } from '@/lib/utils';
 import { UseSnackbar } from '@stores/UseSnackbar';
-import { LoginFormValues } from '@/app/login/loginSchema';
+import { LoginFormValues } from '@/app/login/LoginSchema';
 import { TokenResponse, ErrorDetail } from '@/types/lexobot-ai';
+import { UseGetProfileLogged } from '@/hooks/api/lexobot-ai/me/UseGetProfileLogged';
 import { UsePostAuthentication } from '@/hooks/api/lexobot-ai/authentication/UsePostAuthentication';
 import { createContext, ReactNode, useCallback, useState, useContext, useEffect, useMemo } from 'react';
 import { UsePostRefreshAuthentication } from '@/hooks/api/lexobot-ai/authentication/UsePostRefreshAuthentication';
-import { formatErrorMessage } from '@/lib/utils';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -16,6 +18,7 @@ interface AuthContextType {
     logout: () => void;
     refreshTokens: () => void;
     authLoaded: boolean;
+    userProfile: UserProfile | null;
 }
 
 interface DecodedToken {
@@ -30,21 +33,20 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [authLoaded, setAuthLoaded] = useState(false);
     const setSnackbarMessage = UseSnackbar((state) => state.setMessage);
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
+        if (typeof window === "undefined") return null;
+        const stored = localStorage.getItem("user_profile");
+        return stored ? JSON.parse(stored) : null;
+    });
 
     const getToken = useCallback(() => Cookies.get('access_token'), []);
     const getRefreshToken = useCallback(() => Cookies.get('refresh_token'), []);
 
-    const setUserName = (decodedToken: DecodedToken) => {
-        Cookies.set('user_name', decodedToken.FullName)
-    }
-
     const { mutate: postAuthenticationUser } = UsePostAuthentication({
         onSuccess: (data: TokenResponse) => {
-            setSnackbarMessage('Inicio de sesión válido');
-            console.log(data)
+            setSnackbarMessage('Inicio de sesión válido', 'success');
             Cookies.set('access_token', String(data.access_token), { expires: 1 / 24 });
             Cookies.set('refresh_token', String(data.refresh_token), { expires: 30 });
-            setUserName(jwtDecode<DecodedToken>(String(data.access_token)))
             setIsAuthenticated(true);
         },
         onError: (data: ErrorDetail) => {
@@ -64,7 +66,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logout = useCallback(() => {
         Cookies.remove('access_token');
         Cookies.remove('refresh_token');
-        Cookies.remove('user_name');
+        localStorage.removeItem("user_profile");
+        setUserProfile(null);
         setIsAuthenticated(false);
     }, []);
 
@@ -72,7 +75,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         onSuccess: (data: TokenResponse) => {
             Cookies.set('access_token', String(data.access_token), { expires: 1 / 24 });
             Cookies.set('refresh_token', String(data.refresh_token), { expires: 30 });
-            setUserName(jwtDecode<DecodedToken>(String(data.access_token)))
             setIsAuthenticated(true);
             setSnackbarMessage(`Token actualizado correctamente`)
         },
@@ -104,6 +106,19 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             setSnackbarMessage('Error al intentar verificar el token', 'error');
         }
     }, [getToken, getRefreshToken, setSnackbarMessage, refreshTokenMutation, logout]);
+
+
+    const { data, isLoading, isError } = UseGetProfileLogged(isAuthenticated);
+
+    useEffect(() => {
+        if (!isLoading && !isError && data) {
+            setUserProfile(data);
+            localStorage.setItem("user_profile", JSON.stringify(data));
+        } else if (isError) {
+            logout();
+        }
+    }, [data, isLoading, isError, logout, isAuthenticated]);
+
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -141,8 +156,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         refreshTokens,
-        authLoaded
-    }), [isAuthenticated, login, logout, refreshTokens, authLoaded]);
+        authLoaded,
+        userProfile,
+    }), [isAuthenticated, login, logout, refreshTokens, authLoaded, userProfile]);
 
     return (
         <AuthContext.Provider value={contextValue}>

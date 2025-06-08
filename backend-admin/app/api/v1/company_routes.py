@@ -14,7 +14,7 @@ router = APIRouter(
 
 company_service = CompanyService()
 
-@router.post("/", response_model=CompanyResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=CompanyResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **validation_error,
     **duplicate_entry_error
@@ -38,7 +38,7 @@ async def get_company(
     """Get a company by ID"""
     return await company_service.get_company(db, company_id, include_inactive)
 
-@router.get("/", response_model=List[CompanyResponse], responses={**common_errors})
+@router.get("", response_model=List[CompanyResponse], responses={**common_errors})
 async def get_companies(
     include_inactive: bool = False,
     db: AsyncSession = Depends(get_db)

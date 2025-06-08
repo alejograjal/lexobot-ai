@@ -14,7 +14,7 @@ router = APIRouter(
 
 role_service = RoleService()
 
-@router.post("/", response_model=RoleResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=RoleResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **validation_error,
     **duplicate_entry_error
@@ -31,7 +31,7 @@ async def get_role(role_id: int, include_inactive: bool = False, db: AsyncSessio
     """Get role by ID"""
     return await role_service.get_role(db, role_id, include_inactive)
 
-@router.get("/", response_model=List[RoleResponse], responses={**common_errors})
+@router.get("", response_model=List[RoleResponse], responses={**common_errors})
 async def get_all_roles(include_inactive: bool = False, db: AsyncSession = Depends(get_db)) -> List[RoleResponse]:
     """List all roles"""
     return await role_service.get_all_roles(db, include_inactive)

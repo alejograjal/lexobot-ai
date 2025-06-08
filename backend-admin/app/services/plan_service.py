@@ -20,6 +20,7 @@ class PlanService:
         plan = await self.repository.get_by_id(db, plan_id, include_inactive)
         if not plan:
             raise NotFoundException("Plan", plan_id)
+        
         return plan
 
     async def get_all_plans(self, db: AsyncSession, include_inactive: bool = False) -> List[Plan]:
@@ -43,6 +44,8 @@ class PlanService:
     async def delete_plan(self, db: AsyncSession, plan_id: int) -> bool:
         if not await self.repository.exists(db, plan_id):
             raise NotFoundException("Plan", plan_id)
+        
         if await self.repository.has_active_company_access(db, plan_id):
             raise ValidationException("Cannot delete plan with active company access assigned")
+        
         return await self.repository.delete(db, plan_id)

@@ -14,7 +14,7 @@ router = APIRouter(
 
 plan_service = PlanService()
 
-@router.post("/", response_model=PlanResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=PlanResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **validation_error,
 })
@@ -37,7 +37,7 @@ async def get_plan(
     """Get a plan by ID"""
     return await plan_service.get_plan(db, plan_id, include_inactive)
 
-@router.get("/", response_model=List[PlanResponse], responses={**common_errors})
+@router.get("", response_model=List[PlanResponse], responses={**common_errors})
 async def get_all_plans(
     include_inactive: bool = False,
     db: AsyncSession = Depends(get_db)

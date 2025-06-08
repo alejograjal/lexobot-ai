@@ -1,6 +1,7 @@
 from typing import List
 from .base import BaseRepository
 from sqlalchemy import and_, select
+from sqlalchemy.orm import selectinload
 from app.db.models import TenantDocument
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,12 +10,13 @@ class TenantDocumentRepository(BaseRepository[TenantDocument]):
         super().__init__(TenantDocument, relationships=['tenant'])
     
     async def get_by_tenant(self, db: AsyncSession, tenant_id: int) -> List[TenantDocument]:
+        options = [selectinload(getattr(self.model, rel)) for rel in self.relationships]
+        
         stmt = select(self.model).where(
-            and_(
-                self.model.tenant_id == tenant_id,
-                self.model.is_active == True
-            )
-        ).options(*[getattr(self.model, rel) for rel in self.relationships])
+            self.model.tenant_id == tenant_id,
+            self.model.is_active == True
+        ).options(*options)
+        
         result = await db.execute(stmt)
         return result.scalars().all()
 

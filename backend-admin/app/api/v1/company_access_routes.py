@@ -14,7 +14,7 @@ router = APIRouter(
 
 service = CompanyAccessService()
 
-@router.get("/", response_model=List[CompanyAccessResponse], responses={
+@router.get("", response_model=List[CompanyAccessResponse], responses={
     **common_errors,
     **not_found_error
 })
@@ -33,7 +33,7 @@ async def get_access(
 ) -> CompanyAccessResponse:
     return await service.get_access(db, company_id, access_id)
 
-@router.post("/", response_model=CompanyAccessResponse, status_code=status.HTTP_201_CREATED, responses={
+@router.post("", response_model=CompanyAccessResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **not_found_error,
     **validation_error

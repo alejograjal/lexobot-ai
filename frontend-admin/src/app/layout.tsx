@@ -1,4 +1,5 @@
 import './globals.css'
+import { Toaster } from 'sonner'
 import type { Metadata } from 'next'
 import { Providers } from './Providers'
 import { Inter } from 'next/font/google'
@@ -14,7 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <Toaster position="bottom-center" richColors closeButton />
+          {children}
+        </body>
       </Providers>
     </html>
   )
