@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { ApiError } from "openapi-typescript-fetch"
-import { castRequestBody, UseTypedApiClientBS } from "@/hooks/UseTypedApiClientLA"
+import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA"
 import { TokenResponse, ErrorDetail, RefreshTokenRequest } from "@/types/lexobot-ai"
 
 interface UsePostRefreshAuthenticationProps {
@@ -21,7 +21,7 @@ export const UsePostRefreshAuthentication = ({
     const path = '/api/v1/auth/refresh';
     const method = 'post';
 
-    const postRefreshToken = UseTypedApiClientBS({ path, method })
+    const postRefreshToken = UseTypedApiClientLA({ path, method })
 
     return useMutation({
         mutationFn: async (

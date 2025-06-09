@@ -26,7 +26,7 @@ export function ConfirmDeleteDrawer({
             <DrawerContent>
                 <div className="mx-auto w-full max-w-lg">
                     <DrawerHeader>
-                        <DrawerTitle>Eliminación de recurso</DrawerTitle>
+                        <DrawerTitle>Eliminación del registro</DrawerTitle>
                         <DrawerDescription>
                             ¿Está seguro que desea eliminar <strong>{resourceName}</strong>?
                             <br />

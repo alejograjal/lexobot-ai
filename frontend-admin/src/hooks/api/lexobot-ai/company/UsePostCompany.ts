@@ -1,7 +1,7 @@
 import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ErrorDetail, CompanyResponse, CompanyCreate } from "@/types/lexobot-ai";
-import { castRequestBody, UseTypedApiClientBS } from "@/hooks/UseTypedApiClientLA";
+import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
 interface UsePostCompanyProps {
     onSuccess?: (
@@ -27,7 +27,7 @@ export const UsePostCompany = ({
     const path = '/api/v1/companies';
     const method = 'post';
 
-    const postCompany = UseTypedApiClientBS({ path, method })
+    const postCompany = UseTypedApiClientLA({ path, method })
     const queryClient = useQueryClient();
 
     const createBranchMutation = useMutation({

@@ -1,7 +1,7 @@
 import { ErrorDetail } from "@/types/lexobot-ai";
 import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { castRequestBody, UseTypedApiClientBS } from "@/hooks/UseTypedApiClientLA";
+import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
 interface UseDeleteCompanyProps {
     onSuccess?: (
@@ -27,7 +27,7 @@ export const UseDeleteCompany = ({
     const path = '/api/v1/companies/{company_id}';
     const method = 'delete';
 
-    const deleteCompany = UseTypedApiClientBS({ path, method })
+    const deleteCompany = UseTypedApiClientLA({ path, method })
     const queryClient = useQueryClient();
 
     const deleteBranchMutation = useMutation({

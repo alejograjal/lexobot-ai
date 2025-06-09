@@ -2,13 +2,13 @@ import { isPresent } from "@/lib/utils";
 import { CompanyUpdate } from "@/types/lexobot-ai";
 import { ApiError } from "openapi-typescript-fetch";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { castRequestBody, UseTypedApiClientBS } from "@/hooks/UseTypedApiClientLA";
+import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
 export const UseGetCompanyById = (companyId: string | undefined): UseQueryResult<CompanyUpdate, ApiError> => {
     const path = '/api/v1/companies/{company_id}';
     const method = 'get';
 
-    const getCompany = UseTypedApiClientBS({ path, method })
+    const getCompany = UseTypedApiClientLA({ path, method })
 
     return useQuery({
         queryKey: ["GetCompany", companyId],

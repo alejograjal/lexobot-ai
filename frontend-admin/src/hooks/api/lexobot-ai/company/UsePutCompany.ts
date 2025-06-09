@@ -1,6 +1,6 @@
 import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { castRequestBody, UseTypedApiClientBS } from "@/hooks/UseTypedApiClientLA";
+import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 import { ErrorDetail, CompanyResponse, CompanyUpdate } from "@/types/lexobot-ai";
 
 interface UsePutCompanyProps {
@@ -29,7 +29,7 @@ export const UsePutCompany = ({
     const path = '/api/v1/companies/{company_id}';
     const method = 'patch';
 
-    const putCompany = UseTypedApiClientBS({ path, method })
+    const putCompany = UseTypedApiClientLA({ path, method })
     const queryClient = useQueryClient();
 
     const updateCompanyMutation = useMutation({

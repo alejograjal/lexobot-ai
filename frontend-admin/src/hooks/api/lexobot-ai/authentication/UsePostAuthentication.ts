@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import { ApiError } from "openapi-typescript-fetch"
-import { castRequestBody, UseTypedApiClientBS } from "@hooks/UseTypedApiClientLA"
+import { castRequestBody, UseTypedApiClientLA } from "@hooks/UseTypedApiClientLA"
 import { TokenResponse, LoginRequest, ErrorDetail } from "@/types/lexobot-ai"
 
 interface UsePostAuthenticationProps {
@@ -21,7 +21,7 @@ export const UsePostAuthentication = ({
     const path = '/api/v1/auth/login';
     const method = 'post';
 
-    const postAuthentication = UseTypedApiClientBS({ path, method })
+    const postAuthentication = UseTypedApiClientLA({ path, method })
 
     return useMutation({
         mutationFn: async (

@@ -1,6 +1,11 @@
+"use client";
+
 import Cookies from 'js-cookie';
 import { paths } from "@api/clients/lexobot-ai/api";
-import { Fetcher, Middleware, type TypedFetch } from "openapi-typescript-fetch";
+import { useTokenStore } from '@/stores/UseTokenStore';
+import { createAuthMiddleware } from './middleware/authMiddleware';
+import { Fetcher, type TypedFetch } from "openapi-typescript-fetch";
+import { arrayWrapperMiddleware } from './middleware/arrayWrapperMiddleware';
 
 const getHeaders = (disableAuth: boolean, token: string): Record<string, string> => {
     if (disableAuth) {
@@ -12,18 +17,8 @@ const getHeaders = (disableAuth: boolean, token: string): Record<string, string>
     }
 }
 
-const arrayWrapperMiddleware: Middleware = async (url, init, next) => {
-    if (init?.body) {
-        const body = JSON.parse(init.body as string);
-        const keys = Object.keys(body);
-        if (keys.length === 1 && Array.isArray(body[String(keys[0])])) {
-            init.body = JSON.stringify(body[String(keys[0])]);
-        }
-    }
-    return next(url, init);
-};
 
-export const UseTypedApiClientBS = <
+export const UseTypedApiClientLA = <
     PathT extends keyof paths,
     MethodT extends keyof paths[PathT],
 >({
@@ -35,14 +30,17 @@ export const UseTypedApiClientBS = <
     method: MethodT
     disableAuth?: boolean
 }): TypedFetch<paths[PathT][MethodT]> => {
-    const token = Cookies.get('access_token');
+    const { getAccessToken } = useTokenStore();
     const fetcher = Fetcher.for<paths>();
+    const baseUrl = process.env.NODE_ENV === 'development' ? '' : process.env.NEXT_PUBLIC_API_WEB_STACK_BASE_URL;
+
     fetcher.configure({
-        baseUrl: process.env.NODE_ENV === 'development' ? '' : process.env.NEXT_PUBLIC_API_WEB_STACK_BASE_URL,
+        baseUrl,
         init: {
-            headers: getHeaders(disableAuth, token ?? ''),
+            credentials: 'include',
+            headers: getHeaders(disableAuth, getAccessToken() ?? ''),
         },
-        use: [arrayWrapperMiddleware]
+        use: [arrayWrapperMiddleware, createAuthMiddleware(baseUrl!)]
     });
 
     return fetcher.path(path).method(method).create({}) as TypedFetch<paths[PathT][MethodT]>;
