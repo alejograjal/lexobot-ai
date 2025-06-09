@@ -19,7 +19,7 @@ export const useAuthProvider = () => {
 
     const isAuthenticated = !!accessToken;
 
-    const { data, isLoading, isError } = UseGetProfileLogged(isAuthenticated);
+    const { data, isLoading, isError } = UseGetProfileLogged();
 
     const { mutate: postAuthenticationUser } = UsePostAuthentication({
         onSuccess: (data: TokenResponse) => {

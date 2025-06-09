@@ -1,22 +1,12 @@
 "use client";
 
-import Cookies from 'js-cookie';
 import { paths } from "@api/clients/lexobot-ai/api";
 import { useTokenStore } from '@/stores/UseTokenStore';
 import { createAuthMiddleware } from './middleware/authMiddleware';
 import { Fetcher, type TypedFetch } from "openapi-typescript-fetch";
 import { arrayWrapperMiddleware } from './middleware/arrayWrapperMiddleware';
 
-const getHeaders = (disableAuth: boolean, token: string): Record<string, string> => {
-    if (disableAuth) {
-        return {}
-    }
-
-    return {
-        Authorization: `Bearer ${token}`
-    }
-}
-
+const getHeaders = (disableAuth: boolean, token: string): Record<string, string> => disableAuth ? {} : { Authorization: `Bearer ${token}` }
 
 export const UseTypedApiClientLA = <
     PathT extends keyof paths,
@@ -59,23 +49,21 @@ export const castRequestBody = <
     }
 
     if (method === 'get' || method === 'delete') {
-        if (data && typeof data === 'object') {
-            return data as never;
-        }
-
-        const pathParams = path.match(/{([^{}]+)}/g);
-        if (pathParams) {
-            const pathObj = pathParams.reduce((acc, param) => {
-                const paramName = param.replace(/[{}]/g, '');
-                if (typeof data === 'object' && data !== null && paramName in (data as Record<string, unknown>)) {
-                    acc[paramName] = (data as Record<string, unknown>)[paramName];
-                }
-                return acc;
-            }, {} as { [key: string]: unknown });
-
-            return pathObj as never;
-        }
+        if (typeof data === 'object') return data as never;
+        return extractPathParams(path, data) as never;
     }
 
     return undefined as never;
 };
+
+function extractPathParams<PathT extends string>(path: PathT, data: unknown) {
+    const pathParams = path.match(/{([^{}]+)}/g);
+    if (!pathParams) return {};
+    return pathParams.reduce((acc, param) => {
+        const name = param.replace(/[{}]/g, '');
+        if (typeof data === 'object' && data !== null && name in data) {
+            acc[name] = (data as Record<string, unknown>)[name];
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
