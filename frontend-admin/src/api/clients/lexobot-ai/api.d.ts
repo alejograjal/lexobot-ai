@@ -774,14 +774,14 @@ export interface components {
             /** Name */
             name: string;
             /** Description */
-            description?: string | null;
+            description?: string;
         };
         /** RoleResponse */
         RoleResponse: {
             /** Name */
             name: string;
             /** Description */
-            description?: string | null;
+            description?: string;
             /** Id */
             id: number;
             /** Is Active */
@@ -792,7 +792,7 @@ export interface components {
             /** Name */
             name: string;
             /** Description */
-            description?: string | null;
+            description?: string;
             /** Id */
             id: number;
         };
@@ -908,16 +908,11 @@ export interface components {
              */
             email: string;
             /** Phone Number */
-            phone_number?: string | null;
+            phone_number: string;
             /** Username */
             username: string;
             /** Role Id */
             role_id: number;
-            /**
-             * Password
-             * @description Password must contain at least one uppercase letter, one lowercase letter, one number and one special character
-             */
-            password: string;
         };
         /** UserProfile */
         UserProfile: {
@@ -952,7 +947,7 @@ export interface components {
              */
             email: string;
             /** Phone Number */
-            phone_number?: string | null;
+            phone_number: string;
             /** Username */
             username: string;
             /** Role Id */
@@ -976,8 +971,6 @@ export interface components {
             username?: string | null;
             /** Role Id */
             role_id?: number | null;
-            /** Password */
-            password?: string | null;
         };
         /** ValidationError */
         ValidationError: {

@@ -4,18 +4,18 @@ import { useState } from "react"
 import { Page } from "@/components/Shared/Page"
 import { PageHeader } from "@/components/Shared/PageHeader"
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks"
-import { Company, initialValues } from "../components/CompanySchema"
-import { UsePostCompany } from "@/hooks/api/lexobot-ai/company/UsePostCompany"
-import { CompanyForm } from "@/app/(with-layout)/company/components/CompanyForm"
+import { UsePostUser } from "@/hooks/api/lexobot-ai/user/UsePostUser"
+import { UserForm } from "@/app/(with-layout)/access/user/components/UserForm"
+import { initialValues, User } from "@/app/(with-layout)/access/user/components/UserSchema"
 
 export default function CreateCompanyPage() {
     const [loading, setLoading] = useState(false);
 
     const closeLoading = () => setLoading(false);
 
-    const { mutate: postCompany } = UsePostCompany(UseMutationCallbacks('Compañia creada correctamente', '/company', closeLoading));
+    const { mutate: postCompany } = UsePostUser(UseMutationCallbacks('Usuario creado correctamente', '/access/user', closeLoading));
 
-    const handleSubmit = (data: Company) => {
+    const handleSubmit = (data: User) => {
         postCompany({ ...data });
     }
 
@@ -23,12 +23,12 @@ export default function CreateCompanyPage() {
         <Page
             header={
                 <PageHeader
-                    title="Crear compañia nueva"
+                    title="Crear usuario nuevo"
                     subtitle="Por favor llene todos los campos"
                 />
             }
         >
-            <CompanyForm
+            <UserForm
                 defaultValues={initialValues}
                 onSubmit={handleSubmit}
                 onloading={loading}

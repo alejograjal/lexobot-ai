@@ -1,28 +1,26 @@
 "use client"
 
-import { AnyObjectSchema } from "yup"
 import { Form, } from "@/components/ui/form"
 import { DefaultValues } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm, SubmitHandler } from "react-hook-form"
 import { FormActions } from "@/components/Form/FormActions"
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form"
+import { companySchema, Company } from "./CompanySchema"
 import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
 
-interface CompanyFormProps<T extends FieldValues> {
-    schema: AnyObjectSchema
-    defaultValues?: DefaultValues<T>
-    onSubmit: SubmitHandler<T>
+interface CompanyFormProps {
+    defaultValues?: DefaultValues<Company>
+    onSubmit: SubmitHandler<Company>
     onloading: boolean
 }
 
-export function CompanyForm<T extends FieldValues>({
-    schema,
+export function CompanyForm({
     defaultValues,
     onSubmit,
     onloading
-}: CompanyFormProps<T>) {
-    const form = useForm<T>({
-        resolver: yupResolver(schema),
+}: CompanyFormProps) {
+    const form = useForm<Company>({
+        resolver: yupResolver(companySchema),
         defaultValues,
     })
 

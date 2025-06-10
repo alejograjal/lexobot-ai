@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks";
-import { DeleteCompanyButton } from "../components/DeleteCompanyButton";
+import { DeleteCompanyDrawer } from "../components/DeleteCompanyDrawer";
 import { UseDeleteCompany } from "@/hooks/api/lexobot-ai/company/UseDeleteCompany";
 
 interface DeleteCompanyProps {
@@ -16,14 +16,13 @@ export function DeleteCompany({ companyId, companyName }: DeleteCompanyProps) {
 
     const { mutate: deleteCompany } = UseDeleteCompany(UseMutationCallbacks("Compañía borrada correctamente", "/company", closeLoading));
 
-
     const handleConfirmDelete = () => {
         setIsLoading(true);
         deleteCompany(companyId);
     };
 
     return (
-        <DeleteCompanyButton
+        <DeleteCompanyDrawer
             companyName={`la compañia ${companyName}, id N° ${companyId}`}
             isLoading={isLoading}
             onConfirm={handleConfirmDelete}

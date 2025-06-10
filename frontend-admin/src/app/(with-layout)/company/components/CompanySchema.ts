@@ -1,4 +1,5 @@
 import * as yup from "yup"
+import { InferType } from "yup";
 import { CompanyCreate } from "@/types/lexobot-ai"
 
 export const initialValues: CompanyCreate = {
@@ -11,7 +12,7 @@ export const initialValues: CompanyCreate = {
     managed_tenants_count: 0
 };
 
-export const createCompanySchema = yup.object({
+export const companySchema = yup.object({
     name: yup.string().required("Nombre requerido"),
     email: yup.string().email("Correo inválido").required("Correo requerido"),
     legal_id: yup.string().required("Cédula requerida"),
@@ -21,12 +22,4 @@ export const createCompanySchema = yup.object({
     managed_tenants_count: yup.number().required("Cantidad requerida"),
 })
 
-export const updateCompanySchema = yup.object({
-    name: yup.string().nullable(),
-    email: yup.string().email().nullable(),
-    legal_id: yup.string().nullable(),
-    address: yup.string().nullable(),
-    phone: yup.string().nullable(),
-    billing_email: yup.string().email().nullable(),
-    managed_tenants_count: yup.number().nullable(),
-})
+export type Company = InferType<typeof companySchema>

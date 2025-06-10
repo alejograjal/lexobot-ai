@@ -3,7 +3,7 @@ import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
-interface UseDeleteCompanyProps {
+interface UseDeleteUserProps {
     onSuccess?: (
         data: undefined,
         variables: number
@@ -19,26 +19,26 @@ interface UseDeleteCompanyProps {
     ) => void
 }
 
-export const UseDeleteCompany = ({
+export const UseDeleteUser = ({
     onSuccess,
     onError,
     onSettled
-}: UseDeleteCompanyProps) => {
-    const path = '/api/v1/companies/{company_id}';
+}: UseDeleteUserProps) => {
+    const path = '/api/v1/users/{user_id}';
     const method = 'delete';
 
-    const deleteCompany = UseTypedApiClientLA({ path, method })
+    const deleteUser = UseTypedApiClientLA({ path, method })
     const queryClient = useQueryClient();
 
-    const deleteCompanyMutation = useMutation({
-        mutationKey: ['DeleteCompany'],
-        mutationFn: async (companyId: number) => {
-            await deleteCompany(castRequestBody({ company_id: companyId }, path, method))
+    const deleteUserMutation = useMutation({
+        mutationKey: ['DeleteUser'],
+        mutationFn: async (userId: number) => {
+            await deleteUser(castRequestBody({ user_id: userId }, path, method))
             return undefined;
         },
         onSuccess: async (data: undefined, variables: number) => {
             await queryClient.invalidateQueries({
-                queryKey: ['GetCompanies']
+                queryKey: ['GetUsers']
             })
             onSuccess?.(data, variables)
         },
@@ -52,5 +52,5 @@ export const UseDeleteCompany = ({
         }
     })
 
-    return deleteCompanyMutation;
+    return deleteUserMutation;
 }

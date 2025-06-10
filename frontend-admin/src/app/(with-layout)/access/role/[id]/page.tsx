@@ -6,61 +6,59 @@ import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
 import { Page } from "@/components/Shared/Page"
 import { formatErrorMessage } from "@/lib/utils"
+import { RoleForm } from "../components/RoleForm"
 import { UseSnackbar } from "@/stores/UseSnackbar"
-import { DeleteCompany } from "./DeleteCompany"
+import { Role } from "../components/RoleSchema"
 import { PageHeader } from "@/components/Shared/PageHeader"
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks"
-import { UsePutCompany } from "@/hooks/api/lexobot-ai/company/UsePutCompany"
-import { CompanyForm } from "@/app/(with-layout)/company/components/CompanyForm"
-import { UseGetCompanyById } from "@/hooks/api/lexobot-ai/company/UseGetCompanyById"
+import { UsePutRole } from "@/hooks/api/lexobot-ai/role/UsePutRole"
+import { UseGetRoleById } from "@/hooks/api/lexobot-ai/role/UseGetRoleById"
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress"
-import { Company } from "../components/CompanySchema"
 
-export default function UpdateCompanyPage() {
+export default function UpdateRolePage() {
     const router = useRouter()
     const params = useParams()
     const setSnackbarMessage = UseSnackbar((state) => state.setMessage)
 
-    const companyIdRaw = params?.id
+    const roleIdRaw = params?.id
 
     useEffect(() => {
-        if (!companyIdRaw || isNaN(Number(companyIdRaw))) {
-            router.replace('/company')
+        if (!roleIdRaw || isNaN(Number(roleIdRaw))) {
+            router.replace('/access/role')
         }
-    }, [companyIdRaw, router])
+    }, [roleIdRaw, router])
 
-    const companyId = companyIdRaw && !isNaN(Number(companyIdRaw)) ? String(companyIdRaw) : undefined
+    const roleId = roleIdRaw && !isNaN(Number(roleIdRaw)) ? String(roleIdRaw) : undefined
 
     const [loading, setLoading] = useState(false)
     const closeLoading = () => setLoading(false)
 
-    const { data, isLoading, isError, error: errorAPI } = UseGetCompanyById(companyId)
+    const { data, isLoading, isError, error: errorAPI } = UseGetRoleById(roleId)
 
-    const { mutate: putCompany } = UsePutCompany({
-        companyId: Number(companyId),
-        ...UseMutationCallbacks('Compañia actualizada correctamente', '/company', closeLoading)
+    const { mutate: putRole } = UsePutRole({
+        roleId: Number(roleId),
+        ...UseMutationCallbacks('Rol actualizado correctamente', '/access/role', closeLoading)
     })
 
     useEffect(() => {
         if (isError) {
             const { error } = errorAPI.data
             setSnackbarMessage(formatErrorMessage(error), 'error')
-            router.replace('/company')
+            router.replace('/access/role')
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: Company) => {
+    const handleSubmit = (data: Role) => {
         setLoading(true)
-        putCompany({ ...data })
+        putRole({ ...data })
     }
 
     return (
         <Page
             header={
                 <PageHeader
-                    title={`Editar compañia ${data?.name}`}
+                    title={`Editar rol ${data?.name}`}
                     subtitle="Actualice los campos que desee"
-                    actionButton={<DeleteCompany companyId={Number(companyId)} companyName={data?.name!} />}
                 />
             }
 
@@ -68,7 +66,7 @@ export default function UpdateCompanyPage() {
             {isLoading ? (
                 <CircularLoadingProgress />
             ) : (
-                <CompanyForm
+                <RoleForm
                     defaultValues={data ?? undefined}
                     onSubmit={handleSubmit}
                     onloading={loading}

@@ -1,66 +1,65 @@
 "use client"
 
-import type { InferType } from "yup"
+import { DeleteUser } from "./DeleteUser"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useParams } from "next/navigation"
 import { Page } from "@/components/Shared/Page"
+import { User } from "../components/UserSchema"
 import { formatErrorMessage } from "@/lib/utils"
 import { UseSnackbar } from "@/stores/UseSnackbar"
-import { DeleteCompany } from "./DeleteCompany"
 import { PageHeader } from "@/components/Shared/PageHeader"
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks"
-import { UsePutCompany } from "@/hooks/api/lexobot-ai/company/UsePutCompany"
-import { CompanyForm } from "@/app/(with-layout)/company/components/CompanyForm"
-import { UseGetCompanyById } from "@/hooks/api/lexobot-ai/company/UseGetCompanyById"
+import { UsePutUser } from "@/hooks/api/lexobot-ai/user/UsePutUser"
+import { UseGetUserById } from "@/hooks/api/lexobot-ai/user/UseGetUserById"
+import { UserForm } from "@/app/(with-layout)/access/user/components/UserForm"
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress"
-import { Company } from "../components/CompanySchema"
 
-export default function UpdateCompanyPage() {
+export default function UpdateUserPage() {
     const router = useRouter()
     const params = useParams()
     const setSnackbarMessage = UseSnackbar((state) => state.setMessage)
 
-    const companyIdRaw = params?.id
+    const userIdRaw = params?.id
 
     useEffect(() => {
-        if (!companyIdRaw || isNaN(Number(companyIdRaw))) {
-            router.replace('/company')
+        if (!userIdRaw || isNaN(Number(userIdRaw))) {
+            router.replace('/access/user')
         }
-    }, [companyIdRaw, router])
+    }, [userIdRaw, router])
 
-    const companyId = companyIdRaw && !isNaN(Number(companyIdRaw)) ? String(companyIdRaw) : undefined
+    const userId = userIdRaw && !isNaN(Number(userIdRaw)) ? String(userIdRaw) : undefined
 
     const [loading, setLoading] = useState(false)
     const closeLoading = () => setLoading(false)
 
-    const { data, isLoading, isError, error: errorAPI } = UseGetCompanyById(companyId)
+    const { data, isLoading, isError, error: errorAPI } = UseGetUserById(userId)
 
-    const { mutate: putCompany } = UsePutCompany({
-        companyId: Number(companyId),
-        ...UseMutationCallbacks('Compañia actualizada correctamente', '/company', closeLoading)
+    const { mutate: putUser } = UsePutUser({
+        userId: Number(userId),
+        ...UseMutationCallbacks('Usuario actualizado correctamente', '/access/user', closeLoading)
     })
 
     useEffect(() => {
         if (isError) {
             const { error } = errorAPI.data
             setSnackbarMessage(formatErrorMessage(error), 'error')
-            router.replace('/company')
+            router.replace('/access/user')
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: Company) => {
+    const handleSubmit = (data: User) => {
         setLoading(true)
-        putCompany({ ...data })
+        putUser({ ...data })
     }
 
     return (
         <Page
             header={
                 <PageHeader
-                    title={`Editar compañia ${data?.name}`}
+                    title={`Editar usuario ${data?.first_name} ${data?.last_name}`}
                     subtitle="Actualice los campos que desee"
-                    actionButton={<DeleteCompany companyId={Number(companyId)} companyName={data?.name!} />}
+                    actionButton={<DeleteUser userId={Number(userId)} userName={`${data?.first_name} ${data?.last_name}`} />}
                 />
             }
 
@@ -68,7 +67,7 @@ export default function UpdateCompanyPage() {
             {isLoading ? (
                 <CircularLoadingProgress />
             ) : (
-                <CompanyForm
+                <UserForm
                     defaultValues={data ?? undefined}
                     onSubmit={handleSubmit}
                     onloading={loading}

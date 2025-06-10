@@ -1,45 +1,45 @@
 import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ErrorDetail, CompanyResponse, CompanyCreate } from "@/types/lexobot-ai";
+import { ErrorDetail, UserResponse, UserCreate } from "@/types/lexobot-ai";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
-interface UsePostCompanyProps {
+interface UsePostUserProps {
     onSuccess?: (
-        data: CompanyResponse,
-        variables: CompanyCreate
+        data: UserResponse,
+        variables: UserCreate
     ) => void,
     onError?: (
         data: ErrorDetail,
-        variables: CompanyCreate
+        variables: UserCreate
     ) => void,
     onSettled?: (
-        data: CompanyResponse | undefined,
+        data: UserResponse | undefined,
         errorAPI: ErrorDetail | null,
-        variables: CompanyCreate
+        variables: UserCreate
     ) => void
 }
 
-export const UsePostCompany = ({
+export const UsePostUser = ({
     onSuccess,
     onError,
     onSettled
-}: UsePostCompanyProps) => {
-    const path = '/api/v1/companies';
+}: UsePostUserProps) => {
+    const path = '/api/v1/users';
     const method = 'post';
 
-    const postCompany = UseTypedApiClientLA({ path, method })
+    const postUser = UseTypedApiClientLA({ path, method })
     const queryClient = useQueryClient();
 
-    const createCompanyMutation = useMutation({
-        mutationKey: ['PostCompany'],
-        mutationFn: async (company: CompanyCreate) => {
-            const requestBody = castRequestBody(company, path, method) as NonNullable<Parameters<typeof postCompany>[0]>
-            const { data } = await postCompany(requestBody)
+    const createUserMutation = useMutation({
+        mutationKey: ['PostUser'],
+        mutationFn: async (company: UserCreate) => {
+            const requestBody = castRequestBody(company, path, method) as NonNullable<Parameters<typeof postUser>[0]>
+            const { data } = await postUser(requestBody)
             return data;
         },
-        onSuccess: async (data: CompanyResponse, variables: CompanyCreate) => {
+        onSuccess: async (data: UserResponse, variables: UserCreate) => {
             await queryClient.invalidateQueries({
-                queryKey: ['GetCompanies']
+                queryKey: ['GetUsers']
             })
             onSuccess?.(data, variables)
         },
@@ -53,5 +53,5 @@ export const UsePostCompany = ({
         }
     })
 
-    return createCompanyMutation;
+    return createUserMutation;
 }

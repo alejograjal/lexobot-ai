@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class RoleBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str = None
 
 class RoleCreate(RoleBase):
     pass

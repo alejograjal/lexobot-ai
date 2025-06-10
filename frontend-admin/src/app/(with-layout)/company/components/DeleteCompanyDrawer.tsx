@@ -4,13 +4,13 @@ import React from "react"
 import { Button } from "@/components/ui/button"
 import { ConfirmDeleteDrawer } from "@/components/Shared/ConfirmDeleteDrawer"
 
-interface DeleteCompanyButtonProps {
+interface DeleteCompanyDrawerProps {
     companyName?: string
     isLoading: boolean
     onConfirm: () => void
 }
 
-export function DeleteCompanyButton({ companyName, isLoading, onConfirm }: DeleteCompanyButtonProps) {
+export function DeleteCompanyDrawer({ companyName, isLoading, onConfirm }: DeleteCompanyDrawerProps) {
     return (
         <ConfirmDeleteDrawer
             trigger={<Button variant="destructive" disabled={isLoading}>Eliminar</Button>}

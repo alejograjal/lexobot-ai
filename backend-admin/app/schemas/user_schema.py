@@ -14,16 +14,12 @@ class UserBase(BaseModel):
     first_name: Annotated[str, Field(max_length=100)]
     last_name: Annotated[str, Field(max_length=100)]
     email: EmailStr
-    phone_number: Optional[Annotated[str, Field(max_length=20)]] = None
+    phone_number: Annotated[str, Field(max_length=20)]
     username: Annotated[str, Field(min_length=3, max_length=50)]
     role_id: int
 
 class UserCreate(UserBase):
-    password: Annotated[str, Field(
-        min_length=8, 
-        max_length=64,
-        description="Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
-    )]
+    pass
 
 class UserUpdate(BaseModel):
     first_name: Optional[Annotated[str, Field(max_length=100)]] = None
@@ -32,11 +28,6 @@ class UserUpdate(BaseModel):
     phone_number: Optional[Annotated[str, Field(max_length=20)]] = None
     username: Optional[Annotated[str, Field(min_length=3, max_length=50)]] = None
     role_id: Optional[int] = None
-    password: Optional[Annotated[str, Field(
-        min_length=8, 
-        max_length=64,
-        description="Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
-    )]] = None
 
 class UserResponse(UserBase):
     id: int

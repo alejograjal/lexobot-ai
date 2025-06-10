@@ -32,3 +32,13 @@ class UserRepository(BaseRepository[User]):
         )
         result = await db.execute(stmt)
         return result.scalar_one_or_none()
+    
+    async def get_by_phoneNumber(self, db: AsyncSession, phoneNumber: str) -> Optional[User]:
+        stmt = select(User).where(
+            and_(
+                User.phone_number == phoneNumber,
+                User.is_active == True
+            )
+        )
+        result = await db.execute(stmt)
+        return result.scalar_one_or_none()
