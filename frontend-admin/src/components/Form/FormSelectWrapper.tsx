@@ -41,7 +41,7 @@ export function FormSelectWrapper<T extends FieldValues>({
                         <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
-                            value={String(field.value ?? '')}
+                            value={field.value === "" || field.value == null ? undefined : String(field.value)}
                             disabled={disabled}
                         >
                             <SelectTrigger>

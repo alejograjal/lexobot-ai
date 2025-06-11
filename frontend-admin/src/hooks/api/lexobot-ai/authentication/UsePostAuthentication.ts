@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { ApiError } from "openapi-typescript-fetch"
-import { castRequestBody, UseTypedApiClientLA } from "@hooks/UseTypedApiClientLA"
 import { TokenResponse, LoginRequest, ErrorDetail } from "@/types/lexobot-ai"
+import { castRequestBody, UseTypedApiClientLA } from "@hooks/UseTypedApiClientLA"
 
 interface UsePostAuthenticationProps {
     onSuccess?: (

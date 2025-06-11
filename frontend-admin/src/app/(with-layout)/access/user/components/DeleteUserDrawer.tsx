@@ -14,7 +14,7 @@ export function DeleteUserDrawer({ userName, isLoading, onConfirm }: DeleteUserD
     return (
         <ConfirmDeleteDrawer
             trigger={<Button variant="destructive" disabled={isLoading}>Eliminar</Button>}
-            resourceName={userName ?? "este recurso"}
+            resourceName={userName}
             isLoading={isLoading}
             onConfirm={onConfirm}
         />

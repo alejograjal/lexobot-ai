@@ -9,6 +9,7 @@ import { FormActions } from "@/components/Form/FormActions"
 import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
 import { UseGetRoles } from "@/hooks/api/lexobot-ai/role/UseGetRoles"
 import { FormSelectWrapper } from "@/components/Form/FormSelectWrapper"
+import { FormPhoneField } from "@/components/Form/FormInputPhone"
 
 interface UserFormProps {
     defaultValues?: DefaultValues<User>
@@ -26,7 +27,7 @@ export function UserForm({
         defaultValues,
     })
 
-    const { data: roles, isLoading: loadingRoles, isError } = UseGetRoles()
+    const { data: roles, isLoading, isError } = UseGetRoles()
 
     const roleOptions =
         roles?.map(role => ({
@@ -34,7 +35,7 @@ export function UserForm({
             label: role.name,
         })) ?? []
 
-    const selectPlaceholder = isError ? "Error al cargar los roles" : loadingRoles ? "Cargando..." : "Seleccione un rol"
+    const selectPlaceholder = isError ? "Error al cargar los roles" : isLoading ? "Cargando..." : "Seleccione un rol"
 
     return (
         <Form {...form}>
@@ -42,9 +43,9 @@ export function UserForm({
                 <FormFieldWrapper name="first_name" label="Nombre" />
                 <FormFieldWrapper name="last_name" label="Apellidos" />
                 <FormFieldWrapper name="email" label="Correo electrónico" />
-                <FormFieldWrapper name="phone_number" label="Teléfono" />
+                <FormPhoneField name="phone_number" label="Teléfono" />
                 <FormFieldWrapper name="username" label="Nombre de usuario" />
-                <FormSelectWrapper name="role_id" label="Rol" options={roleOptions} placeholder={selectPlaceholder} disabled={loadingRoles || isError} />
+                <FormSelectWrapper name="role_id" label="Rol" options={roleOptions} placeholder={selectPlaceholder} disabled={isLoading || isError} />
 
                 <FormActions pathCancel="/access/user" isSaving={onloading} />
             </form>

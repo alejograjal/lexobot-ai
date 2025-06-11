@@ -14,7 +14,7 @@ export function DeleteCompanyDrawer({ companyName, isLoading, onConfirm }: Delet
     return (
         <ConfirmDeleteDrawer
             trigger={<Button variant="destructive" disabled={isLoading}>Eliminar</Button>}
-            resourceName={companyName ?? "este recurso"}
+            resourceName={companyName}
             isLoading={isLoading}
             onConfirm={onConfirm}
         />

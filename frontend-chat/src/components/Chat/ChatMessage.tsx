@@ -19,7 +19,7 @@ export default function ChatMessage({ message, onTyping }: { message: Message, o
         setDisplayedText(prev => prev + message.text[currentIndex])
         setCurrentIndex(prev => prev + 1)
 
-        if (onTyping && currentIndex % 5 === 0) { // Cada 5 caracteres para mejor performance
+        if (onTyping && currentIndex % 5 === 0) {
           onTyping()
         }
       }, typingSpeed)

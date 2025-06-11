@@ -46,3 +46,24 @@ export const applyPhoneMask = (phone: string): string => {
     }
     return `${numericPhone.slice(0, 4)}-${numericPhone.slice(4)}`;
 };
+
+export const formatCurrency = (
+    value: number,
+    options: {
+        thousandSeparator?: string;
+        decimalSeparator?: string;
+        prefix?: string;
+    } = {}
+): string => {
+    const {
+        thousandSeparator = ',',
+        decimalSeparator = '.',
+        prefix = '$'
+    } = options;
+
+    const parts = Math.abs(value).toFixed(2).split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+
+    const formattedValue = `${prefix}${parts.join(decimalSeparator)}`;
+    return value < 0 ? `-${formattedValue}` : formattedValue;
+};

@@ -1,6 +1,6 @@
 import { isPresent } from "@/lib/utils";
-import { CompanyResponse } from "@/types/lexobot-ai";
 import { ApiError } from "openapi-typescript-fetch";
+import { CompanyResponse } from "@/types/lexobot-ai";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 

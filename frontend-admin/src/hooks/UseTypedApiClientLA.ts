@@ -22,7 +22,7 @@ export const UseTypedApiClientLA = <
 }): TypedFetch<paths[PathT][MethodT]> => {
     const { getAccessToken } = useTokenStore();
     const fetcher = Fetcher.for<paths>();
-    const baseUrl = process.env.NODE_ENV === 'development' ? '' : process.env.NEXT_PUBLIC_API_WEB_STACK_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_LEXOBOT_URL;
 
     fetcher.configure({
         baseUrl,

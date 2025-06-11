@@ -752,6 +752,7 @@ export interface components {
             id: number;
             /** Is Active */
             is_active: boolean;
+            plan_category: components["schemas"]["PlanCategoryResponse"];
         };
         /** PlanUpdate */
         PlanUpdate: {
@@ -2232,7 +2233,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": boolean;
+                    "application/json": unknown;
                 };
             };
             /** @description Unauthorized */

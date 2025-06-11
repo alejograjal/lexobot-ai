@@ -1,7 +1,7 @@
 import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 import { ErrorDetail, UserResponse, UserUpdate } from "@/types/lexobot-ai";
+import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
 interface UsePutUserProps {
     userId: number

@@ -14,7 +14,9 @@ class PlanService:
         if existing:
             raise ValidationException(f"Plan '{data.name}' already exists in this category")
         
-        return await self.repository.create(db, data.dict())
+        plan = await self.repository.create(db, data.dict())
+    
+        return await self.repository.get_by_id(db, plan.id)
 
     async def get_plan(self, db: AsyncSession, plan_id: int, include_inactive: bool = False) -> Plan:
         plan = await self.repository.get_by_id(db, plan_id, include_inactive)

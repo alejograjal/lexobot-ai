@@ -7,7 +7,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 
 interface ConfirmDeleteDrawerProps {
     trigger: React.ReactNode
-    resourceName: string
+    resourceName?: string
     onConfirm?: () => void
     description?: string
     isLoading?: boolean
@@ -15,7 +15,7 @@ interface ConfirmDeleteDrawerProps {
 
 export function ConfirmDeleteDrawer({
     trigger,
-    resourceName,
+    resourceName = "este recurso",
     onConfirm,
     description = "Esta acción no se puede deshacer.",
     isLoading = false,

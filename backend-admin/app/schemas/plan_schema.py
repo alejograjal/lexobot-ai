@@ -1,6 +1,7 @@
 from typing import Optional
 from decimal import Decimal
 from pydantic import BaseModel, Field
+from .plan_category_schema import PlanCategoryResponse
 
 class PlanBase(BaseModel):
     plan_category_id: int
@@ -20,3 +21,7 @@ class PlanUpdate(BaseModel):
 class PlanResponse(PlanBase):
     id: int
     is_active: bool
+    plan_category: PlanCategoryResponse
+    
+    class Config:
+        from_attributes = True

@@ -14,7 +14,7 @@ export function DeleteUser({ userId, userName }: DeleteUserProps) {
     const [isLoading, setIsLoading] = useState(false);
     const closeLoading = () => setIsLoading(false);
 
-    const { mutate: deleteCompany } = UseDeleteUser(UseMutationCallbacks("Usuario borrado correctamente", "/access/user", closeLoading));
+    const { mutate: deleteCompany } = UseDeleteUser(UseMutationCallbacks("Usuario eliminado correctamente", "/access/user", closeLoading));
 
     const handleConfirmDelete = () => {
         setIsLoading(true);

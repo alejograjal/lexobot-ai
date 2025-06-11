@@ -36,7 +36,7 @@ async def get_plan_category(category_id: int, db: AsyncSession = Depends(get_db)
 async def update_plan_category(category_id: int, payload: PlanCategoryUpdate, db: AsyncSession = Depends(get_db)):
     return await service.update(db, category_id, payload)
 
-@router.delete("/{category_id}", response_model=bool, responses={
+@router.delete("/{category_id}", responses={
     **common_errors,
     **not_found_error,
     **validation_error

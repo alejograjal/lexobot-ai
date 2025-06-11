@@ -8,7 +8,7 @@ export const initialValues: UserCreate = {
     email: "",
     phone_number: "",
     username: "",
-    role_id: 0
+    role_id: undefined as unknown as number
 };
 
 export const userSchema = yup.object({

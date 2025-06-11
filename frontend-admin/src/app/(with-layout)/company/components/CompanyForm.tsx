@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { FormActions } from "@/components/Form/FormActions"
 import { companySchema, Company } from "./CompanySchema"
 import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
+import { FormPhoneField } from "@/components/Form/FormInputPhone"
 
 interface CompanyFormProps {
     defaultValues?: DefaultValues<Company>
@@ -31,7 +32,7 @@ export function CompanyForm({
                 <FormFieldWrapper name="email" label="Correo" />
                 <FormFieldWrapper name="legal_id" label="Cédula" />
                 <FormFieldWrapper name="address" label="Dirección" as="textarea" />
-                <FormFieldWrapper name="phone" label="Teléfono" />
+                <FormPhoneField name="phone" label="Teléfono" />
                 <FormFieldWrapper name="billing_email" label="Correo de facturación" />
 
                 <FormActions pathCancel="/company" isSaving={onloading} />

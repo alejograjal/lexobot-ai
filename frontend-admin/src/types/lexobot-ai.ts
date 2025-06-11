@@ -26,3 +26,11 @@ export type RoleResponse = components["schemas"]["RoleResponse"];
 export type UserCreate = components["schemas"]["UserCreate"];
 export type UserUpdate = components["schemas"]["UserUpdate"];
 export type UserResponse = components["schemas"]["UserResponse"];
+
+export type PlanCategoryCreate = components["schemas"]["PlanCategoryCreate"];
+export type PlanCategoryUpdate = components["schemas"]["PlanCategoryUpdate"];
+export type PlanCategoryResponse = components["schemas"]["PlanCategoryResponse"];
+
+export type PlanCreate = components["schemas"]["PlanCreate"];
+export type PlanUpdate = components["schemas"]["PlanUpdate"];
+export type PlanResponse = components["schemas"]["PlanResponse"];

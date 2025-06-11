@@ -41,6 +41,23 @@ export function DataTable<TData, TValue>({
         })
     }, [columns])
 
+    const flattenObject = (obj: any): Record<string, unknown> => {
+        const flattened: Record<string, unknown> = {};
+
+        for (const key in obj) {
+            if (typeof obj[key] === 'object' && obj[key] !== null) {
+                const nested = flattenObject(obj[key]);
+                for (const nestedKey in nested) {
+                    flattened[`${key}.${nestedKey}`] = nested[nestedKey];
+                }
+            } else {
+                flattened[key] = obj[key];
+            }
+        }
+
+        return flattened;
+    };
+
     const table = useReactTable({
         data,
         columns: normalizedColumns,
@@ -49,9 +66,10 @@ export function DataTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         globalFilterFn: (row, columnId, filterValue) => {
-            return Object.values(row.original as Record<string, unknown>).some((value) =>
+            const flattenedRow = flattenObject(row.original);
+            return Object.values(flattenedRow).some((value) =>
                 String(value).toLowerCase().includes(String(filterValue).toLowerCase())
-            )
+            );
         },
         state: {
             sorting,

@@ -32,8 +32,8 @@ export const UsePostUser = ({
 
     const createUserMutation = useMutation({
         mutationKey: ['PostUser'],
-        mutationFn: async (company: UserCreate) => {
-            const requestBody = castRequestBody(company, path, method) as NonNullable<Parameters<typeof postUser>[0]>
+        mutationFn: async (user: UserCreate) => {
+            const requestBody = castRequestBody(user, path, method) as NonNullable<Parameters<typeof postUser>[0]>
             const { data } = await postUser(requestBody)
             return data;
         },
