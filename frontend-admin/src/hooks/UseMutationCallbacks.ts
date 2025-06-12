@@ -16,6 +16,10 @@ export const UseMutationCallbacks = (successMessage: string, redirectTo: string,
             router.replace(redirectTo);
         },
         onError: (data: ErrorDetail, _variables: unknown) => {
+            if (data === undefined) {
+                setSnackbarMessage('Se ha producido un error, por favor vuelva a intentarlo', 'error');
+                return
+            }
             setSnackbarMessage(formatErrorMessage(data), 'error');
         },
         onSettled: (_data: unknown, _error: unknown, _variables: unknown) => {

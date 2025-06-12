@@ -437,14 +437,14 @@ export interface paths {
         };
         /** Get Tenant */
         get: operations["get_tenant_api_v1_tenants__tenant_id__get"];
-        /** Update Tenant */
-        put: operations["update_tenant_api_v1_tenants__tenant_id__put"];
+        put?: never;
         post?: never;
         /** Delete Tenant */
         delete: operations["delete_tenant_api_v1_tenants__tenant_id__delete"];
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update Tenant */
+        patch: operations["update_tenant_api_v1_tenants__tenant_id__patch"];
         trace?: never;
     };
     "/api/v1/users": {
@@ -3629,7 +3629,7 @@ export interface operations {
             };
         };
     };
-    update_tenant_api_v1_tenants__tenant_id__put: {
+    delete_tenant_api_v1_tenants__tenant_id__delete: {
         parameters: {
             query?: never;
             header?: never;
@@ -3638,29 +3638,14 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TenantUpdate"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
-            200: {
+            204: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["TenantResponse"];
-                };
-            };
-            /** @description Duplicate entry */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
+                content?: never;
             };
             /** @description Unauthorized */
             401: {
@@ -3709,7 +3694,7 @@ export interface operations {
             };
         };
     };
-    delete_tenant_api_v1_tenants__tenant_id__delete: {
+    update_tenant_api_v1_tenants__tenant_id__patch: {
         parameters: {
             query?: never;
             header?: never;
@@ -3718,14 +3703,29 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TenantUpdate"];
+            };
+        };
         responses: {
             /** @description Successful Response */
-            204: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["TenantResponse"];
+                };
+            };
+            /** @description Duplicate entry */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
             };
             /** @description Unauthorized */
             401: {

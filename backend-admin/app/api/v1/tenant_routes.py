@@ -32,7 +32,7 @@ async def list_tenants(include_inactive: bool = False, db: AsyncSession = Depend
 async def get_tenant(tenant_id: int, include_inactive: bool = False, db: AsyncSession = Depends(get_db)):
     return await service.get(db, tenant_id, include_inactive)
 
-@router.put("/{tenant_id}", response_model=TenantResponse, responses={
+@router.patch("/{tenant_id}", response_model=TenantResponse, responses={
     **common_errors,
     **not_found_error,
     **validation_error,

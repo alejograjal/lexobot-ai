@@ -34,3 +34,7 @@ export type PlanCategoryResponse = components["schemas"]["PlanCategoryResponse"]
 export type PlanCreate = components["schemas"]["PlanCreate"];
 export type PlanUpdate = components["schemas"]["PlanUpdate"];
 export type PlanResponse = components["schemas"]["PlanResponse"];
+
+export type TenantCreate = components["schemas"]["TenantCreate"];
+export type TenantUpdate = components["schemas"]["TenantUpdate"];
+export type TenantResponse = components["schemas"]["TenantResponse"];

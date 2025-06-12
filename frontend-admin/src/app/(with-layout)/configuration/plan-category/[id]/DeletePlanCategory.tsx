@@ -14,7 +14,7 @@ export function DeletePlanCategory({ planCategoryId, planCategoryName }: DeleteP
     const [isLoading, setIsLoading] = useState(false);
     const closeLoading = () => setIsLoading(false);
 
-    const { mutate: deleteCompany } = UseDeletePlanCategory(UseMutationCallbacks("Categoría de plan borrada correctamente", "/configuration/plan-category", closeLoading));
+    const { mutate: deleteCompany } = UseDeletePlanCategory(UseMutationCallbacks("Categoría de plan eliminada correctamente", "/configuration/plan-category", closeLoading));
 
     const handleConfirmDelete = () => {
         setIsLoading(true);
