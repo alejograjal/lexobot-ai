@@ -44,6 +44,7 @@ export function FormFieldWrapper<T extends FieldValues>({
                         {as === "input" ? (
                             <Input
                                 {...field}
+                                value={field.value ?? ""}
                                 {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
                                 placeholder={placeholder}
                                 className={cn(
@@ -53,6 +54,7 @@ export function FormFieldWrapper<T extends FieldValues>({
                         ) : (
                             <Textarea
                                 {...field}
+                                value={field.value ?? ""}
                                 {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
                                 placeholder={placeholder}
                                 className={cn(

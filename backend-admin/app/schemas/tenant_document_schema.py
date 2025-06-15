@@ -6,8 +6,9 @@ class TenantDocumentBase(BaseModel):
     document_name: str = Field(..., max_length=255)
     file_path: str
 
-class TenantDocumentCreate(TenantDocumentBase):
-    pass
+class TenantDocumentCreate(BaseModel):
+    document_name: str = Field(..., max_length=255)
+    file_path: str
 
 class TenantDocumentUpdate(BaseModel):
     document_name: str | None = Field(None, max_length=255)

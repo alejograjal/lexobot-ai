@@ -5,7 +5,7 @@ import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
-export default function ActionsDropDown({ companyId }: { companyId: string }) {
+export default function ActionsDropDown({ tenantId }: { tenantId: string }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -18,8 +18,8 @@ export default function ActionsDropDown({ companyId }: { companyId: string }) {
                 <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={`/company/${companyId}/tenants`}>
-                        Tenants asignados
+                    <Link href={`/tenant/${tenantId}/document`}>
+                        Documentos
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>

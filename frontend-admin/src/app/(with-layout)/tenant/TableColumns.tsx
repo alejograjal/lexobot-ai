@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { TenantResponse } from "@/types/lexobot-ai"
 import { SortableColumnHeader } from "@/components/Shared/SortableColumnHeader.tsx"
+import ActionsDropDown from "./ActionsDropDown"
 
 export const columns: ColumnDef<TenantResponse>[] = [
     {
@@ -36,4 +37,13 @@ export const columns: ColumnDef<TenantResponse>[] = [
             )
         },
     },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => (
+            <div onClick={(e) => e.stopPropagation()}>
+                <ActionsDropDown tenantId={String(row.original.id)} />
+            </div>
+        ),
+    }
 ]

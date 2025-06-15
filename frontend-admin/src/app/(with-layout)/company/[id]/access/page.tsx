@@ -52,7 +52,7 @@ export default function CompanyAccess() {
     const existsAccess = companyAccess && companyAccess.length > 0
 
     const { mutate: postCompanyAccess } = UsePostCompanyAccess({
-        company_id: Number(companyId),
+        companyId: Number(companyId),
         ...UseMutationCallbacks('Acceso de compañía creado correctamente', '/company', closeLoading)
     })
 

@@ -4,7 +4,7 @@ import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientL
 import { ErrorDetail, CompanyAccessResponse, CompanyAccessCreate } from "@/types/lexobot-ai";
 
 interface UsePostCompanyAccessProps {
-    company_id: number
+    companyId: number
     onSuccess?: (
         data: CompanyAccessResponse,
         variables: CompanyAccessCreate
@@ -21,7 +21,7 @@ interface UsePostCompanyAccessProps {
 }
 
 export const UsePostCompanyAccess = ({
-    company_id,
+    companyId,
     onSuccess,
     onError,
     onSettled
@@ -35,7 +35,7 @@ export const UsePostCompanyAccess = ({
     const createCompanyAccessMutation = useMutation({
         mutationKey: ['PostCompanyAccess'],
         mutationFn: async (companyAccess: CompanyAccessCreate) => {
-            const requestBody = castRequestBody({ company_id, ...companyAccess }, path, method) as NonNullable<Parameters<typeof postCompanyAccess>[0]>
+            const requestBody = castRequestBody({ company_id: companyId, ...companyAccess }, path, method) as NonNullable<Parameters<typeof postCompanyAccess>[0]>
             const { data } = await postCompanyAccess(requestBody)
             return data;
         },

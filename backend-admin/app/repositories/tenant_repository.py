@@ -18,6 +18,11 @@ class TenantRepository(BaseRepository[Tenant]):
         stmt = select(self.model).where(self.model.name == name, self.model.is_active == True)
         result = await db.execute(stmt)
         return result.scalar_one_or_none()
+    
+    async def get_by_contact_email(self, db: AsyncSession, email: str) -> Optional[Tenant]:
+        stmt = select(self.model).where(self.model.contact_email == email, self.model.is_active == True)
+        result = await db.execute(stmt)
+        return result.scalar_one_or_none()
 
     async def get_by_external_id(self, db: AsyncSession, external_id: str) -> Optional[Tenant]:
         stmt = select(self.model).where(self.model.external_id == external_id, self.model.is_active == True)

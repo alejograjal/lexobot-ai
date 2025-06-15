@@ -153,7 +153,7 @@ export interface paths {
         patch: operations["update_company_api_v1_companies__company_id__patch"];
         trace?: never;
     };
-    "/api/v1/company-tenant-assignments/company/{company_id}": {
+    "/api/v1/company-tenant-assignments": {
         parameters: {
             query?: never;
             header?: never;
@@ -164,23 +164,7 @@ export interface paths {
          * Get All Assignments By Company
          * @description Get all company-tenant assignments
          */
-        get: operations["get_all_assignments_by_company_api_v1_company_tenant_assignments_company__company_id__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/company-tenant-assignments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
+        get: operations["get_all_assignments_by_company_api_v1_company_tenant_assignments_get"];
         put?: never;
         /**
          * Create Assignment
@@ -221,12 +205,12 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
         /**
          * Bulk Sync Assignments
          * @description Synchronize all assignments for a company
          */
-        post: operations["bulk_sync_assignments_api_v1_company_tenant_assignments_bulk_sync_post"];
+        put: operations["bulk_sync_assignments_api_v1_company_tenant_assignments_bulk_sync_put"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -464,6 +448,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/available": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Available Tenants */
+        get: operations["get_available_tenants_api_v1_tenants_available_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}": {
         parameters: {
             query?: never;
@@ -481,23 +482,6 @@ export interface paths {
         head?: never;
         /** Update Tenant */
         patch: operations["update_tenant_api_v1_tenants__tenant_id__patch"];
-        trace?: never;
-    };
-    "/api/v1/tenants/available": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Available Tenants */
-        get: operations["get_available_tenants_api_v1_tenants_available_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
     "/api/v1/users": {
@@ -722,8 +706,8 @@ export interface components {
             company_id: number;
             /** Tenant Id */
             tenant_id: number;
-            Company: components["schemas"]["CompanyResponse"];
-            Tenant: components["schemas"]["TenantResponse"];
+            company: components["schemas"]["CompanyResponse"];
+            tenant: components["schemas"]["TenantResponse"];
         };
         /** CompanyUpdate */
         CompanyUpdate: {
@@ -894,11 +878,11 @@ export interface components {
              * @default 0
              */
             client_count: number;
+            /** Server Ip */
+            server_ip?: string | null;
         };
         /** TenantDocumentCreate */
         TenantDocumentCreate: {
-            /** Tenant Id */
-            tenant_id: number;
             /** Document Name */
             document_name: string;
             /** File Path */
@@ -945,6 +929,8 @@ export interface components {
              * @default 0
              */
             client_count: number;
+            /** Server Ip */
+            server_ip?: string | null;
             /** Id */
             id: number;
         };
@@ -958,6 +944,8 @@ export interface components {
             contact_email?: string | null;
             /** Client Count */
             client_count?: number | null;
+            /** Server Ip */
+            server_ip?: string | null;
         };
         /** TokenResponse */
         TokenResponse: {
@@ -1923,13 +1911,13 @@ export interface operations {
             };
         };
     };
-    get_all_assignments_by_company_api_v1_company_tenant_assignments_company__company_id__get: {
+    get_all_assignments_by_company_api_v1_company_tenant_assignments_get: {
         parameters: {
-            query?: never;
-            header?: never;
-            path: {
+            query: {
                 company_id: number;
             };
+            header?: never;
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -2115,7 +2103,7 @@ export interface operations {
             };
         };
     };
-    bulk_sync_assignments_api_v1_company_tenant_assignments_bulk_sync_post: {
+    bulk_sync_assignments_api_v1_company_tenant_assignments_bulk_sync_put: {
         parameters: {
             query?: never;
             header?: never;
@@ -3691,6 +3679,64 @@ export interface operations {
             };
         };
     };
+    get_available_tenants_api_v1_tenants_available_get: {
+        parameters: {
+            query: {
+                company_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantResponse"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_tenant_api_v1_tenants__tenant_id__get: {
         parameters: {
             query?: {
@@ -3892,64 +3938,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Internal server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_available_tenants_api_v1_tenants_available_get: {
-        parameters: {
-            query: {
-                company_id: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TenantResponse"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Internal server error */

@@ -1,0 +1,16 @@
+"use client"
+
+import { ColumnDef } from "@tanstack/react-table"
+import { TenantDocumentResponse } from "@/types/lexobot-ai"
+import { SortableColumnHeader } from "@/components/Shared/SortableColumnHeader.tsx"
+
+export const columns: ColumnDef<TenantDocumentResponse>[] = [
+    {
+        accessorKey: "id",
+        header: ({ column }) => <SortableColumnHeader column={column} title="Id" />,
+    },
+    {
+        accessorKey: "name",
+        header: ({ column }) => <SortableColumnHeader column={column} title="Nombre" />,
+    }
+]

@@ -1,8 +1,8 @@
 from typing import List
 from app.db import get_db
 from app.core import require_administrator
-from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, status, Query
 from app.schemas import CompanyTenantAssignmentResponse
 from app.services import CompanyTenantAssignmentService
 from app.schemas import CompanyTenantAssignmentCreate, CompanyTenantAssignmentBulkSync, common_errors, duplicate_entry_error, not_found_error, validation_error
@@ -15,8 +15,8 @@ router = APIRouter(
 
 company_tenant_assignment_service = CompanyTenantAssignmentService()
 
-@router.get("/company/{company_id}", response_model=List[CompanyTenantAssignmentResponse], responses={**common_errors})
-async def get_all_assignments_by_company(company_id: int, db: AsyncSession = Depends(get_db)):
+@router.get("", response_model=List[CompanyTenantAssignmentResponse], responses={**common_errors})
+async def get_all_assignments_by_company(company_id: int = Query(...), db: AsyncSession = Depends(get_db)):
     """Get all company-tenant assignments"""
     return await company_tenant_assignment_service.get_all_by_company(db, company_id)
 
@@ -37,7 +37,7 @@ async def delete_assignment(assignment_id: int, db: AsyncSession = Depends(get_d
     await company_tenant_assignment_service.delete(db, assignment_id)
     return None
 
-@router.post("/bulk-sync", status_code=status.HTTP_204_NO_CONTENT, responses={
+@router.put("/bulk-sync", status_code=status.HTTP_204_NO_CONTENT, responses={
     **common_errors,
     **validation_error
 })

@@ -2,14 +2,14 @@
 
 import * as React from "react"
 
+import { Roles } from "@/types/lexobot-ai"
 import { useAuth } from "@/context/AuthContext"
+import { GalleryVerticalEnd, } from "lucide-react"
 import { getRoutesByRole } from "@/navigation/Routes"
 import { NavMain } from "@/components/Navigation/nav-main"
 import { NavUser } from "@/components/Navigation/nav-user"
 import { TeamSwitcher } from "@/components/Switcher/team-switcher"
-import { AudioWaveform, Command, GalleryVerticalEnd, } from "lucide-react"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
-import { Roles } from "@/types/lexobot-ai"
 
 const data = {
   teams: [
