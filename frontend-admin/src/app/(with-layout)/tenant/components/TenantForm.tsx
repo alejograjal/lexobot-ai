@@ -30,6 +30,7 @@ export function TenantForm({
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-md">
                 <FormFieldWrapper name="name" label="Nombre" />
                 <FormFieldWrapper name="contact_name" label="Nombre de contacto" />
+                <FormFieldWrapper name="external_id" label="Identificador externo" />
                 <FormFieldWrapper name="contact_email" label="Email de contacto" />
                 <FormFieldNumberWrapper name="client_count" label="Cantidad de consumidores" />
 

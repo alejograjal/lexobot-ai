@@ -14,4 +14,4 @@ class User(BaseModel):
     role_id = Column(Integer, ForeignKey('roles.id'), nullable=False)
     role = relationship("Role")
 
-    login_attempts = relationship("LoginAttempt", back_populates="user", cascade="all, delete-orphan")
+    login_attempts = relationship("LoginAttempt", back_populates="user", cascade="all, delete-orphan", lazy="selectin")

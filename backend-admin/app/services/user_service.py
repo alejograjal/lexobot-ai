@@ -66,9 +66,6 @@ class UserService:
 
         update_data = user_data.dict(exclude_unset=True)
 
-        print("update_data", update_data)
-        print("current_user", current_user)
-
         if "role_id" in update_data and current_user.role_id != update_data["role_id"]:
             role_value = self.ROLE_ID_TO_ENUM.get(update_data["role_id"])
             if self.is_current_role(UserRole.COMPANY.value) and role_value in [UserRole.COMPANY.value, UserRole.ADMINISTRATOR.value]:

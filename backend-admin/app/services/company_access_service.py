@@ -41,19 +41,17 @@ class CompanyAccessService:
     async def create_access(self, db: AsyncSession, company_id: int, obj_in: CompanyAccessCreate) -> CompanyAccess:
         await self._ensure_company_exists(db, company_id)
         
+        if not self.is_expiration_after_acquisition(obj_in.plan_acquisition_date, obj_in.plan_expiration_date):
+            raise ValidationException("Plan expiration date must be greater than acquisition date")
+
         now = datetime.now(timezone.utc)
-        
-        year, month = obj_in.plan_acquisition_date.year, obj_in.plan_acquisition_date.month
-        last_day = calendar.monthrange(year, month)[1]
-        plan_expiration_date = obj_in.plan_acquisition_date.replace(day=last_day)
 
         db_obj = {
             **obj_in.model_dump(),
             "company_id": company_id,
-            "openai_api_key": str(uuid4()),
+            "lexobot_worker_api_key": str(uuid4()),
             "issue_at": now,
             "expires_at": now + timedelta(days=365 * 5),
-            "plan_expiration_date": plan_expiration_date,
         }
 
         return await self.repository.create(db, db_obj)
@@ -61,12 +59,12 @@ class CompanyAccessService:
     async def update_access(self, db: AsyncSession, company_id: int, access_id: int, obj_in: CompanyAccessUpdate) -> CompanyAccess:
         await self._ensure_company_exists(db, company_id)
 
-        await self._validate_access_belongs_to_company(db, access_id, company_id)
+        await self._validate_access_belongs_to_company(db, company_id, access_id)
         
-        if not self.is_last_day_of_month(obj_in.plan_expiration_date):
-            raise ValidationException("Plan expiration date must be the last day of the month")
+        if not self.is_expiration_after_acquisition(obj_in.plan_acquisition_date, obj_in.plan_expiration_date):
+            raise ValidationException("Plan expiration date must be greater than acquisition date")
 
-        return await self.repository.update(db, access_id, {"plan_expiration_date": obj_in.plan_expiration_date})
+        return await self.repository.update(db, access_id, obj_in.dict(exclude_unset=True))
 
     async def delete_access(self, db: AsyncSession, company_id: int, access_id: int) -> bool:
         await self._ensure_company_exists(db, company_id)
@@ -76,5 +74,5 @@ class CompanyAccessService:
         return await self.repository.delete(db, access_id)
     
     @staticmethod
-    def is_last_day_of_month(date: datetime) -> bool:
-        return date.day == calendar.monthrange(date.year, date.month)[1]        
+    def is_expiration_after_acquisition(acquisition_date: datetime, expiration_date: datetime) -> bool:
+        return expiration_date > acquisition_date

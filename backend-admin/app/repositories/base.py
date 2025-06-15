@@ -3,6 +3,7 @@ from app.db.models import BaseModel
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from typing import Generic, TypeVar, Type, List, Optional, Callable, Any
 
 ModelType = TypeVar("ModelType", bound=BaseModel)
@@ -11,6 +12,48 @@ class BaseRepository(Generic[ModelType]):
     def __init__(self, model: Type[ModelType], relationships: List[str] = None):
         self.model = model
         self.relationships = relationships or []
+
+    def parse_relationship(self, model: Type[ModelType], rel_path: str):
+        parts = rel_path.split(".")
+
+        attr = getattr(model, parts[0])
+        if not isinstance(attr, InstrumentedAttribute):
+            raise ValueError(f"{parts[0]} is not a valid relationship on {model}")
+
+        loader = selectinload(attr)
+        current_loader = loader
+        current_model = attr.property.mapper.class_
+
+        for part in parts[1:]:
+            attr = getattr(current_model, part)
+            if not isinstance(attr, InstrumentedAttribute):
+                raise ValueError(f"{part} is not a valid relationship on {current_model}")
+            current_loader = current_loader.selectinload(attr)
+            current_model = attr.property.mapper.class_
+
+        return loader
+
+    def _add_relationships_to_query(self, stmt):
+        for relationship in self.relationships:
+            stmt = stmt.options(self.parse_relationship(self.model, relationship))
+        return stmt
+    
+    async def _load_relationships(self, db: AsyncSession, obj: ModelType) -> ModelType:
+        if not self.relationships or not obj:
+            return obj
+    
+        if obj not in db:
+            db.add(obj)
+        
+        for relationship in self.relationships:
+            parts = relationship.split('.')
+            current = obj
+            for part in parts:
+                if current is not None:
+                    await db.refresh(current, attribute_names=[part])
+                    current = getattr(current, part, None)
+
+        return obj
 
     async def execute_in_transaction(
         self,
@@ -33,9 +76,7 @@ class BaseRepository(Generic[ModelType]):
 
     async def get_by_id(self, db: AsyncSession, id: int, include_inactive: bool = False) -> Optional[ModelType]:
         stmt = select(self.model).where(self.model.id == id)
-        
-        for relationship in self.relationships:
-            stmt = stmt.options(selectinload(getattr(self.model, relationship)))
+        stmt = self._add_relationships_to_query(stmt)
         
         if not include_inactive:
             stmt = stmt.where(self.model.is_active == True)
@@ -45,6 +86,8 @@ class BaseRepository(Generic[ModelType]):
 
     async def get_all(self, db: AsyncSession, include_inactive: bool = False) -> List[ModelType]:
         stmt = select(self.model)
+        stmt = self._add_relationships_to_query(stmt)
+
         if not include_inactive:
             stmt = stmt.where(self.model.is_active == True)
         result = await db.execute(stmt)
@@ -73,15 +116,19 @@ class BaseRepository(Generic[ModelType]):
         obj = self.model(**obj_in)
         db.add(obj)
         await db.flush()
-        return obj
+        await db.refresh(obj)
+        return await self._load_relationships(db, obj)
 
     async def update(self, db: AsyncSession, id: int, obj_in: dict) -> Optional[ModelType]:
         obj = await self.get_by_id(db, id)
         if obj:
             for key, value in obj_in.items():
                 setattr(obj, key, value)
+
             await db.flush()
-            return obj
+            await db.refresh(obj)
+
+            return await self._load_relationships(db, obj)
         return None
 
     async def remove(self, db: AsyncSession, id: int) -> bool:

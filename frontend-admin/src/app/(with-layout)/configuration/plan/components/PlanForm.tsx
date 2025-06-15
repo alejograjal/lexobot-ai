@@ -3,14 +3,15 @@
 import { Form, } from "@/components/ui/form"
 import { Plan, planSchema } from "./PlanSchema"
 import { DefaultValues } from "react-hook-form"
+import { createSelectOptions } from "@/lib/utils"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { FormActions } from "@/components/Form/FormActions"
 import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
 import { FormSelectWrapper } from "@/components/Form/FormSelectWrapper"
-import { UseGetPlanCategories } from "@/hooks/api/lexobot-ai/planCategory/UseGetPlanCategories"
 import { FormCurrencyInput } from "@/components/Form/FormCurrencyInput"
 import { FormFieldNumberWrapper } from "@/components/Form/FormFieldNumberWrapper"
+import { UseGetPlanCategories } from "@/hooks/api/lexobot-ai/planCategory/UseGetPlanCategories"
 
 interface PlanFormProps {
     defaultValues?: DefaultValues<Plan>
@@ -28,14 +29,8 @@ export function PlanForm({
         defaultValues,
     })
 
-    const { data: roles, isLoading, isError } = UseGetPlanCategories()
-
-    const roleOptions =
-        roles?.map(role => ({
-            value: String(role.id),
-            label: role.name,
-        })) ?? []
-
+    const { data: planCategories, isLoading, isError } = UseGetPlanCategories()
+    const planCategoryOptions = createSelectOptions(planCategories, { valueField: 'id', labelField: 'name' });
     const selectPlaceholder = isError ? "Error al cargar las categorías" : isLoading ? "Cargando..." : "Seleccione una categoría"
 
     return (
@@ -44,7 +39,7 @@ export function PlanForm({
                 <FormFieldWrapper name="name" label="Nombre" />
                 <FormCurrencyInput name="base_price" label="Precio base" />
                 <FormFieldNumberWrapper name="max_tenants" label="Cantidad máxima de tenants" />
-                <FormSelectWrapper name="plan_category_id" label="Categoría de plan" options={roleOptions} placeholder={selectPlaceholder} disabled={isLoading || isError} />
+                <FormSelectWrapper name="plan_category_id" label="Categoría de plan" options={planCategoryOptions} placeholder={selectPlaceholder} disabled={isLoading || isError} />
 
                 <FormActions pathCancel="/configuration/plan" isSaving={onloading} />
             </form>

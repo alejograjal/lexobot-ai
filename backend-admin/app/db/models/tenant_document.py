@@ -8,4 +8,4 @@ class TenantDocument(BaseModel):
     document_name = Column(String(255), nullable=False)
     file_path = Column(Text, nullable=False)
 
-    tenant = relationship("Tenant", backref="documents")
+    tenant = relationship("Tenant", backref="documents", lazy="selectin")

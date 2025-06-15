@@ -3,13 +3,14 @@
 import { Form, } from "@/components/ui/form"
 import { User, userSchema } from "./UserSchema"
 import { DefaultValues } from "react-hook-form"
+import { createSelectOptions } from "@/lib/utils"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { FormActions } from "@/components/Form/FormActions"
+import { FormPhoneField } from "@/components/Form/FormInputPhone"
 import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
 import { UseGetRoles } from "@/hooks/api/lexobot-ai/role/UseGetRoles"
 import { FormSelectWrapper } from "@/components/Form/FormSelectWrapper"
-import { FormPhoneField } from "@/components/Form/FormInputPhone"
 
 interface UserFormProps {
     defaultValues?: DefaultValues<User>
@@ -28,13 +29,7 @@ export function UserForm({
     })
 
     const { data: roles, isLoading, isError } = UseGetRoles()
-
-    const roleOptions =
-        roles?.map(role => ({
-            value: String(role.id),
-            label: role.name,
-        })) ?? []
-
+    const roleOptions = createSelectOptions(roles, { valueField: 'id', labelField: 'name' });
     const selectPlaceholder = isError ? "Error al cargar los roles" : isLoading ? "Cargando..." : "Seleccione un rol"
 
     return (

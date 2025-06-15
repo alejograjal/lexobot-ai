@@ -525,8 +525,6 @@ export interface components {
     schemas: {
         /** CompanyAccessCreate */
         CompanyAccessCreate: {
-            /** Company Id */
-            company_id: number;
             /** Plan Id */
             plan_id: number;
             /**
@@ -534,6 +532,11 @@ export interface components {
              * Format: date-time
              */
             plan_acquisition_date: string;
+            /**
+             * Plan Expiration Date
+             * Format: date-time
+             */
+            plan_expiration_date: string;
             /**
              * Auto Renewal
              * @default false
@@ -542,8 +545,6 @@ export interface components {
         };
         /** CompanyAccessResponse */
         CompanyAccessResponse: {
-            /** Company Id */
-            company_id: number;
             /** Plan Id */
             plan_id: number;
             /**
@@ -552,14 +553,19 @@ export interface components {
              */
             plan_acquisition_date: string;
             /**
+             * Plan Expiration Date
+             * Format: date-time
+             */
+            plan_expiration_date: string;
+            /**
              * Auto Renewal
              * @default false
              */
             auto_renewal: boolean;
             /** Id */
             id: number;
-            /** Openai Api Key */
-            openai_api_key: string;
+            /** Lexobot Worker Api Key */
+            lexobot_worker_api_key: string;
             /**
              * Issue At
              * Format: date-time
@@ -570,21 +576,20 @@ export interface components {
              * Format: date-time
              */
             expires_at: string;
-            /**
-             * Plan Expiration Date
-             * Format: date-time
-             */
-            plan_expiration_date: string;
             /** Is Active */
             is_active: boolean;
+            plan: components["schemas"]["PlanResponse"];
         };
         /** CompanyAccessUpdate */
         CompanyAccessUpdate: {
-            /**
-             * Plan Expiration Date
-             * Format: date-time
-             */
-            plan_expiration_date: string;
+            /** Plan Id */
+            plan_id: number | null;
+            /** Plan Acquisition Date */
+            plan_acquisition_date: string | null;
+            /** Plan Expiration Date */
+            plan_expiration_date: string | null;
+            /** Auto Renewal */
+            auto_renewal: boolean | null;
         };
         /** CompanyCreate */
         CompanyCreate: {
@@ -808,6 +813,11 @@ export interface components {
         TenantCreate: {
             /** Name */
             name: string;
+            /**
+             * External Id
+             * Format: uuid
+             */
+            external_id: string;
             /** Contact Name */
             contact_name: string;
             /**
@@ -854,6 +864,11 @@ export interface components {
         TenantResponse: {
             /** Name */
             name: string;
+            /**
+             * External Id
+             * Format: uuid
+             */
+            external_id: string;
             /** Contact Name */
             contact_name: string;
             /**
@@ -868,11 +883,6 @@ export interface components {
             client_count: number;
             /** Id */
             id: number;
-            /**
-             * External Id
-             * Format: uuid
-             */
-            external_id: string;
         };
         /** TenantUpdate */
         TenantUpdate: {

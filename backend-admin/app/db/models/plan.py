@@ -10,4 +10,4 @@ class Plan(BaseModel):
     max_tenants = Column(Integer, nullable=False) 
     base_price = Column(Numeric(10, 2), nullable=False)
 
-    plan_category = relationship("PlanCategory", backref="plans")
+    plan_category = relationship("PlanCategory", backref="plans", lazy="selectin")

@@ -4,10 +4,10 @@ import { Form, } from "@/components/ui/form"
 import { DefaultValues } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm, SubmitHandler } from "react-hook-form"
-import { FormActions } from "@/components/Form/FormActions"
 import { companySchema, Company } from "./CompanySchema"
-import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
+import { FormActions } from "@/components/Form/FormActions"
 import { FormPhoneField } from "@/components/Form/FormInputPhone"
+import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
 
 interface CompanyFormProps {
     defaultValues?: DefaultValues<Company>

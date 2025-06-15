@@ -11,4 +11,4 @@ class LoginAttempt(BaseModel):
     attempts_count = Column(Integer, default=1)
     last_attempt = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
-    user = relationship("User", back_populates="login_attempts")
+    user = relationship("User", back_populates="login_attempts", lazy="selectin")

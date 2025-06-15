@@ -48,6 +48,9 @@ export const UsePutCompany = ({
                 queryClient.invalidateQueries({
                     queryKey: ['GetCompanies'],
                     exact: false
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: ['GetCompanyAccesses']
                 })
             ]);
             onSuccess?.(data, variables)

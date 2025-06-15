@@ -4,6 +4,7 @@ from pydantic import BaseModel, EmailStr
 
 class TenantBase(BaseModel):
     name: str
+    external_id: uuid.UUID
     contact_name: str
     contact_email: EmailStr
     client_count: int = 0
@@ -19,4 +20,3 @@ class TenantUpdate(BaseModel):
 
 class TenantResponse(TenantBase):
     id: int
-    external_id: uuid.UUID

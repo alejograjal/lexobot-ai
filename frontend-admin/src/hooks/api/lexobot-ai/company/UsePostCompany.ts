@@ -38,9 +38,15 @@ export const UsePostCompany = ({
             return data;
         },
         onSuccess: async (data: CompanyResponse, variables: CompanyCreate) => {
-            await queryClient.invalidateQueries({
-                queryKey: ['GetCompanies']
-            })
+             await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: ['GetCompanies'],
+                    exact: false
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: ['GetCompanyAccesses']
+                })
+            ]);
             onSuccess?.(data, variables)
         },
         onError: (errorAPI: ApiError, _) => {

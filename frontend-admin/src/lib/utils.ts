@@ -1,6 +1,13 @@
+import { format } from "date-fns"
+import { es } from "date-fns/locale"
 import { twMerge } from "tailwind-merge"
 import { clsx, type ClassValue } from "clsx"
 import { ErrorDetail } from "@/types/lexobot-ai";
+
+interface SelectOption {
+    value: string;
+    label: string;
+}
 
 export const telephoneMaskRegex = /^\d{4}-\d{4}$/;
 
@@ -66,4 +73,26 @@ export const formatCurrency = (
 
     const formattedValue = `${prefix}${parts.join(decimalSeparator)}`;
     return value < 0 ? `-${formattedValue}` : formattedValue;
+};
+
+export const formatDate = (date: string | Date | null): string => {
+    if (!date) return '-';
+    try {
+        return format(new Date(date), 'dd/MM/yyyy', { locale: es });
+    } catch {
+        return '-';
+    }
+};
+
+export const createSelectOptions = <T extends Record<string, any>>(
+    items: T[] | undefined,
+    config: {
+        valueField: keyof T;
+        labelField: keyof T;
+    }
+): SelectOption[] => {
+    return items?.map(item => ({
+        value: String(item[config.valueField]),
+        label: String(item[config.labelField])
+    })) ?? [];
 };
