@@ -8,9 +8,9 @@ import { CompanyAccessForm } from "./components/CompanyAccessForm";
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks";
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress";
 import { CompanyAccess as CompanyAccessSchema, initialValues } from "./components/CompanyAccessSchema";
-import { UsePutCompanyAccess } from "@/hooks/api/lexobot-ai/company-access/UsePutCompanyAccess";
-import { UsePostCompanyAccess } from "@/hooks/api/lexobot-ai/company-access/UsePostCompanyAccess";
-import { UseGetCompanyAccesses } from "@/hooks/api/lexobot-ai/company-access/UseGetCompanyAccesses";
+import { UsePutCompanyAccess } from "@/hooks/api/lexobot-ai/companyAccess/UsePutCompanyAccess";
+import { UsePostCompanyAccess } from "@/hooks/api/lexobot-ai/companyAccess/UsePostCompanyAccess";
+import { UseGetCompanyAccesses } from "@/hooks/api/lexobot-ai/companyAccess/UseGetCompanyAccesses";
 import { init } from "next/dist/compiled/webpack/webpack";
 
 function mapCompanyAccessToDto(data: CompanyAccessSchema) {

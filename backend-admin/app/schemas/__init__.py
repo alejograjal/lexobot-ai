@@ -43,7 +43,8 @@ from .plan_category_schema import (
 
 from .company_tenant_assignment_schema import (
     CompanyTenantAssignmentCreate,
-    CompanyTenantAssignmentBulkSync
+    CompanyTenantAssignmentBulkSync,
+    CompanyTenantAssignmentResponse
 )
 
 from .plan_schema import (
@@ -107,6 +108,7 @@ __all__ = [
 
     # Company Access
     "CompanyAccessCreate",
+    "CompanyAccessUpdate",
     "CompanyAccessResponse"
 
     # Plan Category
@@ -117,7 +119,8 @@ __all__ = [
 
     # Company Tenant Assignment
     "CompanyTenantAssignmentCreate",
-    "CompanyTenantAssignmentBulkSync"
+    "CompanyTenantAssignmentBulkSync",
+    "CompanyTenantAssignmentResponse"
 
     # Plan
     "PlanBase",

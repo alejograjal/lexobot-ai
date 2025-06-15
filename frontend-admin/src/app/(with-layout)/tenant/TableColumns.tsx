@@ -27,7 +27,7 @@ export const columns: ColumnDef<TenantResponse>[] = [
     },
     {
         accessorKey: "client_count",
-        header: ({ column }) => <SortableColumnHeader column={column} title="Cantidad de consumidores" />,
+        header: ({ column }) => <SortableColumnHeader column={column} title="Cantidad de asociados" />,
         cell: ({ row }) => {
             return (
                 <div className="text-right">

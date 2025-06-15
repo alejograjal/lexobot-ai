@@ -42,3 +42,7 @@ export type TenantResponse = components["schemas"]["TenantResponse"];
 export type CompanyAccessCreate = components["schemas"]["CompanyAccessCreate"];
 export type CompanyAccessUpdate = components["schemas"]["CompanyAccessUpdate"];
 export type CompanyAccessResponse = components["schemas"]["CompanyAccessResponse"];
+
+export type CompanyTenantCreate = components["schemas"]["CompanyTenantAssignmentCreate"];
+export type CompanyTenantBulk = components["schemas"]["CompanyTenantAssignmentBulkSync"];
+export type CompanyTenantResponse = components["schemas"]["CompanyTenantAssignmentResponse"];

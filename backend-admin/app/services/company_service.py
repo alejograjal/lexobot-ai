@@ -47,6 +47,9 @@ class CompanyService:
         if not company:
             raise NotFoundException("Company", company_id)
         return company
+    
+    async def _update_managed_tenants_count_direct(self, db: AsyncSession, company_id: int, count: int):
+        await self.repository.update(db, company_id, {"managed_tenants_count": count})
 
     async def delete_company(self, db: AsyncSession, company_id: int) -> bool:
         if not await self.repository.exists(db, company_id):

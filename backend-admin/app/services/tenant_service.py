@@ -4,11 +4,13 @@ from app.db.models import Tenant
 from app.repositories import TenantRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas import TenantCreate, TenantUpdate
+from .company_tenant_assignment_service import CompanyTenantAssignmentService
 from app.core import NotFoundException, DuplicateEntryError, ValidationException
 
 class TenantService:
     def __init__(self):
         self.repository = TenantRepository()
+        self.company_tenant_assignment_service = CompanyTenantAssignmentService()
 
     async def _validate_tenant_data(
         self, 
@@ -49,6 +51,16 @@ class TenantService:
 
     async def get_all(self, db: AsyncSession, include_inactive: bool = False) -> List[Tenant]:
         return await self.repository.get_all(db, include_inactive)
+    
+    async def get_available_for_company(self, db: AsyncSession, company_id: int) -> List[Tenant]:
+        assigned_ids = await self.company_tenant_assignment_service.get_assigned_tenant_ids(db, company_id)
+
+        print('unassigned tenant ids', assigned_ids)
+
+        if not assigned_ids:
+            return await self.repository.get_all(db)
+
+        return await self.repository.get_available_for_company(db, assigned_ids)
 
     async def update(self, db: AsyncSession, tenant_id: int, data: TenantUpdate) -> Tenant:
         if not await self.repository.exists(db, tenant_id):

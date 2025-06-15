@@ -1,7 +1,7 @@
 import { ApiError } from "openapi-typescript-fetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ErrorDetail, CompanyAccessResponse, CompanyAccessCreate } from "@/types/lexobot-ai";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
+import { ErrorDetail, CompanyAccessResponse, CompanyAccessCreate } from "@/types/lexobot-ai";
 
 interface UsePostCompanyAccessProps {
     company_id: number

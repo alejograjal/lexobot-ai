@@ -1,12 +1,12 @@
 "use client"
 
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { ErrorProcess } from "../Shared/ErrorProcess"
 import { CircularLoadingProgress } from "../Shared/CircularLoadingProgress"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table"
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, OnChangeFn, RowSelectionState, SortingState, useReactTable } from "@tanstack/react-table"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -14,6 +14,10 @@ interface DataTableProps<TData, TValue> {
     loading?: boolean
     error?: boolean
     onRowClick?: (row: TData) => void
+    selectable?: boolean
+    onSelectionChange?: (ids: number[]) => void
+    rowSelection?: Record<string, boolean>
+    onRowSelectionChange?: (rowSelection: Record<string, boolean>) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -21,7 +25,11 @@ export function DataTable<TData, TValue>({
     data,
     loading,
     error,
-    onRowClick
+    onRowClick,
+    selectable,
+    onSelectionChange,
+    rowSelection,
+    onRowSelectionChange
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([{ id: "id", desc: true }])
     const [globalFilter, setGlobalFilter] = useState("")
@@ -58,6 +66,16 @@ export function DataTable<TData, TValue>({
         return flattened;
     };
 
+    const handleRowSelectionChange: OnChangeFn<RowSelectionState> = (updater) => {
+        if (!onRowSelectionChange) return
+
+        if (typeof updater === "function") {
+            onRowSelectionChange(updater(rowSelection ?? {}))
+        } else {
+            onRowSelectionChange(updater)
+        }
+    }
+
     const table = useReactTable({
         data,
         columns: normalizedColumns,
@@ -65,6 +83,9 @@ export function DataTable<TData, TValue>({
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
+        onRowSelectionChange: handleRowSelectionChange,
+        getRowId: (row: any) => String(row.id),
+        enableRowSelection: selectable,
         globalFilterFn: (row, columnId, filterValue) => {
             const flattenedRow = flattenObject(row.original);
             return Object.values(flattenedRow).some((value) =>
@@ -74,8 +95,16 @@ export function DataTable<TData, TValue>({
         state: {
             sorting,
             globalFilter,
+            rowSelection: rowSelection ?? {},
         },
     })
+
+    useEffect(() => {
+        if (!onSelectionChange) return
+
+        const selected = table.getSelectedRowModel().rows.map(row => row.original.id)
+        onSelectionChange(selected)
+    }, [rowSelection, onSelectionChange, table])
 
     if (loading) {
         <CircularLoadingProgress />

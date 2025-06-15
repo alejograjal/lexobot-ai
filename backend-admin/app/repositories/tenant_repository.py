@@ -1,12 +1,18 @@
-from typing import Optional
 from .base import BaseRepository
-from sqlalchemy import exists, select
+from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import exists, select, not_, and_
 from app.db.models import Tenant, CompanyTenantAssignment
 
 class TenantRepository(BaseRepository[Tenant]):
     def __init__(self):
         super().__init__(Tenant)
+
+    async def get_available_for_company(self, db: AsyncSession, assigned_ids: List[int]) -> List[Tenant]:
+        stmt = select(Tenant).where(not_(Tenant.id.in_(assigned_ids)), and_(Tenant.is_active == True))
+        result = await db.execute(stmt)
+
+        return result.scalars().all()
 
     async def get_by_name(self, db: AsyncSession, name: str) -> Optional[Tenant]:
         stmt = select(self.model).where(self.model.name == name, self.model.is_active == True)

@@ -15,7 +15,7 @@ export interface ProtectedRouteItem {
 
 export const protectedRoutes: ProtectedRouteItem[] = [
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-    { title: "Compañias", url: "/company", icon: Building2 },
+    { title: "Compañias", url: "/company", icon: Building2, },
     { title: "Tenants", url: "/tenant", icon: MapPinHouse },
     {
         title: "Configuración",

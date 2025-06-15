@@ -1,7 +1,6 @@
 from typing import List
 from .base import BaseRepository
 from sqlalchemy import select, and_
-from sqlalchemy.orm import joinedload
 from app.db.models import CompanyAccess
 from sqlalchemy.ext.asyncio import AsyncSession
 

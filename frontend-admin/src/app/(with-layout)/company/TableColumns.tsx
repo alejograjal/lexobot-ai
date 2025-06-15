@@ -1,6 +1,7 @@
 "use client"
 
 import { applyPhoneMask } from "@/lib/utils"
+import ActionsDropDown from "./ActionsDropDown"
 import { ColumnDef } from "@tanstack/react-table"
 import { CompanyResponse } from "@/types/lexobot-ai"
 import { SortableColumnHeader } from "@/components/Shared/SortableColumnHeader.tsx"
@@ -40,4 +41,13 @@ export const columns: ColumnDef<CompanyResponse>[] = [
             )
         },
     },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => (
+            <div onClick={(e) => e.stopPropagation()}>
+                <ActionsDropDown companyId={String(row.original.id)} />
+            </div>
+        ),
+    }
 ]

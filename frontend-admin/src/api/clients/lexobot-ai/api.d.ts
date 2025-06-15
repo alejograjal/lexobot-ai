@@ -153,6 +153,26 @@ export interface paths {
         patch: operations["update_company_api_v1_companies__company_id__patch"];
         trace?: never;
     };
+    "/api/v1/company-tenant-assignments/company/{company_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get All Assignments By Company
+         * @description Get all company-tenant assignments
+         */
+        get: operations["get_all_assignments_by_company_api_v1_company_tenant_assignments_company__company_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/company-tenant-assignments": {
         parameters: {
             query?: never;
@@ -167,11 +187,27 @@ export interface paths {
          * @description Create a new company-tenant assignment
          */
         post: operations["create_assignment_api_v1_company_tenant_assignments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/company-tenant-assignments/{assignment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
         /**
          * Delete Assignment
          * @description Delete a specific company-tenant assignment
          */
-        delete: operations["delete_assignment_api_v1_company_tenant_assignments_delete"];
+        delete: operations["delete_assignment_api_v1_company_tenant_assignments__assignment_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -447,6 +483,23 @@ export interface paths {
         patch: operations["update_tenant_api_v1_tenants__tenant_id__patch"];
         trace?: never;
     };
+    "/api/v1/tenants/available": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Available Tenants */
+        get: operations["get_available_tenants_api_v1_tenants_available_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/users": {
         parameters: {
             query?: never;
@@ -660,6 +713,17 @@ export interface components {
             company_id: number;
             /** Tenant Id */
             tenant_id: number;
+        };
+        /** CompanyTenantAssignmentResponse */
+        CompanyTenantAssignmentResponse: {
+            /** Id */
+            id: number;
+            /** Company Id */
+            company_id: number;
+            /** Tenant Id */
+            tenant_id: number;
+            Company: components["schemas"]["CompanyResponse"];
+            Tenant: components["schemas"]["TenantResponse"];
         };
         /** CompanyUpdate */
         CompanyUpdate: {
@@ -1859,6 +1923,64 @@ export interface operations {
             };
         };
     };
+    get_all_assignments_by_company_api_v1_company_tenant_assignments_company__company_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                company_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CompanyTenantAssignmentResponse"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     create_assignment_api_v1_company_tenant_assignments_post: {
         parameters: {
             query?: never;
@@ -1878,7 +2000,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["CompanyTenantAssignmentResponse"];
                 };
             };
             /** @description Duplicate entry */
@@ -1928,14 +2050,13 @@ export interface operations {
             };
         };
     };
-    delete_assignment_api_v1_company_tenant_assignments_delete: {
+    delete_assignment_api_v1_company_tenant_assignments__assignment_id__delete: {
         parameters: {
-            query: {
-                company_id: number;
-                tenant_id: number;
-            };
+            query?: never;
             header?: never;
-            path?: never;
+            path: {
+                assignment_id: number;
+            };
             cookie?: never;
         };
         requestBody?: never;
@@ -3771,6 +3892,64 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_available_tenants_api_v1_tenants_available_get: {
+        parameters: {
+            query: {
+                company_id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantResponse"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Internal server error */
