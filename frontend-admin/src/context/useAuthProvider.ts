@@ -5,7 +5,7 @@ import { formatErrorMessage } from '@/lib/utils';
 import { UseSnackbar } from '@/stores/UseSnackbar';
 import { useTokenStore } from '@/stores/UseTokenStore';
 import { useCallback, useState, useEffect } from 'react';
-import { LoginFormValues } from '@/app/login/LoginSchema';
+import { LoginFormValues } from '@/app/login/LoginFullSchema';
 import { ErrorDetail, TokenResponse, UserProfile } from '@/types/lexobot-ai';
 import { UseGetProfileLogged } from '@/hooks/api/lexobot-ai/me/UseGetProfileLogged';
 import { UsePostAuthentication } from '@/hooks/api/lexobot-ai/authentication/UsePostAuthentication';

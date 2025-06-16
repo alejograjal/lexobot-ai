@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { useAuth } from '@/context/AuthContext';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useCallback, useEffect, useState } from "react"
-import { loginSchema, LoginFormValues } from "./LoginSchema"
+import { loginSchema, LoginFormValues } from "./LoginFullSchema"
 import { ButtonLoading } from "@/components/Button/ButonLoading"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
