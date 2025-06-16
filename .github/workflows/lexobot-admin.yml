@@ -29,12 +29,12 @@ jobs:
 
       - name: Build and package backend
         run: |
-          docker build -t backend-admin-image ./backend-admin
+          docker build -t backend-admin-image dist/backend-admin
           docker save backend-admin-image | gzip > dist/backend-admin.tar.gz
 
       - name: Build and package frontend
         run: |
-          docker build -t frontend-admin-image ./frontend-admin
+          docker build -t frontend-admin-image dist/frontend-admin
           docker save frontend-admin-image | gzip > dist/frontend-admin.tar.gz
 
       - name: Setup SSH

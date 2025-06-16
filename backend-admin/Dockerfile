@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libpq-dev gcc && \
     rm -rf /var/lib/apt/lists/*
 
-COPY backend-admin/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY backend-admin .
+COPY . .
 
 EXPOSE 8000
 
