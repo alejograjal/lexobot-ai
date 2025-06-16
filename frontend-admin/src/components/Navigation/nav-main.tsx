@@ -8,7 +8,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar"
 
 function renderSingleItem(item: ProtectedRouteItem, pathname: string) {
-  const isActive = pathname === item.url
+  const isActive = pathname.startsWith(item.url!)
 
   return (
     <SidebarMenuItem key={item.title}>
@@ -41,7 +41,7 @@ function renderCollapsibleItem(item: ProtectedRouteItem, pathname: string) {
         <CollapsibleContent>
           <SidebarMenuSub>
             {item.items!.map((subItem) => {
-              const isActive = pathname === subItem.url
+              const isActive = pathname === subItem.url || pathname.startsWith(`${subItem.url}/`);
 
               return (
                 <SidebarMenuSubItem key={subItem.title}>

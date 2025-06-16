@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { useAuth } from '@/context/AuthContext';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useCallback, useEffect, useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ButtonLoading } from "@/components/Button/ButonLoading"
 import { LoginFormValues, loginSchema } from "@/app/login/LoginSchema"
 
@@ -49,19 +49,18 @@ export function LoginForm({
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card className="overflow-hidden p-0">
-                <CardContent className="grid p-0 md:grid-cols-2">
-                    <form className="p-6 md:p-8" onSubmit={handleSubmit(createLoginWrapper)}>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-3xl text-center">Bienvenido</CardTitle>
+                    <CardDescription>
+                        Accede a tu cuenta de administración de LexoBot
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit(createLoginWrapper)}>
                         <div className="flex flex-col gap-6">
-                            <div className="flex flex-col items-center text-center">
-                                <h1 className="text-2xl font-bold">Welcome back</h1>
-                                <p className="text-muted-foreground text-balance">
-                                    Login to your LexoBot management account
-                                </p>
-                            </div>
-
                             <div className="grid gap-3">
-                                <Label htmlFor="username">Username</Label>
+                                <Label htmlFor="username">Nombre de usuario</Label>
                                 <Input
                                     id="username"
                                     type="text"
@@ -74,12 +73,12 @@ export function LoginForm({
 
                             <div className="grid gap-3">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">Contraseña</Label>
                                     <a
                                         href="#"
                                         className="ml-auto text-sm underline-offset-2 hover:underline"
                                     >
-                                        Forgot your password?
+                                        ¿Olvidaste tu contraseña?
                                     </a>
                                 </div>
                                 <Input
@@ -100,14 +99,6 @@ export function LoginForm({
                             </ButtonLoading>
                         </div>
                     </form>
-                    <div className="bg-muted relative hidden md:block">
-                        <Image
-                            src="/LexoBot-AI-simple.jpeg"
-                            alt="Image"
-                            fill
-                            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-                        />
-                    </div>
                 </CardContent>
             </Card>
         </div>

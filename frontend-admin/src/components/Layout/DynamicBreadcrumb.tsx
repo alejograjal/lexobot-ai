@@ -17,10 +17,19 @@ export function DynamicBreadcrumb() {
 
     const getLabel = (segment: string) => {
         const map: Record<string, string> = {
+            new: "Nuevo",
             dashboard: "Dashboard",
-            users: "Usuarios",
-            list: "Lista",
-            settings: "Configuración",
+            company: "Compañías",
+            tenant: "Tenants",
+            assign: 'Asignación',
+            document: 'Documentos',
+            configuration: "Configuración",
+            plan: "Planes",
+            "plan-category": "Categoría de planes",
+            access: "Accesos",
+            role: "Roles",
+            user: "Usuarios",
+
         }
         return map[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)
     }

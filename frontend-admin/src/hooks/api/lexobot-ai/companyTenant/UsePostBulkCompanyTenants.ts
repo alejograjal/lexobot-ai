@@ -25,7 +25,7 @@ export const UsePostBulkCompanyTenant = ({
     onSettled
 }: UsePutCompanyTenantProps) => {
     const path = '/api/v1/company-tenant-assignments/bulk-sync';
-    const method = 'post';
+    const method = 'put';
 
     const postBulkCompanyTenant = UseTypedApiClientLA({ path, method })
     const queryClient = useQueryClient();

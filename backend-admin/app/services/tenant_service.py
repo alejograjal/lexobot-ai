@@ -55,8 +55,6 @@ class TenantService:
     async def get_available_for_company(self, db: AsyncSession, company_id: int) -> List[Tenant]:
         assigned_ids = await self.company_tenant_assignment_service.get_assigned_tenant_ids(db, company_id)
 
-        print('unassigned tenant ids', assigned_ids)
-
         if not assigned_ids:
             return await self.repository.get_all(db)
 

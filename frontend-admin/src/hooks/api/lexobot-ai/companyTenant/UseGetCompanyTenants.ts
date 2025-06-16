@@ -5,7 +5,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
 export const UseGetCompanyTenants = (company_id: string | undefined): UseQueryResult<CompanyTenantResponse[], ApiError> => {
-    const path = '/api/v1/company-tenant-assignments/company/{company_id}';
+    const path = '/api/v1/company-tenant-assignments';
     const method = 'get';
 
     const getCompanyTenants = UseTypedApiClientLA({ path, method })
