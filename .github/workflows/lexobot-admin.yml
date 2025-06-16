@@ -74,14 +74,10 @@ jobs:
             # Backup previous deployments
             [ -d backend-admin ] && mv backend-admin backend-admin_$ts
             [ -d frontend-admin ] && mv frontend-admin frontend-admin_$ts
-            [ -f docker-compose-admin.yml ] && mv docker-compose-admin.yml docker-compose-admin_$ts.yml
 
             # Unzip new versions
             unzip -q backend-admin.zip
             unzip -q frontend-admin.zip
-
-            # Move docker-compose back to root deploy folder
-            mv docker-compose-admin.yml .
 
             # Remove zip files
             rm -f backend-admin.zip frontend-admin.zip
@@ -105,5 +101,4 @@ jobs:
             # Optional: Remove backups older than 3 days
             find . -maxdepth 1 -type d -name "backend-admin_*" -mtime +3 -exec rm -rf {} \;
             find . -maxdepth 1 -type d -name "frontend-admin_*" -mtime +3 -exec rm -rf {} \;
-            find . -maxdepth 1 -type f -name "docker-compose-admin_*.yml" -mtime +3 -exec rm -f {} \;
           EOF
