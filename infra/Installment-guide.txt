@@ -15,5 +15,8 @@ sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-
 
 sudo chmod +x /usr/local/bin/docker-compose
 
+# Install Unzip
+sudo apt update && sudo apt install unzip -y
+
 # CertBot
 sudo apt install -y certbot python3-certbot-nginx
