@@ -1,4 +1,4 @@
-name: Deploy LexoBot Admin via ZIP
+name: Deploy LexoBot Administration Center
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Build and package frontend
         run: |
-          docker build -t frontend-admin-image dist/frontend-admin
+          docker build --build-arg NEXT_PUBLIC_API_LEXOBOT_URL=${{ secrets.NEXT_PUBLIC_API_LEXOBOT_URL }}  -t frontend-admin-image dist/frontend-admin
           docker save frontend-admin-image | gzip > dist/frontend-admin.tar.gz
 
       - name: Setup SSH
