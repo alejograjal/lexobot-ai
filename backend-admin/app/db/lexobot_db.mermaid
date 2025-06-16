@@ -1,0 +1,138 @@
+erDiagram
+    companies {
+        int id PK
+        string name
+        string email
+        string legal_id UK
+        string address
+        string phone
+        string billing_email
+        int managed_tenants_count
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    tenants {
+        int id PK
+        uuid external_id UK
+        string name
+        string contact_name
+        string contact_email
+        int client_count
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    plan_categories {
+        int id PK
+        string name
+        string description
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    plans {
+        int id PK
+        int plan_category_id FK
+        string name
+        int max_tenants
+        decimal base_price
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    roles {
+        int id PK
+        string name UK
+        string description
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    users {
+        int id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone_number
+        string username UK
+        string password_hash
+        int role_id FK
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    company_tenant_assignments {
+        int id PK
+        int company_id FK
+        int tenant_id FK
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    tenant_documents {
+        int id PK
+        int tenant_id FK
+        string document_name
+        string file_path
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    company_accesses {
+        int id PK
+        int company_id FK
+        string openai_api_key UK
+        datetime_tz issue_at "with timezone"
+        datetime_tz expires_at "with timezone"
+        int plan_id FK
+        datetime_tz plan_acquisition_date "with timezone"
+        datetime_tz plan_expiration_date "with timezone"
+        boolean auto_renewal
+        string created_by "not null"
+        datetime_tz created_at "not null, with timezone"
+        string updated_by
+        datetime_tz updated_at "with timezone"
+        boolean is_active "not null, default true"
+    }
+
+    login_attempts {
+        int id PK
+        int user_id FK
+        string ip_address "not null"
+        int attempts_count "not null, default 1"
+        datetime_tz last_attempt "with timezone"
+    }
+
+    companies ||--o{ company_tenant_assignments : has
+    tenants ||--o{ company_tenant_assignments : belongs_to
+    companies ||--o{ company_accesses : has
+    plan_categories ||--o{ plans : has
+    roles ||--o{ users : has
+    plans ||--o{ company_accesses : subscribed_to
+    tenants ||--o{ tenant_documents : has
+    users ||--o{ login_attempts : has

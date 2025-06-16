@@ -1,0 +1,2 @@
+# Give execution permissions
+chmod +x install-docker.sh 
