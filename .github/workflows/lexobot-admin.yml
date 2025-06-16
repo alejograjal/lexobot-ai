@@ -57,17 +57,17 @@ jobs:
 
       - name: Create deploy directory on server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p /home/${{ secrets.SSH_USER }}/lexobot-deploy"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/lexobot-deploy"
 
       - name: Upload ZIPs to server deploy folder
         run: |
-          scp -o StrictHostKeyChecking=no dist/*.zip dist/docker-compose-admin.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/lexobot-deploy/
+          scp -o StrictHostKeyChecking=no dist/*.zip dist/docker-compose-admin.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/lexobot-deploy/
 
       - name: Deploy on server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
-            cd /home/${{ secrets.SSH_USER }}/lexobot-deploy
+            cd ~/lexobot-deploy
 
             ts=$(date +%Y%m%d%H%M%S)
 
