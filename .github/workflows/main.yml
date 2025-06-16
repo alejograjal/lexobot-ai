@@ -1,0 +1,109 @@
+name: Deploy LexoBot Admin via ZIP
+
+on:
+  push:
+    branches:
+      - principal
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for frontend build)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies and build
+        run: |
+          cd frontend-admin
+          npm ci
+          npm run build
+          cd ..
+
+      - name: Prepare dist folder
+        run: |
+          rm -rf dist
+          mkdir dist
+
+          # Copy backend-admin source (ajustar si necesitás solo archivos específicos)
+          cp -r backend-admin dist/backend-admin
+
+          # Copy frontend build output
+          mkdir -p dist/frontend-admin
+          cp -r frontend-admin/.next dist/frontend-admin/
+          cp -r frontend-admin/public dist/frontend-admin/
+          cp frontend-admin/package.json dist/frontend-admin/
+          cp frontend-admin/next.config.js dist/frontend-admin/ || true
+
+          # Copiar docker-compose
+          cp infra/docker/docker-compose-admin.yml dist/
+
+      - name: Zip the artifacts
+        run: |
+          cd dist
+          zip -r backend-admin.zip backend-admin
+          zip -r frontend-admin.zip frontend-admin
+          cd ..
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Create deploy directory on server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p /home/${{ secrets.SSH_USER }}/lexobot-deploy"
+
+      - name: Upload ZIPs to server deploy folder
+        run: |
+          scp -o StrictHostKeyChecking=no dist/*.zip dist/docker-compose-admin.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/lexobot-deploy/
+
+      - name: Deploy on server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e
+            cd /home/${{ secrets.SSH_USER }}/lexobot-deploy
+
+            ts=$(date +%Y%m%d%H%M%S)
+
+            # Backup previous deployments
+            [ -d backend-admin ] && mv backend-admin backend-admin_$ts
+            [ -d frontend-admin ] && mv frontend-admin frontend-admin_$ts
+            [ -f docker-compose-admin.yml ] && mv docker-compose-admin.yml docker-compose-admin_$ts.yml
+
+            # Unzip new versions
+            unzip -q backend-admin.zip
+            unzip -q frontend-admin.zip
+
+            # Move docker-compose back to root deploy folder
+            mv docker-compose-admin.yml .
+
+            # Remove zip files
+            rm -f backend-admin.zip frontend-admin.zip
+
+            # Create .env file dynamically with secrets
+            cat > .env << ENVFILE
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            FASTAPI_TITLE=${{ secrets.FASTAPI_TITLE }}
+            POSTGRESQL_SERVER=postgres
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            POSTGRESQL_PORT=5432
+            CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
+            NEXT_PUBLIC_API_LEXOBOT_URL=http://187.33.158.74:8000
+            ENVFILE
+
+            # Launch containers
+            docker compose -f docker-compose-admin.yml up -d --build
+
+            # Optional: Remove backups older than 3 days
+            find . -maxdepth 1 -type d -name "backend-admin_*" -mtime +3 -exec rm -rf {} \;
+            find . -maxdepth 1 -type d -name "frontend-admin_*" -mtime +3 -exec rm -rf {} \;
+            find . -maxdepth 1 -type f -name "docker-compose-admin_*.yml" -mtime +3 -exec rm -f {} \;
+          EOF
