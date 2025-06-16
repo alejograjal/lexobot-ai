@@ -77,13 +77,8 @@ jobs:
             [ -f docker-compose-admin.yml ] && mv docker-compose-admin.yml docker-compose-admin_$ts.yml
 
             # Unzip new versions
-            if command -v busybox &> /dev/null; then
-              busybox unzip -q backend-admin.zip
-              busybox unzip -q frontend-admin.zip
-            else
-              bsdtar -xf backend-admin.zip
-              bsdtar -xf frontend-admin.zip
-            fi
+            bsdtar -xf backend-admin.zip
+            bsdtar -xf frontend-admin.zip
 
             # Move docker-compose back to root deploy folder
             mv docker-compose-admin.yml .
