@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useForm } from "react-hook-form"
 import { useRouter } from 'next/navigation'
@@ -9,9 +8,9 @@ import { Label } from "@/components/ui/label"
 import { useAuth } from '@/context/AuthContext';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useCallback, useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { loginSchema, LoginFormValues } from "./LoginSchema"
 import { ButtonLoading } from "@/components/Button/ButonLoading"
-import { LoginFormValues, loginSchema } from "@/app/login/LoginSchema"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function LoginForm({
     className,

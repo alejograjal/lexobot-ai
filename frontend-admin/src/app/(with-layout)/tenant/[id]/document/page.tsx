@@ -27,7 +27,7 @@ export default function TenantDocument() {
         if (isError) {
             router.replace(`/tenant/${tenantIdRaw}`)
         }
-    }, [isError, router])
+    }, [isError, router, tenantIdRaw])
 
     return (
         <Page
