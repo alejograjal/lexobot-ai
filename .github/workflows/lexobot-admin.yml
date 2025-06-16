@@ -77,4 +77,7 @@ jobs:
 
             # Clean up
             rm -f *.tar.gz
+
+            # Delete dangling images
+            docker rmi $(docker images -f "dangling=true" -q)
           EOF
