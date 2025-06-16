@@ -4,12 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Settings:
-    BASE_WORKER_API_METHOD = os.getenv("BASE_WORKER_API_METHOD")
     FASTAPI_TITLE: str = os.getenv("FASTAPI_TITLE", "Lexobot Administration Center")
     SECRET_KEY: str = os.getenv("SECRET_KEY")
+    POSTGRESQL_SERVER: str = os.getenv("POSTGRESQL_SERVER")
     POSTGRESQL_USER: str = os.getenv("POSTGRESQL_USER")
     POSTGRESQL_PASSWORD: str = os.getenv("POSTGRESQL_PASSWORD")
-    POSTGRESQL_SERVER: str = os.getenv("POSTGRESQL_SERVER", "localhost")
     POSTGRESQL_PORT: str = os.getenv("POSTGRESQL_PORT", "5432")
     POSTGRESQL_DB: str = os.getenv("POSTGRESQL_DB")
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")

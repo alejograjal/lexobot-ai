@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    container_name: postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lexobot-admin
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: python-api
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: "${SECRET_KEY}"
+      FASTAPI_TITLE: "${FASTAPI_TITLE}"
+      POSTGRESQL_SERVER: "postgres"
+      POSTGRESQL_USER: "${POSTGRES_USER}"
+      POSTGRESQL_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRESQL_DB: "${POSTGRES_DB}"
+      POSTGRESQL_PORT: "5432"
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    networks:
+      - lexobot-admin
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nextjs-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_LEXOBOT_URL: http://187.33.158.74:8000
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    networks:
+      - lexobot-admin
+
+volumes:
+  postgres_data:
+
+networks:
+  lexobot-admin:
+    driver: bridge
