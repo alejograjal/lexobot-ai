@@ -61,7 +61,7 @@ jobs:
 
       - name: Upload ZIPs to server deploy folder
         run: |
-          scp -o StrictHostKeyChecking=no dist/*.zip dist/docker-compose-admin.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/lexobot-deploy/
+          scp -o StrictHostKeyChecking=no dist/*.zip dist/docker-compose-admin.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/lexobot-deploy/
 
       - name: Deploy on server
         run: |
