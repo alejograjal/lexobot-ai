@@ -15,9 +15,6 @@ app.get('/health', (req, res) => {
 app.use('/api', (req, res, next) => {
     const tenantId = req.headers['x-tenant-id'];
 
-    console.log('Entire request headers:', req.headers);
-    console.log('X-Tenant-ID:', tenantId);
-
     if (!tenantId || typeof tenantId !== 'string') {
         return res.status(400).json({ error: 'Missing or invalid X-Tenant-ID header' });
     }
@@ -32,6 +29,8 @@ app.use('/api', (req, res, next) => {
     }
 
     const target = tenantMap[tenantId];
+
+    console.log(`Request for tenant: ${tenantId}, target: ${target}`);
 
     if (!target) {
         return res.status(400).json({ error: `Unknown tenant_id: ${tenantId}` });
