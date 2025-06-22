@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
         for (const [key, value] of Object.entries(headers ?? {})) {
             if (typeof value === 'string') {
-                forwardedHeaders.set(key, value)
+                forwardedHeaders.set(key.toLowerCase(), value)
             }
         }
 
