@@ -36,7 +36,7 @@ jobs:
 
       - name: Transfer files to server
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" dist/*.tar.gz dist/docker-compose-chat.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_GATEWAY_HOST_CHAT }}:~/lexobot-deploy/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" dist/*.tar.gz dist/docker-compose-chat.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_GATEWAY_HOST }}:~/lexobot-deploy/
 
       - name: Deploy on server
         run: |
