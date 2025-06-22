@@ -13,10 +13,10 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api', (req, res, next) => {
-    const tenantId = req.query.tenant_id;
+    const tenantId = req.headers['x-tenant-id'];
 
-    if (!tenantId) {
-        return res.status(400).json({ error: 'Missing tenant_id' });
+    if (!tenantId || typeof tenantId !== 'string') {
+        return res.status(400).json({ error: 'Missing or invalid X-Tenant-ID header' });
     }
 
     let tenantMap;
