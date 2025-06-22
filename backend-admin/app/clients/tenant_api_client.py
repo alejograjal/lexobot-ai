@@ -13,9 +13,9 @@ class TenantApiClient:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.client.aclose()
 
-    async def _get_hmac_token(self, company_access_id: str, ttl: int = 60) -> dict:
+    async def _get_hmac_token(self, company_access_id: str, external_id: str, ttl: int = 60) -> dict:
         params = {"company_access_id": company_access_id, "ttl": ttl}
-        response = await self.client.get("/token/hmac", params=params)
+        response = await self.client.get(f"/token/hmac?tenant_id={external_id}", params=params)
         response.raise_for_status()
         return response.json()
 
@@ -31,7 +31,7 @@ class TenantApiClient:
             "document_name": (None, document_name),
             "external_id": (None, external_id)
         }
-        response = await self.client.post("/api/upload-document", files=files, headers=headers)
+        response = await self.client.post(f"/api/upload-document?tenant_id={external_id}", files=files, headers=headers)
         response.raise_for_status()
         return response.json()
     
@@ -43,7 +43,7 @@ class TenantApiClient:
             "X-Signature": token["signature"]
         }
         params = {"external_id": external_id}
-        response = await self.client.delete(f"/api/remove-document/{document_name}", params=params, headers=headers)
+        response = await self.client.delete(f"/api/remove-document/{document_name}?tenant_id={external_id}", params=params, headers=headers)
         response.raise_for_status()
         return response.json()
 
@@ -54,6 +54,6 @@ class TenantApiClient:
             "X-Timestamp": token["timestamp"],
             "X-Signature": token["signature"]
         }
-        response = await self.client.post(f"/api/build-vectorstore/{external_id}", headers=headers, timeout=90)
+        response = await self.client.post(f"/api/build-vectorstore/{external_id}?tenant_id={external_id}", headers=headers, timeout=90)
         response.raise_for_status()
         return response.json()
