@@ -18,6 +18,9 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        console.log('headers:', headers)
+        console.log('Forwarding headers:', [...forwardedHeaders.entries()])
+
         const response = await fetch(url, {
             method: 'POST',
             headers: forwardedHeaders,

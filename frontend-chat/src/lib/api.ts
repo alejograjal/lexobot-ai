@@ -9,8 +9,8 @@ export async function sendQuestion(question: string, tenant_id: string, sessionI
         url: proxiedUrl,
         body: { question },
         headers: {
-            'X-Session-ID': sessionId,
-            'X-Tenant-ID': tenant_id
+            'X-Session-Id': sessionId,
+            'X-Tenant-Id': tenant_id
         }
     })
 
