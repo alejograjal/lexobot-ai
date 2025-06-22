@@ -29,7 +29,7 @@ jobs:
         run: |
           docker build \
             --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }} \
-            --build-arg NODE_ENV=${{ secrets.NODE_ENV }} \
+            --build-arg NEXT_PUBLIC_ENV=${{ secrets.NEXT_PUBLIC_ENV }} \
             -t frontend-chat-image dist/frontend-chat
           docker save frontend-chat-image | gzip > dist/frontend-chat.tar.gz
       

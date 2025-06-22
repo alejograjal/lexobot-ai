@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
-const IS_LOCAL = process.env.NODE_ENV === 'development';
+const IS_LOCAL = process.env.NEXT_PUBLIC_ENV === 'development';
 
 export async function sendQuestion(question: string, tenant_id: string, sessionId: string): Promise<{ answer: string }> {
     const url = `${API_BASE_URL}/ask/${tenant_id}`
