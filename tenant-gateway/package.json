@@ -1,0 +1,13 @@
+{
+    "name": "tenant-gateway",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "gateway.js",
+    "scripts": {
+        "start": "node gateway.js"
+    },
+    "dependencies": {
+        "express": "^4.18.4",
+        "http-proxy-middleware": "^2.0.6"
+    }
+}

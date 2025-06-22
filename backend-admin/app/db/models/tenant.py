@@ -10,4 +10,4 @@ class Tenant(BaseModel):
     contact_name = Column(String(255), nullable=False)
     contact_email = Column(String(255), nullable=False)
     client_count = Column(Integer, default=0, nullable=False)
-    server_id = Column(String(15), nullable=True)
+    server_ip = Column(String(15), nullable=True)
