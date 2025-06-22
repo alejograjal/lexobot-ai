@@ -11,5 +11,6 @@ class Settings:
     FASTAPI_TITLE: str = os.getenv("FASTAPI_TITLE", "Lexobot AI Assistant")
     TENANT_BASE_PATH = os.getenv("TENANT_BASE_PATH")
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")
+    SECRETS_PATH: str = os.getenv("SECRETS_PATH")
 
 settings = Settings()

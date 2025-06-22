@@ -32,6 +32,16 @@ class CompanyAccessService:
         await self._ensure_company_exists(db, company_id)
 
         return await self.repository.get_all_by_company(db, company_id)
+    
+    async def get_company_worker_id(self, db: AsyncSession, company_id: int) -> str:
+        await self._ensure_company_exists(db, company_id)
+
+        accesses = await self.list_accesses_by_company(db, company_id)
+        first_access = accesses[0] if accesses else None
+        if not first_access:
+            raise NotFoundException("Company access", f"No active access found for company {company_id}")
+        
+        return first_access.lexobot_worker_api_key
 
     async def get_access(self, db: AsyncSession, company_id: int, access_id: int) -> CompanyAccess:
         await self._ensure_company_exists(db, company_id)

@@ -22,7 +22,9 @@ export function ConfirmDeleteDrawer({
 }: ConfirmDeleteDrawerProps) {
     return (
         <Drawer>
-            <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+            <DrawerTrigger asChild onClick={(e) => { (e.currentTarget as HTMLElement).blur(); }}>
+                {trigger}
+            </DrawerTrigger>
             <DrawerContent>
                 <div className="mx-auto w-full max-w-lg">
                     <DrawerHeader>

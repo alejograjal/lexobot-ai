@@ -23,7 +23,7 @@ export default function TenantTable() {
 
     return (
         <div className="container mx-auto py-2">
-            <DataTable columns={columns} data={data ?? []} loading={isLoading} error={isError} onRowClick={(row) => router.push(`/tenant/${row.id}`)} />
+            <DataTable columns={columns} data={data ?? []} loading={isLoading} error={isError} onRowClick={(row) => router.push(`/tenant/${tenantIdRaw}/document/${row.id}`)} />
         </div>
     )
 }

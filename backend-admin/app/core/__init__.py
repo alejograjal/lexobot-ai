@@ -53,7 +53,9 @@ from .exceptions import (
     InvalidCredentialsError,
     ForbiddenError,
     ValidationException,
-    InvalidTokenError
+    InvalidTokenError,
+    TenantUploadError,
+    UploadToTenantWorkerError
 )
 
 __all__ = [
@@ -100,5 +102,7 @@ __all__ = [
     "InvalidCredentialsError",
     "ForbiddenError",
     "ValidationException",
-    "InvalidTokenError"
+    "InvalidTokenError",
+    "TenantUploadError",
+    "UploadToTenantWorkerError"
 ]

@@ -18,12 +18,11 @@ def get_qa_cache_store(tenant_id: str) -> Chroma:
         embedding_function=get_embedding_model(tenant_id)
     )
 
-def clean_cache_controlled(tenant_id: str):
+def clean_cache_controlled(tenant_id: str, force: bool = False):
     conf = load_tenant_settings(tenant_id)
     cache_path = os.path.join(get_tenant_path(tenant_id), conf["qa_cache_path"])
     
-    if is_path_size_over_limit(cache_path, QA_CACHE_MAX_SIZE_MB):
+    if is_path_size_over_limit(cache_path, QA_CACHE_MAX_SIZE_MB) or force:
         chroma_client = chromadb.PersistentClient(path=cache_path)
         collection = chroma_client.get_collection(collection_name)
-        oldest_entries = collection.get(limit=50, include=["metadatas"]) 
-        collection.delete(ids=oldest_entries["ids"])
+        collection.delete(where={"tenant_id": tenant_id})

@@ -64,7 +64,6 @@ from .tenant_schema import (
 from .tenant_document_schema import (
     TenantDocumentBase,
     TenantDocumentCreate,
-    TenantDocumentUpdate,
     TenantDocumentResponse
 )
 
@@ -137,7 +136,6 @@ __all__ = [
     # Tenant Document
     "TenantDocumentBase",
     "TenantDocumentCreate",
-    "TenantDocumentUpdate",
     "TenantDocumentResponse"
 
     # Role

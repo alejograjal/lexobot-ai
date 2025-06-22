@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from app.cache import get_or_embed
 from langchain_chroma import Chroma
 from ..embedder import get_embedding_model
@@ -15,4 +16,17 @@ def get_vectorstore(tenant_id: str):
 def retrieve_relevant_docs(tenant_id: str, question: str):
     store = get_vectorstore(tenant_id)
     embedding = get_or_embed(tenant_id, question)
-    return store.similarity_search_by_vector(embedding)
+    docs = store.similarity_search_by_vector(embedding, k=20)
+
+    def parse_date(doc):
+        date_str = doc.metadata.get("date")
+        if not date_str:
+            return datetime.min
+        try:
+            return datetime.fromisoformat(date_str)
+        except Exception:
+            return datetime.min
+
+    docs_sorted = sorted(docs, key=parse_date, reverse=True)
+
+    return docs_sorted

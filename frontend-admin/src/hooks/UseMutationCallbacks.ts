@@ -5,15 +5,19 @@ import { useRouter } from 'next/navigation';
 import { ErrorDetail } from '@/types/lexobot-ai';
 import { formatErrorMessage } from '@/lib/utils';
 import { UseSnackbar } from '@stores/UseSnackbar';
+import { on } from 'events';
 
-export const UseMutationCallbacks = (successMessage: string, redirectTo: string, onSettledCallback?: () => void) => {
+export const UseMutationCallbacks = (successMessage: string, redirectTo?: string, onSettledCallback?: () => void) => {
     const router = useRouter();
     const setSnackbarMessage = UseSnackbar((state) => state.setMessage);
 
     return {
         onSuccess: (data: unknown, _variables: unknown) => {
             setSnackbarMessage(successMessage, 'success');
-            router.replace(redirectTo);
+            if (redirectTo) {
+                router.replace(redirectTo);
+            }
+            onSettledCallback?.();
         },
         onError: (data: ErrorDetail, _variables: unknown) => {
             if (data === undefined) {

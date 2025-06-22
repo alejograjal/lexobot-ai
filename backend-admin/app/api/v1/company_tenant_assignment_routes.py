@@ -2,9 +2,9 @@ from typing import List
 from app.db import get_db
 from app.core import require_administrator
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import APIRouter, Depends, status, Query
 from app.schemas import CompanyTenantAssignmentResponse
 from app.services import CompanyTenantAssignmentService
+from fastapi import APIRouter, Depends, status, Query, Response
 from app.schemas import CompanyTenantAssignmentCreate, CompanyTenantAssignmentBulkSync, common_errors, duplicate_entry_error, not_found_error, validation_error
 
 router = APIRouter(
@@ -48,3 +48,21 @@ async def bulk_sync_assignments(
     """Synchronize all assignments for a company"""
     await company_tenant_assignment_service.bulk_sync(db, bulk_data)
     return None
+
+@router.post(
+    "/{assignment_id}/build-vectorstore",
+    status_code=status.HTTP_200_OK,
+    responses={
+        **common_errors,
+        **not_found_error
+    }
+)
+async def build_vectorstore_for_assignment(
+    assignment_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Trigger vectorstore building for a company-tenant assignment
+    """
+    await company_tenant_assignment_service.build_vectorstore_for_assignment(db, assignment_id)
+    return Response(status_code=status.HTTP_200_OK)

@@ -12,6 +12,7 @@ class Settings:
     POSTGRESQL_PORT: str = os.getenv("POSTGRESQL_PORT", "5432")
     POSTGRESQL_DB: str = os.getenv("POSTGRESQL_DB")
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")
+    TENANT_WORKER_API_URL: str = os.getenv("TENANT_WORKER_API_URL")
 
     @property
     def POSTGRESQL_DATABASE_URL(self):
