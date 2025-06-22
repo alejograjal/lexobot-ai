@@ -9,12 +9,18 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+        const forwardedHeaders = new Headers()
+        forwardedHeaders.set('Content-Type', 'application/json')
+
+        for (const [key, value] of Object.entries(headers ?? {})) {
+            if (typeof value === 'string') {
+                forwardedHeaders.set(key, value)
+            }
+        }
+
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers
-            },
+            headers: forwardedHeaders,
             body: JSON.stringify(body)
         })
 
