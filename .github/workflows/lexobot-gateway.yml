@@ -58,7 +58,7 @@ jobs:
                 docker load -i tenant-gateway.tar.gz
 
                 # Create .env file dynamically with secrets
-                echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env
+                echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" > .env
 
                 chmod 600 .env
 
