@@ -48,5 +48,5 @@ export type CompanyTenantBulk = components["schemas"]["CompanyTenantAssignmentBu
 export type CompanyTenantResponse = components["schemas"]["CompanyTenantAssignmentResponse"];
 
 export type TenantDocumentCreate = components["schemas"]["TenantDocumentCreate"];
-export type TenantDocumentUpdate = components["schemas"]["TenantDocumentUpdate"];
+export type TenantDocumentCreateWithFile = TenantDocumentCreate & { file: File };
 export type TenantDocumentResponse = components["schemas"]["TenantDocumentResponse"];

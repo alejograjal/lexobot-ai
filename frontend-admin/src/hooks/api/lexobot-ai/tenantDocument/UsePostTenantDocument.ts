@@ -1,23 +1,27 @@
 import { ApiError } from "openapi-typescript-fetch";
+import { useApiClient } from "@/hooks/useApiClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
-import { ErrorDetail, TenantDocumentResponse, TenantDocumentCreate } from "@/types/lexobot-ai";
-import { te } from "date-fns/locale";
+import { castRequestBodyMultipart } from "@/hooks/UseTypedApiClientLA";
+import { ErrorDetail, TenantDocumentResponse, TenantDocumentCreateWithFile } from "@/types/lexobot-ai";
+
+type ErrorResponse = {
+    error: ErrorDetail;
+};
 
 interface UsePostTenantDocumentProps {
     tenantId: number
     onSuccess?: (
         data: TenantDocumentResponse,
-        variables: TenantDocumentCreate
+        variables: TenantDocumentCreateWithFile
     ) => void,
     onError?: (
         data: ErrorDetail,
-        variables: TenantDocumentCreate
+        variables: TenantDocumentCreateWithFile
     ) => void,
     onSettled?: (
         data: TenantDocumentResponse | undefined,
         errorAPI: ErrorDetail | null,
-        variables: TenantDocumentCreate
+        variables: TenantDocumentCreateWithFile
     ) => void
 }
 
@@ -30,28 +34,41 @@ export const UsePostTenantDocument = ({
     const path = '/api/v1/tenants/{tenant_id}/documents';
     const method = 'post';
 
-    const postTenantDocument = UseTypedApiClientLA({ path, method })
+    const postTenantDocument = useApiClient();
     const queryClient = useQueryClient();
 
     const createTenantDocumentMutation = useMutation({
         mutationKey: ['PostTenantDocument', tenantId],
-        mutationFn: async (tenantDocument: TenantDocumentCreate) => {
-            const requestBody = castRequestBody({ tenant_id: tenantId, ...tenantDocument }, path, method) as NonNullable<Parameters<typeof postTenantDocument>[0]>
-            const { data } = await postTenantDocument(requestBody)
+        mutationFn: async (tenantDocument: TenantDocumentCreateWithFile) => {
+            const formData: FormData = castRequestBodyMultipart(tenantDocument, method);
+
+            const { data, error } = await postTenantDocument.POST(path, {
+                params: {
+                    path: {
+                        tenant_id: tenantId
+                    }
+                },
+                body: formData as any,
+                bodySerializer: () => formData
+            });
+
+            if (error) {
+                throw error as unknown as ApiError;
+            }
+
             return data;
         },
-        onSuccess: async (data: TenantDocumentResponse, variables: TenantDocumentCreate) => {
+        onSuccess: async (data: TenantDocumentResponse, variables: TenantDocumentCreateWithFile) => {
             await queryClient.invalidateQueries({
                 queryKey: ['GetTenantDocuments', tenantId]
             })
             onSuccess?.(data, variables)
         },
-        onError: (errorAPI: ApiError, _) => {
-            const { error } = errorAPI.data
-            onError?.(error as ErrorDetail, _)
+        onError: (errorAPI: ErrorResponse, _) => {
+            onError?.(errorAPI.error as ErrorDetail, _)
         },
         onSettled: (data, errorAPI, variables) => {
-            const { error } = errorAPI?.data ?? null
+            const error = errorAPI?.error ?? null
             onSettled?.(data, error, variables)
         }
     })

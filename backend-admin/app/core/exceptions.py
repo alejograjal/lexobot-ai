@@ -76,3 +76,15 @@ class InvalidTokenError(AppException):
             error_code="INVALID_TOKEN",
             detail="Token is invalid or has expired"
         )
+
+class TenantUploadError(AppException):
+    def __init__(self, tenant_id: int):
+        super().__init__(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail=f"Se ha presentado un problema al momento de cargar el documento para el tenant {tenant_id}"
+        )
+
+class UploadToTenantWorkerError(AppException):
+    def __init__(self, action: str, tenant_id: int, detail: str):
+        self.message = f"Failed to {action} for tenant {tenant_id}: {detail}"
+        super().__init__(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=self.message)

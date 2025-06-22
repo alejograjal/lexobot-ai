@@ -31,7 +31,8 @@ def store_answer_if_needed(tenant_id: str, question: str, answer: str, docs: lis
         [answer],
         metadatas=[{
             "question": question,
-            "sources": sources_str
+            "sources": sources_str,
+            "tenant_id": tenant_id
         }]
     )
 

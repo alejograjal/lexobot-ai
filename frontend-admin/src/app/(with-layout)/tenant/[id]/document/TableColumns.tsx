@@ -10,7 +10,7 @@ export const columns: ColumnDef<TenantDocumentResponse>[] = [
         header: ({ column }) => <SortableColumnHeader column={column} title="Id" />,
     },
     {
-        accessorKey: "name",
+        accessorKey: "document_name",
         header: ({ column }) => <SortableColumnHeader column={column} title="Nombre" />,
     }
 ]

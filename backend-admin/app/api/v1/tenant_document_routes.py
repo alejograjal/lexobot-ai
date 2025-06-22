@@ -1,10 +1,10 @@
 from typing import List
 from app.db import get_db
 from app.core import require_administrator
-from fastapi import APIRouter, Depends, status
 from app.services import TenantDocumentService
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.schemas import TenantDocumentCreate, TenantDocumentUpdate, TenantDocumentResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
+from fastapi import APIRouter, Depends, status, UploadFile, File, Form
+from app.schemas import TenantDocumentCreate, TenantDocumentResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
 
 router = APIRouter(
     prefix="/tenants/{tenant_id}/documents",
@@ -33,11 +33,13 @@ async def list_documents(
 })
 async def create_document(
     tenant_id: int,
-    document_data: TenantDocumentCreate,
+    document_name: str = Form(...),
+    file: UploadFile = File(...),
     db: AsyncSession = Depends(get_db)
 ) -> TenantDocumentResponse:
     """Create a new document for a tenant"""
-    return await document_service.create_document(db, tenant_id, document_data)
+    document_data = TenantDocumentCreate(document_name=document_name)
+    return await document_service.create_document(db, tenant_id, document_data, file)
 
 @router.put(
     "/bulk",
@@ -73,20 +75,6 @@ async def get_document(
 ) -> TenantDocumentResponse:
     """Get a specific document"""
     return await document_service.get_document(db, tenant_id, document_id)
-
-@router.patch("/{document_id}", response_model=TenantDocumentResponse, responses={
-    **common_errors,
-    **not_found_error,
-    **validation_error
-})
-async def update_document(
-    tenant_id: int,
-    document_id: int,
-    document_data: TenantDocumentUpdate,
-    db: AsyncSession = Depends(get_db)
-) -> TenantDocumentResponse:
-    """Update a document's information"""
-    return await document_service.update_document(db, tenant_id, document_id, document_data)
 
 @router.delete("/{document_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
     **common_errors,

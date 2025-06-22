@@ -30,7 +30,7 @@ export const UseTypedApiClientLA = <
             credentials: 'include',
             headers: getHeaders(disableAuth, getAccessToken() ?? ''),
         },
-        use: [arrayWrapperMiddleware, createAuthMiddleware(baseUrl!)]
+        use: [arrayWrapperMiddleware, createAuthMiddleware(baseUrl!)],
     });
 
     return fetcher.path(path).method(method).create({}) as TypedFetch<paths[PathT][MethodT]>;
@@ -51,6 +51,37 @@ export const castRequestBody = <
     if (method === 'get' || method === 'delete') {
         if (typeof data === 'object') return data as never;
         return extractPathParams(path, data) as never;
+    }
+
+    return undefined as never;
+};
+
+export const castRequestBodyMultipart = <
+    PathT extends keyof paths,
+    MethodT extends keyof paths[PathT]
+>(
+    data: unknown,
+    method: MethodT
+): paths[PathT][MethodT] extends { requestBody: { content: { "multipart/form-data": infer FormData } } } ? FormData | undefined : never => {
+
+    if (method === "post" || method === "put" || method === "patch") {
+        const formData = new FormData();
+        const requestData = data as Record<string, unknown>;
+
+        for (const key in requestData) {
+            const value = requestData[key];
+
+            if (value instanceof File || value instanceof Blob) {
+                formData.append(key, value);
+            } else if (Array.isArray(value)) {
+                value.forEach((item, index) => {
+                    formData.append(`${key}[${index}]`, String(item));
+                });
+            } else if (value !== undefined && value !== null) {
+                formData.append(key, String(value));
+            }
+        }
+        return formData as paths[PathT][MethodT] extends { requestBody: { content: { "multipart/form-data": infer FormData } } } ? FormData : never;
     }
 
     return undefined as never;

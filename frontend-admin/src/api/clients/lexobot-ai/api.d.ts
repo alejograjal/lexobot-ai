@@ -217,6 +217,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/company-tenant-assignments/{assignment_id}/build-vectorstore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Build Vectorstore For Assignment
+         * @description Trigger vectorstore building for a company-tenant assignment
+         */
+        post: operations["build_vectorstore_for_assignment_api_v1_company_tenant_assignments__assignment_id__build_vectorstore_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/plan-categories": {
         parameters: {
             query?: never;
@@ -423,11 +443,7 @@ export interface paths {
         delete: operations["delete_document_api_v1_tenants__tenant_id__documents__document_id__delete"];
         options?: never;
         head?: never;
-        /**
-         * Update Document
-         * @description Update a document's information
-         */
-        patch: operations["update_document_api_v1_tenants__tenant_id__documents__document_id__patch"];
+        patch?: never;
         trace?: never;
     };
     "/api/v1/tenants": {
@@ -560,6 +576,16 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Body_create_document_api_v1_tenants__tenant_id__documents_post */
+        Body_create_document_api_v1_tenants__tenant_id__documents_post: {
+            /** Document Name */
+            document_name: string;
+            /**
+             * File
+             * Format: binary
+             */
+            file: string;
+        };
         /** CompanyAccessCreate */
         CompanyAccessCreate: {
             /** Plan Id */
@@ -885,8 +911,6 @@ export interface components {
         TenantDocumentCreate: {
             /** Document Name */
             document_name: string;
-            /** File Path */
-            file_path: string;
         };
         /** TenantDocumentResponse */
         TenantDocumentResponse: {
@@ -900,13 +924,6 @@ export interface components {
             id: number;
             /** Is Active */
             is_active: boolean;
-        };
-        /** TenantDocumentUpdate */
-        TenantDocumentUpdate: {
-            /** Document Name */
-            document_name?: string | null;
-            /** File Path */
-            file_path?: string | null;
         };
         /** TenantResponse */
         TenantResponse: {
@@ -2161,6 +2178,73 @@ export interface operations {
             };
         };
     };
+    build_vectorstore_for_assignment_api_v1_company_tenant_assignments__assignment_id__build_vectorstore_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                assignment_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_all_plan_categories_api_v1_plan_categories_get: {
         parameters: {
             query?: never;
@@ -3215,7 +3299,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TenantDocumentCreate"];
+                "multipart/form-data": components["schemas"]["Body_create_document_api_v1_tenants__tenant_id__documents_post"];
             };
         };
         responses: {
@@ -3432,78 +3516,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Resource not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Internal server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    update_document_api_v1_tenants__tenant_id__documents__document_id__patch: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                tenant_id: number;
-                document_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["TenantDocumentUpdate"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TenantDocumentResponse"];
-                };
             };
             /** @description Unauthorized */
             401: {

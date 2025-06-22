@@ -36,6 +36,16 @@ class CompanyTenantAssignmentRepository(BaseRepository[CompanyTenantAssignment])
         )
         assigned_ids = await db.execute(subquery)
         return assigned_ids.scalars().all()
+    
+    async def get_company_id_by_tenant_id(self, db: AsyncSession, tenant_id: int) -> int | None:
+        stmt = select(CompanyTenantAssignment.company_id).where(
+            and_(
+                CompanyTenantAssignment.tenant_id == tenant_id,
+                CompanyTenantAssignment.is_active == True
+            )
+        )
+        result = await db.execute(stmt)
+        return result.scalar_one_or_none()
 
     async def delete_all_by_company(self, db: AsyncSession, company_id: int) -> None:
         stmt = delete(CompanyTenantAssignment).where(

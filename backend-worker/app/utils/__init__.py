@@ -11,6 +11,7 @@ from .file import extract_text_from_pdf
 from .filesystem import is_path_size_over_limit
 from .chat import is_asking_for_sources, format_chat_history
 from .similarity import are_questions_semantically_similar, SEMANTIC_SIMILARITY_THRESHOLD
+from .tenant_secrets import get_tenant_secret
 
 __all__ = [
     # Filesystem Utils
@@ -26,4 +27,7 @@ __all__ = [
     
     # File Processing Utils
     "extract_text_from_pdf"
+
+    # Tenant Secrets Utils
+    "get_tenant_secret"
 ]
