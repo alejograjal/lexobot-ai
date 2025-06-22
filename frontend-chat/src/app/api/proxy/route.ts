@@ -4,6 +4,12 @@ import type { NextRequest } from 'next/server'
 export async function POST(request: NextRequest) {
     const { url, body, headers } = await request.json()
 
+    console.log('Received request:', {
+        url,
+        body,
+        headers: Object.fromEntries(headers ?? [])
+    })
+
     if (!url) {
         return new Response(JSON.stringify({ error: 'Missing url' }), { status: 400 })
     }
@@ -18,7 +24,6 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        console.log('headers:', headers)
         console.log('Forwarding headers:', [...forwardedHeaders.entries()])
 
         const response = await fetch(url, {
