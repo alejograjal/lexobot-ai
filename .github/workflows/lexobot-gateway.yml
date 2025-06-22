@@ -27,7 +27,9 @@ jobs:
 
       - name: Build and package frontend
         run: |
-          docker build -t frontend-chat-image dist/frontend-chat
+          docker build \
+            --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }} \
+            -t frontend-chat-image dist/frontend-chat
           docker save frontend-chat-image | gzip > dist/frontend-chat.tar.gz
       
       - name: Build and package tenant gateway
