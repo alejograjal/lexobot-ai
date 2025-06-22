@@ -1,4 +1,4 @@
-name: Deploy LexoBot Chat
+name: Deploy LexoBot Chat and Gateway
 
 on:
   push:
@@ -20,14 +20,20 @@ jobs:
 
           # Copy frontend
           cp -r frontend-chat dist/frontend-chat
+          cp -r tenant-gateway dist/tenant-gateway
           
           # Copy docker-compose
-          cp infra/docker/docker-compose-chat.yml dist/
+          cp infra/docker/docker-compose-gateway.yml dist/
 
       - name: Build and package frontend
         run: |
           docker build -t frontend-chat-image dist/frontend-chat
           docker save frontend-chat-image | gzip > dist/frontend-chat.tar.gz
+      
+      - name: Build and package tenant gateway
+        run: |
+          docker build -t tenant-gateway-image dist/tenant-gateway
+          docker save tenant-gateway-image | gzip > dist/tenant-gateway.tar.gz
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
@@ -36,7 +42,7 @@ jobs:
 
       - name: Transfer files to server
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" dist/*.tar.gz dist/docker-compose-chat.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_GATEWAY_HOST }}:~/lexobot-deploy/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" dist/*.tar.gz dist/docker-compose-gateway.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_GATEWAY_HOST }}:~/lexobot-deploy/
 
       - name: Deploy on server
         run: |
@@ -45,10 +51,11 @@ jobs:
                 cd ~/lexobot-deploy
 
                 # Stop existing services
-                docker compose -f docker-compose-chat.yml down || true
+                docker compose -f docker-compose-gateway.yml down || true
 
                 # Load new images
                 docker load -i frontend-chat.tar.gz
+                docker load -i tenant-gateway.tar.gz
 
                 # Create .env file dynamically with secrets
                 echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env
@@ -56,7 +63,7 @@ jobs:
                 chmod 600 .env
 
                 # Launch containers
-                docker compose -f docker-compose-chat.yml up -d
+                docker compose -f docker-compose-gateway.yml up -d
 
                 # Clean up
                 rm -f *.tar.gz
