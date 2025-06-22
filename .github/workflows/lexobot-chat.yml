@@ -1,0 +1,68 @@
+name: Deploy LexoBot Chat
+
+on:
+  push:
+    branches:
+      - principal
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Prepare dist folder
+        run: |
+          rm -rf dist
+          mkdir dist
+
+          # Copy frontend
+          cp -r frontend-chat dist/frontend-chat
+          
+          # Copy docker-compose
+          cp infra/docker/docker-compose-chat.yml dist/
+
+      - name: Build and package frontend
+        run: |
+          docker build -t frontend-chat-image dist/frontend-chat
+          docker save frontend-chat-image | gzip > dist/frontend-chat.tar.gz
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Transfer files to server
+        run: |
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" dist/*.tar.gz dist/docker-compose-chat.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_GATEWAY_HOST_CHAT }}:~/lexobot-deploy/
+
+      - name: Deploy on server
+        run: |
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_GATEWAY_HOST }} << 'EOF'
+                set -e
+                cd ~/lexobot-deploy
+
+                # Stop existing services
+                docker compose -f docker-compose-chat.yml down || true
+
+                # Load new images
+                docker load -i frontend-chat.tar.gz
+
+                # Create .env file dynamically with secrets
+                echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}" >> .env
+
+                chmod 600 .env
+
+                # Launch containers
+                docker compose -f docker-compose-chat.yml up -d
+
+                # Clean up
+                rm -f *.tar.gz
+
+                # Delete dangling images
+                docker rmi $(docker images -f "dangling=true" -q)
+
+                echo "Deployment completed successfully!"
+            EOF
