@@ -92,7 +92,7 @@ class CompanyTenantAssignmentService:
                 )
         except Exception as e:
             raise AppException(
-                detail=f"Se ha producido un error al construir el modelo.",
+                detail=f"Se ha producido un error al construir el modelo. {str(e)}",
                 status_code=500,
                 error_code="VECTORSTORE_BUILD_ERROR"
             ) from e

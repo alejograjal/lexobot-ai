@@ -30,8 +30,6 @@ app.use('/api', (req, res, next) => {
 
     const target = tenantMap[tenantId];
 
-    console.log(`Request for tenant: ${tenantId}, target: ${target}`);
-
     if (!target) {
         return res.status(400).json({ error: `Unknown tenant_id: ${tenantId}` });
     }
