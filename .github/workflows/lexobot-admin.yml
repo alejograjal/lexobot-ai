@@ -71,6 +71,7 @@ jobs:
             echo "POSTGRESQL_PORT=5432" >> .env
             echo "CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}" >> .env
             echo "NEXT_PUBLIC_API_LEXOBOT_URL=${{ secrets.NEXT_PUBLIC_API_LEXOBOT_URL }}" >> .env
+            echo "TENANT_WORKER_API_URL=${{ secrets.TENANT_WORKER_API_URL }}" >> .env
 
             chmod 600 .env
 
