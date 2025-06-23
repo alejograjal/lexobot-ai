@@ -23,7 +23,7 @@ class TenantApiClient:
         return response.json()
 
     async def upload_document(self, company_access_id: str, file_bytes: bytes, document_name: str, external_id: str) -> dict:
-        token = await self._get_hmac_token(company_access_id)
+        token = await self._get_hmac_token(company_access_id, external_id)
         headers = {
             "X-Company-Access-Id": token["company_access_id"],
             "X-Timestamp": token["timestamp"],
@@ -40,7 +40,7 @@ class TenantApiClient:
         return response.json()
     
     async def remove_document(self, company_access_id: str, document_name: str, external_id: str) -> dict:
-        token = await self._get_hmac_token(company_access_id)
+        token = await self._get_hmac_token(company_access_id, external_id)
         headers = {
             "X-Company-Access-Id": token["company_access_id"],
             "X-Timestamp": token["timestamp"],
@@ -53,7 +53,7 @@ class TenantApiClient:
         return response.json()
 
     async def build_vectorstore(self, company_access_id: str,external_id: str) -> dict:
-        token = await self._get_hmac_token(company_access_id)
+        token = await self._get_hmac_token(company_access_id, external_id)
         headers = {
             "X-Company-Access-Id": token["company_access_id"],
             "X-Timestamp": token["timestamp"],
