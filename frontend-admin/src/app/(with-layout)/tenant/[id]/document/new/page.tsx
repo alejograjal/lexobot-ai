@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react"
 import { Page } from "@/components/Shared/Page"
+import { useParams, useRouter } from "next/navigation"
 import { PageHeader } from "@/components/Shared/PageHeader"
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks"
-import { TenantDocument, initialValues } from "../components/DocumentSchema"
-import { UsePostTenant } from "@/hooks/api/lexobot-ai/tenant/UsePostTenant"
-import { TenantForm } from "@/app/(with-layout)/tenant/components/TenantForm"
-import { useParams, useRouter } from "next/navigation"
-import { UseGetTenantById } from "@/hooks/api/lexobot-ai/tenant/UseGetTenantById"
 import { TenantDocumentForm } from "../components/TenantDocumentForm"
+import { TenantDocument, initialValues } from "../components/DocumentSchema"
+import { UseGetTenantById } from "@/hooks/api/lexobot-ai/tenant/UseGetTenantById"
 import { UsePostTenantDocument } from "@/hooks/api/lexobot-ai/tenantDocument/UsePostTenantDocument"
 
 export default function CreateDocument() {
@@ -43,6 +41,7 @@ export default function CreateDocument() {
     });
 
     const handleSubmit = (data: TenantDocument) => {
+        setLoading(true);
         postTenant({ ...data });
     }
 
@@ -55,7 +54,7 @@ export default function CreateDocument() {
                 />
             }
         >
-            <TenantDocumentForm defaultValues={initialValues} onSubmit={handleSubmit} onloading={loading} />
+            <TenantDocumentForm tenantId={Number(tenantId)} defaultValues={initialValues} onSubmit={handleSubmit} onloading={loading} />
         </Page>
     )
 }

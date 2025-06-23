@@ -10,6 +10,7 @@ import { TenantDocument, tenantDocumentSchema } from "./DocumentSchema";
 import { FormDocumentUploader } from "@/components/Form/FormDocumentUploader";
 
 interface TenantDocumentFormProps {
+    tenantId: number;
     defaultValues?: DefaultValues<TenantDocument>;
     onSubmit: SubmitHandler<TenantDocument>;
     onloading: boolean;
@@ -17,6 +18,7 @@ interface TenantDocumentFormProps {
 }
 
 export const TenantDocumentForm = ({
+    tenantId,
     defaultValues,
     onSubmit,
     onloading,
@@ -36,7 +38,7 @@ export const TenantDocumentForm = ({
                     <FormDocumentUploader onFileChange={(file) => { if (file) form.setValue("file", file) }} error={form.formState.errors.file?.message} />
                 )}
 
-                <FormActions pathCancel="/documentos" isSaving={onloading} onlyCancel={!!onEdit} />
+                <FormActions pathCancel={`/tenant/${tenantId}/document`} isSaving={onloading} onlyCancel={!!onEdit} />
 
             </form>
         </Form>
