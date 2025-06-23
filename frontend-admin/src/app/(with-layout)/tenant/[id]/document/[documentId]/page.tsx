@@ -61,6 +61,7 @@ export default function UpdateDocument() {
                 <CircularLoadingProgress />
             ) : (
                 <TenantDocumentForm
+                    tenantId={Number(tenantId)}
                     defaultValues={document ?? undefined}
                     onSubmit={() => { }}
                     onloading={false}
