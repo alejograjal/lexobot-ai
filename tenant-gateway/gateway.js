@@ -8,6 +8,21 @@ const PORT = process.env.PORT || 4000;
 
 const tenantMapPath = path.resolve('./tenants.json');
 
+async function loadTenantMapAsync() {
+    try {
+        const data = await fs.promises.readFile(tenantMapPath, 'utf-8');
+        tenantMap = JSON.parse(data);
+    } catch (err) {
+        console.error('❌ Failed to reload tenants.json:', err);
+    }
+}
+
+loadTenantMapAsync();
+
+fs.watchFile(tenantMapPath, { interval: 1000 }, () => {
+    loadTenantMapAsync();
+});
+
 app.get('/health', (req, res) => {
     res.status(200).send('OK');
 });
@@ -17,15 +32,6 @@ app.use('/api', (req, res, next) => {
 
     if (!tenantId || typeof tenantId !== 'string') {
         return res.status(400).json({ error: 'Missing or invalid X-Tenant-ID header' });
-    }
-
-    let tenantMap;
-
-    try {
-        tenantMap = JSON.parse(fs.readFileSync(tenantMapPath, 'utf-8'));
-    } catch (err) {
-        console.error('Error loading tenants.json:', err);
-        return res.status(500).json({ error: 'Internal tenant mapping error' });
     }
 
     const target = tenantMap[tenantId];
