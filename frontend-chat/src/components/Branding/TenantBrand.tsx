@@ -20,7 +20,7 @@ export default function TenantBanner() {
                     </div>
                     <div className="w-px h-full bg-zinc-300 dark:bg-zinc-700" />
                     <div className="relative flex-1 h-full">
-                        <Image src={tenantImagePath} alt="Imagen del condominio" fill style={{ objectFit: 'cover' }} priority />
+                        <Image src={tenantImagePath} alt="Imagen del condominio" fill style={{ objectFit: 'cover' }} priority unoptimized />
                     </div>
                 </>
             ) : (
