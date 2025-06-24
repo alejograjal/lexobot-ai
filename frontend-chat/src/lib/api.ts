@@ -25,3 +25,15 @@ export async function sendQuestion(question: string, tenant_id: string, sessionI
 
     return res.data;
 }
+
+export function getTenantImageUrl(tenantId: string): string {
+    if (!tenantId || tenantId.trim() === '') {
+        return '';
+    }
+
+    if (IS_LOCAL) {
+        return `/tenant-images/${tenantId}.png`;
+    } else {
+        return `${API_BASE_URL}/tenant-images/${tenantId}.png`;
+    }
+}

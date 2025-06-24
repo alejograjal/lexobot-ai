@@ -1,15 +1,15 @@
 import './globals.css'
-import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Inter } from 'next/font/google'
-import { ThemeProvider } from '@/components/ThemeProvider'
 import ThemeToggle from '@/components/Theme/ThemeToggle'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import TenantBanner from '@/components/Branding/TenantBrand'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'LexoBot-AI',
-  description: 'Interfaz moderna para hacer preguntas a tu IA.'
+  title: 'LexoBot-AI | Chat',
+  description: 'Interactúa con tu IA de forma sencilla y rápida mediante una interfaz moderna y amigable. Obtén respuestas inteligentes basadas en documentos y datos específicos de tu condominio.'
 }
 
 export const viewport = {
@@ -31,22 +31,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {/* Contenedor principal con centrado vertical en desktop */}
           <main className="relative flex flex-col md:justify-center items-center w-full h-full min-h-0 overflow-hidden p-1 sm:px-6 lg:px-8">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-400/20 via-transparent to-transparent blur-2xl" />
             <div className="absolute top-4 right-4 z-20">
               <ThemeToggle />
             </div>
 
-            <div className="relative w-[22rem] h-36 sm:w-[25rem] sm:h-48 md:w-[27rem] md:h-[10rem] lg:w-[30rem] flex-shrink-0 mt-4 md:mt-0">
-              <Image
-                src="/LexoBot-AI.png"
-                alt="LexoBot-AI Logo"
-                fill
-                style={{ objectFit: 'cover' }}
-                priority
-              />
-            </div>
+            <TenantBanner />
 
             <div className={cn(
               "relative z-10 w-full max-w-3xl rounded-2xl bg-white p-2 pt-14 md:p-6 shadow-xl ring-1 ring-black/10 backdrop-blur dark:bg-black/30 dark:ring-white/10",

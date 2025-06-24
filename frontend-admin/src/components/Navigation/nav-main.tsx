@@ -1,19 +1,20 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { ChevronRight } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { useSidebar } from "@/components/ui/sidebar"
 import { ProtectedRouteItem } from "@/navigation/Routes"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar"
 
-function renderSingleItem(item: ProtectedRouteItem, pathname: string) {
+function renderSingleItem(item: ProtectedRouteItem, pathname: string, closeMobileSidebar = () => { }) {
   const isActive = pathname.startsWith(item.url!)
 
   return (
     <SidebarMenuItem key={item.title}>
       <SidebarMenuButton asChild tooltip={item.title}>
-        <Link href={item.url!} className={isActive ? "text-primary font-semibold" : ""}>
+        <Link href={item.url!} onClick={closeMobileSidebar} className={isActive ? "text-primary font-semibold" : ""}>
           {item.icon && <item.icon />}
           <span>{item.title}</span>
         </Link>
@@ -22,7 +23,7 @@ function renderSingleItem(item: ProtectedRouteItem, pathname: string) {
   )
 }
 
-function renderCollapsibleItem(item: ProtectedRouteItem, pathname: string) {
+function renderCollapsibleItem(item: ProtectedRouteItem, pathname: string, closeMobileSidebar = () => { }) {
   return (
     <Collapsible
       key={item.title}
@@ -49,6 +50,7 @@ function renderCollapsibleItem(item: ProtectedRouteItem, pathname: string) {
                     <Link
                       href={subItem.url}
                       className={isActive ? "text-primary font-semibold" : ""}
+                      onClick={closeMobileSidebar}
                     >
                       <span>{subItem.title}</span>
                     </Link>
@@ -65,6 +67,13 @@ function renderCollapsibleItem(item: ProtectedRouteItem, pathname: string) {
 
 export function NavMain({ items }: { items: ProtectedRouteItem[] }) {
   const pathname = usePathname()
+  const { setOpenMobile, isMobile } = useSidebar()
+
+  const closeMobileSidebar = () => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }
 
   return (
     <SidebarGroup>
@@ -72,8 +81,8 @@ export function NavMain({ items }: { items: ProtectedRouteItem[] }) {
       <SidebarMenu>
         {items.map((item) =>
           item.items && item.items.length > 0
-            ? renderCollapsibleItem(item, pathname)
-            : renderSingleItem(item, pathname)
+            ? renderCollapsibleItem(item, pathname, closeMobileSidebar)
+            : renderSingleItem(item, pathname, closeMobileSidebar)
         )}
       </SidebarMenu>
     </SidebarGroup>
