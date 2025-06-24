@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 const IS_LOCAL = process.env.NEXT_PUBLIC_ENV === 'development';
+const TENANT_IMAGES_BASE_URL = process.env.NEXT_PUBLIC_TENANT_IMAGES_BASE_URL
 
 export async function sendQuestion(question: string, tenant_id: string, sessionId: string): Promise<{ answer: string }> {
     const url = `${API_BASE_URL}/ask/${tenant_id}`
@@ -31,9 +32,5 @@ export function getTenantImageUrl(tenantId: string): string {
         return '';
     }
 
-    if (IS_LOCAL) {
-        return `/tenant-images/${tenantId}.png`;
-    } else {
-        return `${API_BASE_URL}/tenant-images/${tenantId}.png`;
-    }
+    return `${TENANT_IMAGES_BASE_URL}/${tenantId}.png`;
 }
