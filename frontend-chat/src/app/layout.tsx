@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { Inter } from 'next/font/google'
 import ThemeToggle from '@/components/Theme/ThemeToggle'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import TenantBanner from '@/components/Branding/TenantBrand'
+import TenantBannerWrapper from '@/components/Branding/TenantBannerWrapper'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ThemeToggle />
             </div>
 
-            <TenantBanner />
+            <TenantBannerWrapper />
 
             <div className={cn(
               "relative z-10 w-full max-w-3xl rounded-2xl bg-white p-2 pt-14 md:p-6 shadow-xl ring-1 ring-black/10 backdrop-blur dark:bg-black/30 dark:ring-white/10",
