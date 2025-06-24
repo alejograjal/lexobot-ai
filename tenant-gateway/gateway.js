@@ -6,6 +6,8 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+let tenantMap = {};
+
 const tenantMapPath = path.resolve('./tenants.json');
 
 async function loadTenantMapAsync() {
