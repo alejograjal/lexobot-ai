@@ -49,7 +49,7 @@ export default function ChatInput({ onSend }: { onSend: (q: string) => Promise<v
                 placeholder="Por favor, haz tu pregunta..."
                 disabled={isSending}
                 className={`
-                    flex-grow min-h-[100px] max-h-[200px] resize-none rounded-md
+                    flex-grow md:min-h-[100px] min-h-[60px] max-h-[200px] resize-none rounded-md
                     border border-gray-300 dark:border-gray-600
                     bg-gray-50 dark:bg-zinc-800
                     text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500

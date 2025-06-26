@@ -50,7 +50,7 @@ async def build_vectorstore(
     external_id: str,
     _ = Depends(validate_signature)
 ):
-    build_vectorstore_for_tenant(external_id)
+    await build_vectorstore_for_tenant(external_id)
     return {
         "status": "vectorstore_built",
         "external_id": external_id

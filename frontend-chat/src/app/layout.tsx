@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <TenantBannerWrapper />
 
             <div className={cn(
-              "relative z-10 w-full max-w-3xl rounded-2xl bg-white p-2 pt-14 md:p-6 shadow-xl ring-1 ring-black/10 backdrop-blur dark:bg-black/30 dark:ring-white/10",
+              "relative z-10 w-full max-w-3xl rounded-2xl bg-white p-2 pt-5 md:p-6 shadow-xl ring-1 ring-black/10 backdrop-blur dark:bg-black/30 dark:ring-white/10",
               "flex min-h-0",
               "mt-auto md:mt-8",
               "mb-4 md:mb-0"

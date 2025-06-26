@@ -6,20 +6,20 @@ from app.services import load_all_pdfs_and_split_with_metadata
 from app.services import get_embedding_model, clean_cache_controlled
 from app.core import DocumentNotFoundForVectorstoreError, TenantConfigNotFoundError
 
-def build_vectorstore_for_tenant(tenant_id: str):
+async def build_vectorstore_for_tenant(tenant_id: str):
     try:
-        settings = load_tenant_settings(tenant_id)
+        settings = await load_tenant_settings(tenant_id)
         base_path = get_tenant_path(tenant_id)
 
         docs_folder = os.path.join(base_path, settings["docs_folder"])
         vectorstore_path = os.path.join(base_path, settings["vectorstore_path"])
 
-        texts, metadatas = load_all_pdfs_and_split_with_metadata(tenant_id, docs_folder)
+        texts, metadatas = await load_all_pdfs_and_split_with_metadata(tenant_id, docs_folder)
 
         if not texts:
             raise DocumentNotFoundForVectorstoreError(tenant_id)
 
-        embedding_model = get_embedding_model(tenant_id)
+        embedding_model = await get_embedding_model(tenant_id)
 
         if os.path.exists(vectorstore_path):
             chroma_client = chromadb.PersistentClient(path=vectorstore_path)
@@ -33,7 +33,7 @@ def build_vectorstore_for_tenant(tenant_id: str):
             persist_directory=vectorstore_path
         )
 
-        clean_cache_controlled(tenant_id, force=True)
+        await clean_cache_controlled(tenant_id, force=True)
     except (TenantConfigNotFoundError, DocumentNotFoundForVectorstoreError) as e:
         raise e
     except Exception as e:

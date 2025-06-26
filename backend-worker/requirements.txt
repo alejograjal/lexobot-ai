@@ -15,3 +15,4 @@ redis>=5.0.0
 scikit-learn
 cachetools
 python-multipart
+aiofiles

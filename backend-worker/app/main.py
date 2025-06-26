@@ -1,6 +1,8 @@
+import asyncio
 from fastapi import FastAPI
 from app.core import settings
 from app.api import api_router
+from app.services import run_periodic_cleanup
 from fastapi.middleware.cors import CORSMiddleware
 from app.exceptions import register_exception_handlers
 
@@ -35,3 +37,7 @@ def root():
         "version": "1.0.0",
         "status": "healthy"
     }
+
+@app.on_event("startup")
+async def start_background_tasks():
+    asyncio.create_task(run_periodic_cleanup(interval_seconds=3600))

@@ -34,3 +34,11 @@ export function getTenantImageUrl(tenantId: string): string {
 
     return `${TENANT_IMAGES_BASE_URL}/${tenantId}.png`;
 }
+
+export function getCompanyImageUrl(tenantId: string): string {
+    if (!tenantId || tenantId.trim() === '') {
+        return '';
+    }
+
+    return `${TENANT_IMAGES_BASE_URL}/${tenantId}-Company.png`;
+}

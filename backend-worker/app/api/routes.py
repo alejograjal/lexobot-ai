@@ -43,7 +43,7 @@ async def validate_session_id(
 async def get_valid_tenant(tenant_id: str) -> str:
     """Validate tenant existence."""
     try:
-        validate_tenant_exists(tenant_id)
+        await validate_tenant_exists(tenant_id)
         return tenant_id
     except TenantNotFoundError:
         raise HTTPException(
@@ -58,7 +58,7 @@ async def get_valid_tenant(tenant_id: str) -> str:
     summary="Ask a question",
     description="Submit a question to be answered by the QA engine"
 )
-def ask_question(
+async def ask_question(
     tenant_id: str = Depends(get_valid_tenant),
     session_id: UUID = Depends(validate_session_id),
     payload: QuestionRequest = Body(...),
@@ -75,7 +75,7 @@ def ask_question(
         Dict containing the answer
     """
     try:
-        answer = qa_engine_ask_question(
+        answer = await qa_engine_ask_question(
             tenant_id=tenant_id,
             session_id=str(session_id),
             question=payload.question

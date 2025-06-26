@@ -1,6 +1,6 @@
 import json
-import redis
 import hashlib
+import redis.asyncio as redis
 from app.core import settings
 from datetime import datetime, timezone
 from langchain_core.documents import Document
@@ -18,9 +18,11 @@ def compute_docs_hash(docs: list[Document]) -> str:
     content_str = json.dumps(sorted(contents), ensure_ascii=False)
     return hashlib.sha256(content_str.encode("utf-8")).hexdigest()
 
-def store_docs_if_needed(docs_hash: str, docs: list[Document]):
+async def store_docs_if_needed(docs_hash: str, docs: list[Document]):
     key = f"docs:{docs_hash}"
-    if not r.exists(key):
+    exists = await r.exists(key)
+
+    if not exists:
         doc_data = [
             {
                 "metadata": doc.metadata,
@@ -28,9 +30,9 @@ def store_docs_if_needed(docs_hash: str, docs: list[Document]):
             }
             for doc in docs
         ]
-        r.set(key, json.dumps(doc_data, ensure_ascii=False), ex=60 * 60 * 24 * 7) 
+        await r.set(key, json.dumps(doc_data, ensure_ascii=False), ex=60 * 60 * 24 * 7) 
 
-def store_trace_entry(tenant_id: str, question: str, answer: str, docs_hash: str):
+async def store_trace_entry(tenant_id: str, question: str, answer: str, docs_hash: str):
     timestamp = datetime.now(timezone.utc).isoformat()
     key = f"trace:{tenant_id}:{timestamp}"
     data = {
@@ -38,4 +40,4 @@ def store_trace_entry(tenant_id: str, question: str, answer: str, docs_hash: str
         "answer": answer,
         "docs_hash": docs_hash
     }
-    r.set(key, json.dumps(data, ensure_ascii=False))
+    await r.set(key, json.dumps(data, ensure_ascii=False))

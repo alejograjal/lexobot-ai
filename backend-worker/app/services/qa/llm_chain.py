@@ -18,9 +18,9 @@ prompt = ChatPromptTemplate.from_messages([
     )
 ])
 
-def run_llm_chain(tenant_id: str, session_id: str, docs, question: str) -> str:
-    llm = get_chat_model(tenant_id)
-    memory = get_memory(tenant_id, session_id)
+async def run_llm_chain(tenant_id: str, session_id: str, docs, question: str) -> str:
+    llm = await get_chat_model(tenant_id)
+    memory = await get_memory(tenant_id, session_id)
 
     chat_history_text = format_chat_history(memory.chat_memory.messages)
 
@@ -30,7 +30,7 @@ def run_llm_chain(tenant_id: str, session_id: str, docs, question: str) -> str:
         document_variable_name="context"
     )
 
-    result = chain.invoke({
+    result = await chain.ainvoke({
         "context": docs,
         "question": question,
         "chat_history": chat_history_text

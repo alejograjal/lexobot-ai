@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import ChatInput from './ChatInput'
+import ChatHeader from './ChatHeader'
 import ChatMessage from './ChatMessage'
 import { sendQuestion } from '@/lib/api'
 import { Message } from '@/types/message'
 import { useSearchParams } from 'next/navigation'
 import { useSessionId } from '@/hooks/useSessionId'
 import { useState, useRef, useEffect, Suspense } from 'react'
-
 
 export default function ChatContainerWrapper() {
   return (
@@ -75,18 +74,8 @@ function ChatContainer() {
 
   return (
     <>
-      <button
-        onClick={handleClear}
-        className="fixed top-5 right-5 z-50 bg-white/90 dark:bg-black/70 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-lg shadow-md hover:bg-white dark:hover:bg-black transition focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:top-6 sm:right-6"
-        style={{ marginBottom: '10rem !important' }}
-        type="button"
-        aria-label="Limpiar chat"
-        title="Limpiar chat"
-      >
-        🧹 Limpiar chat
-      </button>
-
       <div className="flex flex-col h-full overflow-hidden w-full mx-auto">
+        <ChatHeader onClear={(handleClear)} />
         <div className={`${messagesAreaClass} border-t px-4 space-y-4 text-sm md:text-base`}>
           {messages.map((msg, idx) => (
             <ChatMessage key={idx} message={msg} onTyping={idx === messages.length - 1 && msg.role === 'ai' ? scrollToBottom : undefined} />
