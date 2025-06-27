@@ -12,5 +12,6 @@ class Settings:
     TENANT_BASE_PATH = os.getenv("TENANT_BASE_PATH")
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")
     SECRETS_PATH: str = os.getenv("SECRETS_PATH")
+    MAX_EMBEDDING_PROCESSES: int = int(os.getenv("MAX_EMBEDDING_PROCESSES", 5))
 
 settings = Settings()

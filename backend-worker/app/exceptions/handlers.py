@@ -7,7 +7,9 @@ from app.core import (
     TokenExpiredError,
     DocumentNotFoundForVectorstoreError,
     TenantConfigNotFoundError,
-    TenantDocumentNotFoundError
+    TenantDocumentNotFoundError,
+    BillingError,
+    TokenLimitError
 )
 
 def register_exception_handlers(app):
@@ -66,5 +68,19 @@ def register_exception_handlers(app):
     async def tenant_document_not_found_handler(request: Request, exc: TenantDocumentNotFoundError):
         return JSONResponse(
             status_code=404,
+            content={"detail": exc.message}
+        )
+    
+    @app.exception_handler(BillingError)
+    async def billing_error_handler(request: Request, exc: BillingError):
+        return JSONResponse(
+            status_code=403,
+            content={"detail": exc.message}
+        )
+    
+    @app.exception_handler(TokenLimitError)
+    async def token_limit_error_handler(request: Request, exc: TokenLimitError):
+        return JSONResponse(
+            status_code=429,
             content={"detail": exc.message}
         )

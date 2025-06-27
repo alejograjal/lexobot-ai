@@ -76,3 +76,15 @@ class TenantDocumentNotFoundError(Exception):
         self.external_id = external_id
         self.message = f"{message}: '{document_name}' for tenant '{external_id}'"
         super().__init__(self.message)
+
+class BillingError(Exception):
+    def __init__(self, external_id: str, message: str):
+        self.external_id = external_id
+        self.message = message
+        super().__init__(self.message)
+
+class TokenLimitError(Exception):
+    def __init__(self, external_id: str, message: str):
+        self.external_id = external_id
+        self.message = message
+        super().__init__(self.message)

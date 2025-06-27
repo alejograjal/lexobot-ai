@@ -5,18 +5,21 @@ Provides centralized access to core functionality including:
 """
 
 from .config import settings
-from .exceptions import TenantNotFoundError, CompanyNotFoundError, InvalidHMACSignatureError, TokenExpiredError, DocumentNotFoundForVectorstoreError, TenantConfigNotFoundError, TenantDocumentNotFoundError
+from .exceptions import TenantNotFoundError, CompanyNotFoundError, InvalidHMACSignatureError, TokenExpiredError, DocumentNotFoundForVectorstoreError, TenantConfigNotFoundError, TenantDocumentNotFoundError, BillingError, TokenLimitError
 
 __all__ = [
     # Configuration
     "settings",
 
     # Exceptions
+    "LexoBotAIAPIError",
     "TenantNotFoundError",
     "CompanyNotFoundError",
     "InvalidHMACSignatureError",
     "TokenExpiredError",
     "DocumentNotFoundForVectorstoreError",
     "TenantConfigNotFoundError",
-    "TenantDocumentNotFoundError"
+    "TenantDocumentNotFoundError",
+    "BillingError",
+    "TokenLimitError"
 ]

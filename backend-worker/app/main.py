@@ -5,6 +5,7 @@ from app.api import api_router
 from app.services import run_periodic_cleanup
 from fastapi.middleware.cors import CORSMiddleware
 from app.exceptions import register_exception_handlers
+from app.services.billing import run_token_usage_cleanup
 
 app = FastAPI(
     title=settings.FASTAPI_TITLE,
@@ -41,3 +42,4 @@ def root():
 @app.on_event("startup")
 async def start_background_tasks():
     asyncio.create_task(run_periodic_cleanup(interval_seconds=3600))
+    asyncio.create_task(run_token_usage_cleanup(interval_seconds=86400))

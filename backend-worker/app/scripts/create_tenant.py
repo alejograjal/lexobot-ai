@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from app.core import settings
 
-def create_tenant(client_name: str, tenant_id: str, openai_api_key: str):
+def create_tenant(client_name: str, tenant_id: str, openai_api_key: str, token_limit: int, billing_start_day: int):
     tenant_dir = Path(settings.TENANT_BASE_PATH) / tenant_id
     docs_dir = tenant_dir / "docs"
     vectorstore_dir = tenant_dir / "vectorstore"
@@ -18,7 +18,10 @@ def create_tenant(client_name: str, tenant_id: str, openai_api_key: str):
         "vectorstore_path": "vectorstore",
         "qa_cache_path": "cache",
         "redis_namespace": tenant_id,
-        "client-name": client_name
+        "client-name": client_name,
+        "token_limit": token_limit,
+        "billing_start_day": billing_start_day,
+        "billing_active": True
     }
 
     with open(tenant_dir / "settings.json", "w") as f:
