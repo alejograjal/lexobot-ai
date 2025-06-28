@@ -1,18 +1,8 @@
 import asyncio
 import tiktoken
-import redis.asyncio as redis
-from app.core import settings
-from app.core import TokenLimitError
 from datetime import datetime, timedelta
 from app.tenants import load_tenant_settings
-
-redis_client = redis.Redis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB,
-    password=settings.REDIS_PASSWORD,
-    decode_responses=True
-)
+from app.core import TokenLimitError, redis_client
 
 def get_token_encoder(model_name: str):
     try:
@@ -87,21 +77,23 @@ async def get_token_usage_info(tenant_id: str) -> dict:
 
 async def clean_old_token_usage_keys():
     months_to_keep = 2
-
     now = datetime.now()
     cutoff = now - timedelta(days=months_to_keep * 30) 
 
-    keys = await redis_client.keys("usage:*")
-
-    for key in keys:
-        try:
-            _, tenant_id, year_month = key.split(":")
-            year, month = map(int, year_month.split("-"))
-            key_date = datetime(year, month, 1)
-            if key_date < cutoff:
-                await redis_client.delete(key)
-        except Exception:
-            continue
+    cursor = 0
+    while True:
+        cursor, keys = await redis_client.scan(cursor=cursor, match="usage:*", count=100)
+        for key in keys:
+            try:
+                _, tenant_id, year_month = key.split(":")
+                year, month = map(int, year_month.split("-"))
+                key_date = datetime(year, month, 1)
+                if key_date < cutoff:
+                    await redis_client.delete(key)
+            except Exception:
+                continue
+        if cursor == 0:
+            break
 
 async def run_token_usage_cleanup(interval_seconds: int = 86400):
     while True:

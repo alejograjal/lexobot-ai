@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from sqlalchemy import text
 from app.api import api_router
+from app.db import AsyncSessionLocal
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.authentication import AuthenticationError
 from fastapi.exceptions import HTTPException, RequestValidationError
@@ -47,11 +49,21 @@ def create_app() -> FastAPI:
 
 app = create_app()
 
-@app.get("/")
-def root():
+@app.get("/health", tags=["Health"])
+async def root():
     """Root endpoint for API health check."""
+    try:
+        async with AsyncSessionLocal() as session:  
+             await session.execute(text("SELECT 1"))
+        db_status = "ok"
+    except Exception as e:
+        print(e)
+        db_status = "error"
+
+
     return {
         "message": "Lexobot Administration Center API is running.",
         "version": "1.0.0",
-        "status": "healthy"
+        "status": "healthy",
+        "postgres": db_status
     }

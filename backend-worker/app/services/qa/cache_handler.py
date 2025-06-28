@@ -6,9 +6,13 @@ from .trace_store import compute_docs_hash, store_docs_if_needed, store_trace_en
 
 async def get_similar_answer_or_none(tenant_id: str, question: str) -> str | None:
     try:
-        query_embedding = await get_or_embed(tenant_id, question)  # Debugging line
+        query_embedding = await get_or_embed(tenant_id, question) 
         qa_cache_store = await get_qa_cache_store(tenant_id)
-        similar_docs = qa_cache_store.similarity_search_by_vector(query_embedding, k=1)
+        similar_docs = await asyncio.to_thread(
+            qa_cache_store.similarity_search_by_vector,
+            query_embedding,
+            k=1
+        )
         
         if similar_docs:
             cached_doc = similar_docs[0]
@@ -27,7 +31,8 @@ async def store_answer_if_needed(tenant_id: str, question: str, answer: str, doc
     qa_cache_store = await get_qa_cache_store(tenant_id)
     doc_refs = [doc.metadata.get("source", f"doc_{i}") for i, doc in enumerate(docs)]
     sources_str = ", ".join(doc_refs)
-    qa_cache_store.add_texts(
+    await asyncio.to_thread(
+        qa_cache_store.add_texts,
         [answer],
         metadatas=[{
             "question": question,

@@ -1,4 +1,5 @@
 import os
+import asyncio
 from datetime import datetime
 from app.cache import get_or_embed
 from langchain_chroma import Chroma
@@ -17,7 +18,11 @@ async def get_vectorstore(tenant_id: str):
 async def retrieve_relevant_docs(tenant_id: str, question: str):
     store = await get_vectorstore(tenant_id)
     embedding = await get_or_embed(tenant_id, question)
-    docs = store.similarity_search_by_vector(embedding, k=20)
+    docs = await asyncio.to_thread(
+        store.similarity_search_by_vector,
+        embedding,
+        k=20
+    )
 
     def parse_date(doc):
         date_str = doc.metadata.get("date")
@@ -28,6 +33,11 @@ async def retrieve_relevant_docs(tenant_id: str, question: str):
         except Exception:
             return datetime.min
 
-    docs_sorted = sorted(docs, key=parse_date, reverse=True)
+    docs_sorted = await asyncio.to_thread(
+        sorted,
+        docs,
+        key=parse_date,
+        reverse=True
+    )
 
     return docs_sorted

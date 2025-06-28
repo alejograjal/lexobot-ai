@@ -1,16 +1,7 @@
 import os
 import json
 import aiofiles
-import redis.asyncio as redis
-from app.core import settings, TenantConfigNotFoundError
-
-redis_client = redis.Redis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB,
-    password=settings.REDIS_PASSWORD,
-    decode_responses=True
-)
+from app.core import settings, TenantConfigNotFoundError, redis_client
 
 def get_tenant_path(tenant_id: str) -> str:
     return os.path.join(settings.TENANT_BASE_PATH, tenant_id)

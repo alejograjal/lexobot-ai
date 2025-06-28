@@ -1,7 +1,9 @@
 import asyncio
 from fastapi import FastAPI
-from app.core import settings
 from app.api import api_router
+from fastapi import HTTPException
+from redis.exceptions import RedisError
+from app.core import settings, redis_client
 from app.services import run_periodic_cleanup
 from fastapi.middleware.cors import CORSMiddleware
 from app.exceptions import register_exception_handlers
@@ -27,16 +29,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API router
 app.include_router(api_router)
 
-@app.get("/", tags=["Health"])
-def root():
-    """Health check endpoint"""
+@app.get("/health", tags=["Health"])
+async def health_check():
+    try:
+        pong = await redis_client.ping()
+        if not pong:
+            raise RedisError("No PONG from Redis")
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Redis unhealthy: {str(e)}")
+
     return {
         "message": "Lexobot AI Assistant is running.",
         "version": "1.0.0",
-        "status": "healthy"
+        "status": "healthy",
+        "redis": "healthy"
     }
 
 @app.on_event("startup")
