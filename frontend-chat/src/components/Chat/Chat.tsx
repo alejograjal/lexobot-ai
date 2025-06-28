@@ -29,15 +29,25 @@ const Chat = () => {
 
     const askLexoBot = async (question: string) => {
         setIsTyping(true);
+        let aiMessage: Message;
 
-        const response = await sendQuestion(question, tenantId, sessionId)
+        try {
+            const response = await sendQuestion(question, tenantId, sessionId)
 
-        const aiMessage: Message = {
-            id: Date.now().toString() + '_ai',
-            text: response.answer,
-            isUser: false,
-            timestamp: new Date(),
-        };
+            aiMessage = {
+                id: Date.now().toString() + '_ai',
+                text: response.answer,
+                isUser: false,
+                timestamp: new Date(),
+            };
+        } catch {
+            aiMessage = {
+                id: Date.now().toString() + '_ai',
+                text: 'Lo siento, ha ocurrido un error. Por favor, intenta nuevamente.',
+                isUser: false,
+                timestamp: new Date(),
+            }
+        }
 
         setMessages((prev) => [...prev, aiMessage]);
         setIsTyping(false);
@@ -69,7 +79,7 @@ const Chat = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.1, ease: "easeOut" }}
-                className="flex flex-col bg-gray-50 dark:bg-zinc-900 md:rounded-2xl h-full overflow-hidden"
+                className="flex flex-col bg-gray-300 dark:bg-zinc-900 md:rounded-2xl h-full overflow-hidden"
             >
                 <ChatHeader handleClearChat={handleClearChat} />
                 <ChatBody isTyping={isTyping} messages={messages} />
