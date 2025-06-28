@@ -1,16 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
-import { getTenantImageUrl } from '@/lib/api'
+import { useTenantBranding } from '@/hooks/useTenantBranding'
 
 export default function TenantBanner() {
-    const searchParams = useSearchParams()
-    const tenantId = searchParams.get('tenant_id') ?? ''
-
-    const hasTenantImage = tenantId.trim() !== ''
-    const tenantImagePath = hasTenantImage ? getTenantImageUrl(tenantId) : null
-    const companyImagePath = '/LexoBot-AI.png'
+    const { hasTenantImage, tenantImagePath, companyImagePath } = useTenantBranding()
 
     return (
         <div className="relative flex flex-row items-center justify-center w-full max-w-[36rem] h-36 sm:h-48 md:h-[10rem] mt-4 md:mt-0 gap-2">

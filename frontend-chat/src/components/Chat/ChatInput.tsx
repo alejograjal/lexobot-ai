@@ -1,87 +1,61 @@
-'use client'
+import { Send } from 'lucide-react';
+import React, { useState } from 'react';
 
-import { useState, useRef, useEffect } from 'react'
-import { SendHorizonal, Loader2 } from 'lucide-react'
+interface ChatInputProps {
+    onSend: (message: string) => void;
+    disabled?: boolean;
+}
 
-export default function ChatInput({ onSend }: { onSend: (q: string) => Promise<void> | void }) {
-    const [value, setValue] = useState('')
-    const [isSending, setIsSending] = useState(false)
-    const textareaRef = useRef<HTMLTextAreaElement>(null)
+const ChatInput = ({ onSend, disabled = false }: ChatInputProps) => {
+    const [message, setMessage] = useState('');
 
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto'
-            textareaRef.current.style.height =
-                Math.min(textareaRef.current.scrollHeight, 100) + 'px'
+    const handleSend = () => {
+        if (message.trim() && !disabled) {
+            onSend(message.trim());
+            setMessage('');
         }
-    }, [value])
+    };
 
-    const handleSubmit = async () => {
-        const trimmed = value.trim()
-        if (!trimmed || isSending) return
-
-        setIsSending(true)
-        try {
-            await onSend(trimmed)
-            setValue('')
-        } finally {
-            setIsSending(false)
-        }
-    }
-
-    const isDisabled = !value.trim() || isSending
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            handleSubmit()
+            e.preventDefault();
+            handleSend();
         }
-    }
+    };
 
     return (
-        <form onSubmit={e => e.preventDefault()} className="flex items-center md:gap-4 w-full">
-            <textarea
-                ref={textareaRef}
-                rows={2}
-                value={value}
-                onChange={e => setValue(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Por favor, haz tu pregunta..."
-                disabled={isSending}
-                className={`
-                    flex-grow md:min-h-[100px] min-h-[60px] max-h-[200px] resize-none rounded-md
-                    border border-gray-300 dark:border-gray-600
-                    bg-gray-50 dark:bg-zinc-800
-                    text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500
-                    transition-colors duration-200
-                    hover:border-gray-400 dark:hover:border-gray-500
-                    focus:border-gray-500 focus:ring-1 focus:ring-gray-300
-                    dark:focus:border-gray-400 dark:focus:ring-gray-500
-                    focus:outline-none
-                    p-2 text-sm
-                    ${isSending ? 'opacity-70 cursor-not-allowed' : ''}
-                `}
-                style={{
-                    transform: 'translateZ(0)',
-                    fontSize: '16px !important'
-                }}
-            />
-            <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isDisabled}
-                className={`
-                    flex items-center justify-center h-8 w-8 md:h-10 md:w-10 transition-colors
-                    ${isDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white'}
-                `}
-                aria-label="Enviar mensaje"
-            >
-                {isSending ? (
-                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                ) : (
-                    <SendHorizonal className="h-5 w-5" aria-hidden="true" />
-                )}
-            </button>
-        </form>
-    )
-}
+        <div className="border-t border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-1">
+            <div className="relative">
+                <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Por favor, haz tu pregunta..."
+                    disabled={disabled}
+                    className="w-full resize-none pr-12 min-h-[44px] max-h-32 px-3 py-2 text-sm rounded-md
+                        border border-gray-300 dark:border-zinc-600
+                        bg-white dark:bg-zinc-700
+                        text-gray-900 dark:text-gray-100
+                        placeholder-gray-400 dark:placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                        disabled:opacity-50 disabled:cursor-not-allowed"
+                    rows={2}
+                />
+                <button
+                    onClick={handleSend}
+                    disabled={!message.trim() || disabled}
+                    className="absolute right-2 top-2 h-8 w-8 p-0 
+                        bg-blue-900 dark:bg-white 
+                        hover:bg-blue-700 dark:hover:bg-gray-200 
+                        rounded-full disabled:opacity-50 disabled:cursor-not-allowed 
+                        flex items-center justify-center 
+                        text-white dark:text-black transition-colors"
+                >
+                    <Send size={16} />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default ChatInput;

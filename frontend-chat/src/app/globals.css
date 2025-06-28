@@ -43,3 +43,15 @@ body {
     height: -webkit-fill-available;
   }
 }
+
+@media (max-width: 767px) {
+  .mobile-only-bg {
+    background-attachment: fixed !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-only-bg {
+    background-image: none !important;
+  }
+}

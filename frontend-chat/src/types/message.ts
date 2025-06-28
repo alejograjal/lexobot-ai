@@ -1,4 +1,7 @@
-export type Message = {
-  role: 'user' | 'ai'
-  text: string
+
+export interface Message {
+  id: string;
+  text: string;
+  isUser: boolean;
+  timestamp: Date;
 }
