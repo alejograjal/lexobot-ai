@@ -3,12 +3,12 @@
 import ChatInput from './ChatInput';
 import { ChatBody } from './ChatBody';
 import ChatHeader from './ChatHeader';
+import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { sendQuestion } from '@/lib/api';
 import { Message } from '@/types/message';
 import { useSessionId } from '@/hooks/useSessionId';
 import { useTenantBranding } from '@/hooks/useTenantBranding';
-import { motion } from 'framer-motion';
 
 const getInitialMessages = (isValidTenant: boolean) => {
     return [

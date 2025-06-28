@@ -34,7 +34,7 @@ export function ChatBody({ isTyping, messages }: ChatBodyProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="absolute inset-0 bg-no-repeat bg-center bg-contain pointer-events-none mobile-only"
+                    className="absolute inset-0 bg-no-repeat bg-center bg-contain pointer-events-none mobile-only md:hidden"
                     style={{ backgroundImage: `url(${tenantImagePath})`, zIndex: 0 }}
                 />
 
