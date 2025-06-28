@@ -1,5 +1,6 @@
 import os
 import asyncio
+import logging
 import chromadb
 from typing import Dict
 from app.core import settings
@@ -17,13 +18,15 @@ _chroma_clients: Dict[str, chromadb.PersistentClient] = {}
 _chroma_instances: Dict[str, Chroma] = {}
 _chroma_locks: Dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
 
+logger = logging.getLogger(__name__)
+
 def _get_all_tenants_from_folders() -> list[str]:
     base_path = settings.TENANT_BASE_PATH
     try:
         return [name for name in os.listdir(base_path)
                 if os.path.isdir(os.path.join(base_path, name))]
     except Exception as e:
-        print(f"Error leyendo tenants: {e}")
+        logger.error(f"Error leyendo tenants: {e}")
         return []
 
 def _get_or_create_chroma_client(tenant_id: str, path: str) -> chromadb.PersistentClient:
@@ -66,7 +69,7 @@ async def _periodic_cache_cleanup():
         try:
             await clean_cache_controlled(tenant_id)
         except Exception as e:
-            print(f"Error cleaning cache for {tenant_id}: {e}")
+            logger.error(f"Error cleaning cache for {tenant_id}: {e}")
 
 async def clean_cache_controlled(tenant_id: str, force: bool = False):
     conf = await load_tenant_settings(tenant_id)

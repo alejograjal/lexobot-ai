@@ -27,7 +27,12 @@ async def get_or_embed(tenant_id: str, question: str) -> list[float]:
             return json.loads(cached)
 
         embedding_model = await get_embedding_model(tenant_id)
-        embedding = await asyncio.to_thread(embedding_model.embed_query, question)
+
+        try:
+            embedding = await asyncio.to_thread(embedding_model.embed_query, question)
+        except Exception:
+            raise RuntimeError("Error al calcular el embedding de la pregunta")
+        
         await redis_client.setex(key, EMBEDDING_TTL_SECONDS, json.dumps(embedding))
 
         return embedding

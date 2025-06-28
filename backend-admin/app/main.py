@@ -57,7 +57,6 @@ async def root():
              await session.execute(text("SELECT 1"))
         db_status = "ok"
     except Exception as e:
-        print(e)
         db_status = "error"
 
 

@@ -1,10 +1,14 @@
 import asyncio
+import logging
+from typing import Tuple
 from app.cache import get_or_embed
+from ..cache_engine import get_qa_cache_store
 from app.utils import are_questions_semantically_similar
-from ..cache_engine import get_qa_cache_store, clean_cache_controlled
 from .trace_store import compute_docs_hash, store_docs_if_needed, store_trace_entry
 
-async def get_similar_answer_or_none(tenant_id: str, question: str) -> str | None:
+logger = logging.getLogger(__name__)
+
+async def get_similar_answer_or_none(tenant_id: str, question: str) -> Tuple[str, list[str]] | Tuple[None, None]:
     try:
         query_embedding = await get_or_embed(tenant_id, question) 
         qa_cache_store = await get_qa_cache_store(tenant_id)
@@ -20,9 +24,12 @@ async def get_similar_answer_or_none(tenant_id: str, question: str) -> str | Non
             if await are_questions_semantically_similar(tenant_id, question, cached_question):
                 answer = cached_doc.page_content
                 sources = cached_doc.metadata.get("sources", [])
+                if isinstance(sources, str):
+                    sources = [s.strip() for s in sources.split(",")]
+                    
                 return answer, sources
     except Exception as e:
-        print(f"Error en caché: {str(e)}")
+        logger.warning(f"Error en caché: {str(e)}")
     
     return None, None
 
@@ -30,13 +37,12 @@ async def get_similar_answer_or_none(tenant_id: str, question: str) -> str | Non
 async def store_answer_if_needed(tenant_id: str, question: str, answer: str, docs: list):
     qa_cache_store = await get_qa_cache_store(tenant_id)
     doc_refs = [doc.metadata.get("source", f"doc_{i}") for i, doc in enumerate(docs)]
-    sources_str = ", ".join(doc_refs)
     await asyncio.to_thread(
         qa_cache_store.add_texts,
         [answer],
         metadatas=[{
             "question": question,
-            "sources": sources_str,
+            "sources": ", ".join(doc_refs),
             "tenant_id": tenant_id
         }]
     )

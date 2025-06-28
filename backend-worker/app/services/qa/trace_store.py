@@ -31,4 +31,4 @@ async def store_trace_entry(tenant_id: str, question: str, answer: str, docs_has
         "answer": answer,
         "docs_hash": docs_hash
     }
-    await redis_client.set(key, json.dumps(data, ensure_ascii=False))
+    await redis_client.set(key, json.dumps(data, ensure_ascii=False), ex=60 * 60 * 24 * 7)
