@@ -36,7 +36,9 @@ jobs:
       
       - name: Build and package tenant gateway
         run: |
-          docker build -t tenant-gateway-image dist/tenant-gateway
+          docker build \
+            --build-arg ADMIN_API_KEY=${{ secrets.ADMIN_API_KEY }} \
+            -t tenant-gateway-image dist/tenant-gateway
           docker save tenant-gateway-image | gzip > dist/tenant-gateway.tar.gz
 
       - name: Setup SSH

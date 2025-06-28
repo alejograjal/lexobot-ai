@@ -14,6 +14,8 @@ services:
     image: tenant-gateway-image
     container_name: tenant-gateway
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - "4000:4000"
     volumes:

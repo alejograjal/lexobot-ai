@@ -1,2 +1,5 @@
 # Give execution permissions
 chmod +x install-docker.sh 
+
+# Give execution permissions
+chmod +x setup_worker.sh
