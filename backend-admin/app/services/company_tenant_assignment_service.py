@@ -1,8 +1,8 @@
 from typing import List
 from .company_service import CompanyService
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.models import CompanyTenantAssignment
 from .company_access_service import CompanyAccessService
+from app.db.models import CompanyTenantAssignment, Tenant
 from app.clients.tenant_api_client import TenantApiClient
 from app.repositories import CompanyTenantAssignmentRepository
 from app.core import DuplicateEntryError, NotFoundException, AppException
@@ -18,8 +18,17 @@ class CompanyTenantAssignmentService:
     async def get_all_by_company(self, db: AsyncSession, company_id: int) -> List[CompanyTenantAssignment]:
         return await self.repository.get_all_by_company(db, company_id)
     
+    async def get_all_by_tenant(self, db: AsyncSession, tenant_id: int) -> List[CompanyTenantAssignment]:
+        return await self.repository.get_all_by_tenant(db, tenant_id)
+    
+    async def get_all_by_tenants_ids(self, db: AsyncSession, tenant_ids: List[int]) -> List[CompanyTenantAssignment]:
+        return await self.repository.get_all_by_tenants_ids(db, tenant_ids)
+    
     async def get_assigned_tenant_ids(self, db: AsyncSession, company_id: int) -> List[int]:
         return await self.repository.get_assigned_tenant_ids(db, company_id)
+    
+    async def get_tenant_by_companies_ids(self, db: AsyncSession, company_ids: List[int]) -> List[CompanyTenantAssignment]:
+        return await self.repository.get_all_by_companies_ids(db, company_ids)
     
     async def get_company_id_by_tenant_id(self, db: AsyncSession, tenant_id: int) -> int | None:
         company_id = await self.repository.get_company_id_by_tenant_id(db, tenant_id)

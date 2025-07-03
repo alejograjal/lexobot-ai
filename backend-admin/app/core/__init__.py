@@ -16,7 +16,7 @@ from .security import SecurityConfig, SecurityHandler
 
 # Context Management
 from .context import current_user, UserContext
-from .user_context_service import get_current_username, get_current_role
+from .user_context_service import get_current_username, get_current_role, get_current_id
 
 # Middleware
 from .middleware import AuditMiddleware
@@ -71,6 +71,7 @@ __all__ = [
     "UserContext",
     "get_current_username",
     "get_current_role",
+    "get_current_id",
     
     # Middleware
     "AuditMiddleware",
@@ -82,7 +83,7 @@ __all__ = [
     "app_exception_handler",
     "general_exception_handler",
     "authentication_handler",
-    "validation_exception_handler"
+    "validation_exception_handler",
     
     # Permissions
     "require_administrator",

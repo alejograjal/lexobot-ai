@@ -11,22 +11,33 @@ import { FormPhoneField } from "@/components/Form/FormInputPhone"
 import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper"
 import { UseGetRoles } from "@/hooks/api/lexobot-ai/role/UseGetRoles"
 import { FormSelectWrapper } from "@/components/Form/FormSelectWrapper"
+import { useEffect } from "react"
 
 interface UserFormProps {
     defaultValues?: DefaultValues<User>
     onSubmit: SubmitHandler<User>
     onloading: boolean
+    cancelPath?: string
+    disableRole?: boolean
 }
 
 export function UserForm({
     defaultValues,
     onSubmit,
-    onloading
+    onloading,
+    cancelPath = "/access/user",
+    disableRole = false
 }: UserFormProps) {
     const form = useForm<User>({
         resolver: yupResolver(userSchema),
         defaultValues,
     })
+
+    useEffect(() => {
+        if (defaultValues) {
+            form.reset(defaultValues);
+        }
+    }, [defaultValues, form]);
 
     const { data: roles, isLoading, isError } = UseGetRoles()
     const roleOptions = createSelectOptions(roles, { valueField: 'id', labelField: 'name' });
@@ -40,9 +51,9 @@ export function UserForm({
                 <FormFieldWrapper name="email" label="Correo electrónico" />
                 <FormPhoneField name="phone_number" label="Teléfono" />
                 <FormFieldWrapper name="username" label="Nombre de usuario" />
-                <FormSelectWrapper name="role_id" label="Rol" options={roleOptions} placeholder={selectPlaceholder} disabled={isLoading || isError} />
+                <FormSelectWrapper name="role_id" label="Rol" options={roleOptions} placeholder={selectPlaceholder} disabled={isLoading || isError || disableRole} />
 
-                <FormActions pathCancel="/access/user" isSaving={onloading} />
+                <FormActions pathCancel={cancelPath} isSaving={onloading} />
             </form>
         </Form>
     )

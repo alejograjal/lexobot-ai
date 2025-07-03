@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { ErrorDetail } from '@/types/lexobot-ai';
 import { formatErrorMessage } from '@/lib/utils';
 import { UseSnackbar } from '@stores/UseSnackbar';
-import { on } from 'events';
 
 export const UseMutationCallbacks = (successMessage: string, redirectTo?: string, onSettledCallback?: () => void) => {
     const router = useRouter();
@@ -20,9 +19,9 @@ export const UseMutationCallbacks = (successMessage: string, redirectTo?: string
             onSettledCallback?.();
         },
         onError: (data: ErrorDetail, _variables: unknown) => {
-            if (data === undefined) {
+            if (!data) {
                 setSnackbarMessage('Se ha producido un error, por favor vuelva a intentarlo', 'error');
-                return
+                return;
             }
             setSnackbarMessage(formatErrorMessage(data), 'error');
         },

@@ -31,6 +31,10 @@ from .role_service import RoleService
 
 from .me_service import MeService
 
+from .company_user_service import CompanyUserService
+
+from .tenant_user_service import TenantUserService
+
 __all__ = [
     # Authentication & Security
     "AuthService",
@@ -40,29 +44,35 @@ __all__ = [
     "UserService",
     
     # Business Domain
-    "CompanyService"
+    "CompanyService",
 
     # Company Access
-    "CompanyAccessService"
+    "CompanyAccessService",
 
     # Plan Category
-    "PlanCategoryService"
+    "PlanCategoryService",
 
     # Company Tenant Assignment
-    "CompanyTenantAssignmentService"
+    "CompanyTenantAssignmentService",
 
     # Plan
-    "PlanService"
+    "PlanService",
 
     # Tenant
-    "TenantService"
+    "TenantService",
 
     # Tenant Document
-    "TenantDocumentService"
+    "TenantDocumentService",
 
     # Role
-    "RoleService"
+    "RoleService",
 
     # Me
-    "MeService"
+    "MeService",
+
+    # Company User
+    "CompanyUserService",
+
+    # Tenant User
+    "TenantUserService"
 ]

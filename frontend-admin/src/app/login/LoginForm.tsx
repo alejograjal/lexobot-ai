@@ -9,7 +9,7 @@ import { useAuth } from '@/context/AuthContext';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useCallback, useEffect, useState } from "react"
 import { loginSchema, LoginFormValues } from "./LoginFullSchema"
-import { ButtonLoading } from "@/components/Button/ButonLoading"
+import { ButtonLoading } from "@/components/Button/ButtonLoading"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function LoginForm({
@@ -32,9 +32,7 @@ export function LoginForm({
         async (data: LoginFormValues) => {
             setIsLoading(true)
             await login(data)
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 200);
+            setIsLoading(false)
         },
         [login]
     )

@@ -33,6 +33,11 @@ class UserResponse(UserBase):
     id: int
     is_active: bool
 
+    @computed_field
+    @property
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
 
 class UserProfile(BaseModel):
     id: int

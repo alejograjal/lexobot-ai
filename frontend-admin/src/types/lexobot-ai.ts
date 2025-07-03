@@ -50,3 +50,13 @@ export type CompanyTenantResponse = components["schemas"]["CompanyTenantAssignme
 export type TenantDocumentCreate = components["schemas"]["TenantDocumentCreate"];
 export type TenantDocumentCreateWithFile = TenantDocumentCreate & { file: File };
 export type TenantDocumentResponse = components["schemas"]["TenantDocumentResponse"];
+
+export type CompanyUserCreate = components["schemas"]["CompanyUserCreate"];
+export type CompanyUserUpdate = components["schemas"]["CompanyUserUpdate"];
+export type CompanyUserResponse = components["schemas"]["CompanyUserResponse"];
+export type CompanyUserBulk = components["schemas"]["CompanyUserBulkSync"];
+
+export type TenantUserCreate = components["schemas"]["TenantUserCreate"];
+export type TenantUserUpdate = components["schemas"]["TenantUserUpdate"];
+export type TenantUserResponse = components["schemas"]["TenantUserResponse"];
+export type TenantUserBulk = components["schemas"]["TenantUserBulkSync"];

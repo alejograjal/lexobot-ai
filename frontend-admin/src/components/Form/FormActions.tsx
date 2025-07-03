@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ButtonLoading } from "../Button/ButonLoading";
+import { ButtonLoading } from "../Button/ButtonLoading";
 import Link from "next/link";
 
 interface FormActionsProps {

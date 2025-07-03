@@ -1,6 +1,6 @@
-from typing import Optional
 from app.core import UserRole
 from app.db.models import User
+from typing import List, Optional
 from app.core import SecurityHandler
 from app.core import get_current_role
 from app.repositories import UserRepository
@@ -18,6 +18,13 @@ class UserService:
 
     def __init__(self):
         self.repository = UserRepository()
+
+    async def get_all(self, db: AsyncSession, role_id: int = None) -> List[User]:
+        print(role_id)
+        if role_id is None:
+            return await self.repository.get_all(db)
+
+        return await self.repository.get_all_by_role(db, role_id)
 
     async def get_by_id(self, db: AsyncSession, user_id: int) -> Optional[User]:
         user = await self.repository.get_by_id(db, user_id)

@@ -8,18 +8,8 @@ import { GalleryVerticalEnd, } from "lucide-react"
 import { getRoutesByRole } from "@/navigation/Routes"
 import { NavMain } from "@/components/Navigation/nav-main"
 import { NavUser } from "@/components/Navigation/nav-user"
-import { TeamSwitcher } from "@/components/Switcher/team-switcher"
+import { TenantSwitcher } from "@/components/Switcher/tenant-switcher"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
-
-const data = {
-  teams: [
-    {
-      name: "Lexobot AI",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    }
-  ]
-}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { userProfile } = useAuth()
@@ -28,7 +18,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TenantSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={routes} />

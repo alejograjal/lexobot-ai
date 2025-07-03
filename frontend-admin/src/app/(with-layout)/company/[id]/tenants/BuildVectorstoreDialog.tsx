@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ButtonLoading } from "@/components/Button/ButonLoading"
+import { ButtonLoading } from "@/components/Button/ButtonLoading"
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks"
 import { UsePostCompanyTenantBuildVectorStore } from "@/hooks/api/lexobot-ai/companyTenant/UsePostCompanyTenantBuildVectorStore"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
