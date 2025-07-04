@@ -1,8 +1,8 @@
 from typing import List
 from .company_service import CompanyService
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.models import CompanyTenantAssignment
 from .company_access_service import CompanyAccessService
-from app.db.models import CompanyTenantAssignment, Tenant
 from app.clients.tenant_api_client import TenantApiClient
 from app.repositories import CompanyTenantAssignmentRepository
 from app.core import DuplicateEntryError, NotFoundException, AppException

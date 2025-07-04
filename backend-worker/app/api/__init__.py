@@ -7,6 +7,7 @@ from fastapi import APIRouter
 from .routes import router as qa_router
 from .token_routes import router as token_router
 from .access_routes import router as access_router
+from .metrics_routes import router as metrics_router
 from .document_routes import router as document_router
 
 # Create main API router
@@ -16,6 +17,7 @@ api_router = APIRouter()
 api_router.include_router(qa_router, tags=["QA"])
 api_router.include_router(token_router, tags=["Token Usage"])
 api_router.include_router(access_router, tags=["Tenant Tokens"])
+api_router.include_router(metrics_router, tags=["Tenant Metrics"])
 api_router.include_router(document_router, tags=["Tenant Upload"])
 
 __all__ = ["api_router"]

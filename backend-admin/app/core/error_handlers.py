@@ -69,7 +69,6 @@ async def app_exception_handler(request: Request, exc: AppException) -> JSONResp
     )
 
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    print('encountered exception')
     """
     Handles any unhandled exceptions and converts them to a 500 error response
     """

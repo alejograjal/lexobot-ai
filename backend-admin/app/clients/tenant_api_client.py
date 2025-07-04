@@ -63,3 +63,16 @@ class TenantApiClient:
         response = await self.client.post(f"/api/build-vectorstore/{external_id}", headers=headers, timeout=90)
         response.raise_for_status()
         return response.json()
+    
+    async def get_metrics(self, company_access_id: str, external_id: str, start_date: str, end_date: str) -> dict:
+        token = await self._get_hmac_token(company_access_id, external_id)
+        headers = {
+            "X-Company-Access-Id": token["company_access_id"],
+            "X-Timestamp": token["timestamp"],
+            "X-Signature": token["signature"],
+            "X-Tenant-Id": external_id
+        }
+        response = await self.client.get(f"/api/metrics/{external_id}", headers=headers, params={"start_date": start_date, "end_date": end_date})
+
+        response.raise_for_status()
+        return response.json()

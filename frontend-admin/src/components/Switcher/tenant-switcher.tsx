@@ -4,6 +4,7 @@ import * as React from "react"
 import { ChevronsUpDown } from "lucide-react"
 import { GalleryVerticalEnd } from "lucide-react"
 import { TenantResponse } from "@/types/lexobot-ai"
+import { useTenantSelectionStore } from "@/stores/UseTenantSelectionStore"
 import { UseGetTenants } from "@/hooks/api/lexobot-ai/tenant/UseGetTenants"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -11,22 +12,30 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 export function TenantSwitcher() {
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState<TenantResponse>()
+  const { setTenantId, clearTenantId } = useTenantSelectionStore()
 
   const { data, isLoading, isError } = UseGetTenants()
 
   React.useEffect(() => {
     if (data) {
       setActiveTeam(data[0])
+      setTenantId(data[0].id)
     }
-  }, [data])
+  }, [data, setTenantId])
 
-  if (isError) {
-    return null
-  }
+  React.useEffect(() => {
+    if (isError) {
+      clearTenantId()
+    }
+  }, [isError, clearTenantId])
 
-  if (!activeTeam) {
-    return null
-  }
+  React.useEffect(() => {
+    if (!activeTeam) {
+      clearTenantId()
+    }
+  }, [activeTeam, clearTenantId])
+
+  if (isError || !activeTeam) return null
 
   return (
     <SidebarMenu>
@@ -59,7 +68,10 @@ export function TenantSwitcher() {
             {isLoading || !data ? null : data.map((tenant, index) => (
               <DropdownMenuItem
                 key={tenant.name}
-                onClick={() => setActiveTeam(tenant)}
+                onClick={() => {
+                  setActiveTeam(tenant)
+                  setTenantId(tenant.id)
+                }}
                 className="gap-2 p-2"
               >
                 {tenant.name}

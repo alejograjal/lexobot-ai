@@ -48,6 +48,7 @@ export type CompanyTenantBulk = components["schemas"]["CompanyTenantAssignmentBu
 export type CompanyTenantResponse = components["schemas"]["CompanyTenantAssignmentResponse"];
 
 export type TenantDocumentCreate = components["schemas"]["TenantDocumentCreate"];
+export type TenantDocumentCount = components["schemas"]["TenantDocumentCount"];
 export type TenantDocumentCreateWithFile = TenantDocumentCreate & { file: File };
 export type TenantDocumentResponse = components["schemas"]["TenantDocumentResponse"];
 
@@ -60,3 +61,10 @@ export type TenantUserCreate = components["schemas"]["TenantUserCreate"];
 export type TenantUserUpdate = components["schemas"]["TenantUserUpdate"];
 export type TenantUserResponse = components["schemas"]["TenantUserResponse"];
 export type TenantUserBulk = components["schemas"]["TenantUserBulkSync"];
+
+export type MetricsResponse = components["schemas"]["MetricsResponse"];
+
+export type DailyResponse = {
+  date: string,
+  count: number
+}

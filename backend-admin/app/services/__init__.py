@@ -35,6 +35,8 @@ from .company_user_service import CompanyUserService
 
 from .tenant_user_service import TenantUserService
 
+from .metrics_service import MetricsService
+
 __all__ = [
     # Authentication & Security
     "AuthService",
@@ -74,5 +76,8 @@ __all__ = [
     "CompanyUserService",
 
     # Tenant User
-    "TenantUserService"
+    "TenantUserService",
+
+    # Metrics
+    "MetricsService"
 ]

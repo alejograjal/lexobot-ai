@@ -2,9 +2,9 @@ from typing import List
 from app.db import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status, Query
-from app.services import TenantService, TenantUserService, UserService, CompanyUserService
 from app.core import require_administrator, require_company_or_admin, require_any_role, UserRole
-from app.schemas import TenantCreate, TenantUpdate, TenantResponse, TenantUserCreate, TenantUserUpdate, TenantUserResponse, TenantUserBulkSync, common_errors, not_found_error, validation_error, duplicate_entry_error
+from app.services import TenantService, TenantUserService, UserService, CompanyUserService, MetricsService
+from app.schemas import TenantCreate, TenantUpdate, TenantResponse, TenantUserCreate, TenantUserUpdate, TenantUserResponse, TenantUserBulkSync, MetricsResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
 
 router = APIRouter(
     prefix="/tenants",
@@ -14,6 +14,7 @@ service = TenantService()
 tenant_user_service = TenantUserService()
 user_service = UserService()
 company_user_service = CompanyUserService()
+metrics_service = MetricsService()
 
 @router.post("", response_model=TenantResponse, status_code=status.HTTP_201_CREATED, dependencies=[Depends(require_administrator)], responses={
     **common_errors,
@@ -48,12 +49,16 @@ async def list_tenants(include_inactive: bool = False, db: AsyncSession = Depend
 async def get_available_tenants(company_id: int = Query(...), db: AsyncSession = Depends(get_db)):
     return await service.get_available_for_company(db, company_id)
 
-@router.get("/{tenant_id}", response_model=TenantResponse,  dependencies=[Depends(require_any_role)], responses={
+@router.get("/{tenant_id}", response_model=TenantResponse, dependencies=[Depends(require_any_role)], responses={
     **common_errors,
     **not_found_error
 })
 async def get_tenant(tenant_id: int, include_inactive: bool = False, db: AsyncSession = Depends(get_db)):
     return await service.get(db, tenant_id, include_inactive)
+
+@router.get("/{tenant_id}/metrics", response_model=MetricsResponse, dependencies=[Depends(require_administrator)], responses={**common_errors})
+async def get_tenant_metrics(tenant_id: int, start_date: str, end_date: str, db: AsyncSession = Depends(get_db)):
+    return await metrics_service.get_metrics(db, tenant_id, start_date, end_date)
 
 @router.patch("/{tenant_id}", response_model=TenantResponse, dependencies=[Depends(require_administrator)], responses={
     **common_errors,

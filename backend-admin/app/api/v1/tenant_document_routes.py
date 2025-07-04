@@ -4,7 +4,7 @@ from app.core import require_any_role
 from app.services import TenantDocumentService
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status, UploadFile, File, Form
-from app.schemas import TenantDocumentCreate, TenantDocumentResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
+from app.schemas import TenantDocumentCreate, TenantDocumentCount, TenantDocumentResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
 
 router = APIRouter(
     prefix="/tenants/{tenant_id}/documents",
@@ -62,6 +62,19 @@ async def bulk_update_tenant_documents(
     All existing documents will be removed and replaced with the new ones.
     """
     return await document_service.bulk_update_tenant_documents(db, tenant_id, document_data)
+
+@router.get("/count", response_model=TenantDocumentCount, dependencies=[Depends(require_any_role)], responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
+async def get_document_count(
+    tenant_id: int,
+    db: AsyncSession = Depends(get_db)
+) -> int:
+    """Get the number of documents for a tenant"""
+    result = {"count": await document_service.get_tenant_documents_count(db, tenant_id)}
+    return result
 
 @router.get("/{document_id}", response_model=TenantDocumentResponse, dependencies=[Depends(require_any_role)], responses={
     **common_errors,

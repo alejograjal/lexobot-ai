@@ -20,7 +20,6 @@ class UserService:
         self.repository = UserRepository()
 
     async def get_all(self, db: AsyncSession, role_id: int = None) -> List[User]:
-        print(role_id)
         if role_id is None:
             return await self.repository.get_all(db)
 

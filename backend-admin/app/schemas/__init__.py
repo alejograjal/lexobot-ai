@@ -63,6 +63,7 @@ from .tenant_schema import (
 
 from .tenant_document_schema import (
     TenantDocumentBase,
+    TenantDocumentCount,
     TenantDocumentCreate,
     TenantDocumentResponse
 )
@@ -97,6 +98,10 @@ from .error_response_schema import (
     not_found_error,
     validation_error,
     duplicate_entry_error
+)
+
+from .metrics_schema import (
+    MetricsResponse
 )
 
 __all__ = [
@@ -149,6 +154,7 @@ __all__ = [
 
     # Tenant Document
     "TenantDocumentBase",
+    "TenantDocumentCount",
     "TenantDocumentCreate",
     "TenantDocumentResponse",
 
@@ -178,5 +184,8 @@ __all__ = [
     "common_errors",
     "not_found_error",
     "validation_error",
-    "duplicate_entry_error"
+    "duplicate_entry_error",
+
+    # Metrics
+    "MetricsResponse"
 ]
