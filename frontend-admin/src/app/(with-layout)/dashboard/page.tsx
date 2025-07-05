@@ -36,7 +36,7 @@ export default function Page() {
         <ChartLineLabel
           data={dataByPeriod ?? []}
           title="Preguntas por día"
-          description="Cantidad de preguntas hechas durante el día"
+          description="Cantidad según el periodo seleccionado"
           dataKeyXAxis="date"
           dataKeyYAxis="count"
           toggleGroup={
