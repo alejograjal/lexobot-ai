@@ -20,6 +20,7 @@ def get_cache_key(tenant_id: str, question: str) -> str:
 
 async def get_or_embed(tenant_id: str, question: str) -> list[float]:
     async with embedding_semaphore:
+        normalized_question = normalize_question(question)
         key = get_cache_key(tenant_id, question)
         cached = await redis_client.get(key)
 
@@ -29,7 +30,7 @@ async def get_or_embed(tenant_id: str, question: str) -> list[float]:
         embedding_model = await get_embedding_model(tenant_id)
 
         try:
-            embedding = await asyncio.to_thread(embedding_model.embed_query, question)
+            embedding = await asyncio.to_thread(embedding_model.embed_query, normalized_question)
         except Exception:
             raise RuntimeError("Error al calcular el embedding de la pregunta")
         

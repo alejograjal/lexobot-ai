@@ -1,11 +1,12 @@
 import asyncio
 from app.cache import get_or_embed
 from sklearn.metrics.pairwise import cosine_similarity
+from app.cache import normalize_question
 
 SEMANTIC_SIMILARITY_THRESHOLD = 0.83
 
 async def are_questions_semantically_similar(tenant_id: str,q1: str, q2: str) -> bool:    
-    if q1 == q2:
+    if normalize_question(q1) == normalize_question(q2):
         return True
 
     emb1, emb2 = await asyncio.gather(

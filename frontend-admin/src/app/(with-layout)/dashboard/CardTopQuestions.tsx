@@ -36,7 +36,7 @@ export function CardTopQuestions({
                     <CardTitle className="text-base">{title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <ScrollArea className="h-15 md:h-full">
+                    <ScrollArea className="h-40 md:h-32">
                         <div className="p-4">
                             {topQuestions.length === 0 && (
                                 <div className="text-muted-foreground text-sm">No hay preguntas registradas.</div>
