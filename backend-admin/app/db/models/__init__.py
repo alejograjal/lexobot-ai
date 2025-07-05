@@ -9,6 +9,8 @@ from .plan import Plan
 from .tenant import Tenant
 from .company import Company
 from .base import Base, BaseModel
+from .tenant_user import TenantUser
+from .company_user import CompanyUser
 from .plan_category import PlanCategory
 from .login_attempt import LoginAttempt
 from .company_access import CompanyAccess
@@ -23,7 +25,9 @@ __all__ = [
     "Tenant",
     "Company",
     "BaseModel",
-    "LoginAttempt"
+    "TenantUser",
+    "CompanyUser",
+    "LoginAttempt",
     "PlanCategory",
     "CompanyAccess",
     "TenantDocument",

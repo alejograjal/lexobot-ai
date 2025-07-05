@@ -29,6 +29,42 @@ class CompanyTenantAssignmentRepository(BaseRepository[CompanyTenantAssignment])
         result = await db.execute(stmt)
         return result.scalars().all()
     
+    async def get_all_by_companies_ids(self, db: AsyncSession, company_ids: List[int]) -> List[CompanyTenantAssignment]:
+        stmt = select(self.model).where(
+            and_(
+                CompanyTenantAssignment.company_id.in_(company_ids),
+                CompanyTenantAssignment.is_active == True
+            )
+        )
+        stmt = self._add_relationships_to_query(stmt)
+
+        result = await db.execute(stmt)
+        return result.scalars().all()
+    
+    async def get_all_by_tenant(self, db: AsyncSession, tenant_id: int) -> List[CompanyTenantAssignment]:
+        stmt = select(self.model).where(
+            and_(
+                CompanyTenantAssignment.tenant_id == tenant_id,
+                CompanyTenantAssignment.is_active == True
+            )
+        )
+        stmt = self._add_relationships_to_query(stmt)
+
+        result = await db.execute(stmt)
+        return result.scalars().all()
+    
+    async def get_all_by_tenants_ids(self, db: AsyncSession, tenant_ids: List[int]) -> List[CompanyTenantAssignment]:
+        stmt = select(self.model).where(
+            and_(
+                CompanyTenantAssignment.tenant_id.in_(tenant_ids),
+                CompanyTenantAssignment.is_active == True
+            )
+        )
+        stmt = self._add_relationships_to_query(stmt)
+
+        result = await db.execute(stmt)
+        return result.scalars().all()
+    
     async def get_assigned_tenant_ids(self, db: AsyncSession, company_id: int) -> List[int]:
         subquery = (
             select(CompanyTenantAssignment.tenant_id)

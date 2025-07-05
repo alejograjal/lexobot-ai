@@ -41,16 +41,8 @@ export const getRoutesByRole = (role: Roles): ProtectedRouteItem[] => {
     return protectedRoutes
         .map(route => {
             if (!route.items) {
-                if (['Dashboard', 'Tenants'].includes(route.title)) return route
-                return null
-            }
-
-            if (route.title === 'Accesos') {
-                if (role === 'Company') {
-                    const filteredItems = route.items.filter(item => item.title === 'Usuarios')
-                    return filteredItems.length > 0
-                        ? { ...route, items: filteredItems }
-                        : null
+                if (['Dashboard', 'Compañias', 'Tenants'].includes(route.title)) {
+                    return route
                 }
                 return null
             }

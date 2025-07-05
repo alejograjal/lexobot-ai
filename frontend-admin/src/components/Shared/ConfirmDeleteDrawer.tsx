@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { ButtonLoading } from "../Button/ButonLoading"
+import { ButtonLoading } from "../Button/ButtonLoading"
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 
 interface ConfirmDeleteDrawerProps {

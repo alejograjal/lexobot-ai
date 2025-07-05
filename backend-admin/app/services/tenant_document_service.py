@@ -95,6 +95,11 @@ class TenantDocumentService:
         await self._validate_tenant_exists(db, tenant_id)
 
         return await self.repository.get_by_tenant(db, tenant_id)
+    
+    async def get_tenant_documents_count(self, db: AsyncSession, tenant_id: int) -> int:
+        await self._validate_tenant_exists(db, tenant_id)
+
+        return await self.repository.count_by_tenant(db, tenant_id)
 
     async def get_document(self, db: AsyncSession, tenant_id: int, document_id: int) -> TenantDocument:
         await self._validate_tenant_exists(db, tenant_id)

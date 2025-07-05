@@ -2,16 +2,21 @@
 
 import { useEffect } from "react";
 import CompanyTenantsTable from "./Table";
+import { Roles } from "@/types/lexobot-ai";
 import { Page } from "@/components/Shared/Page";
+import { useAuth } from "@/context/AuthContext";
 import { useParams, useRouter } from "next/navigation";
 import { PageHeader } from "@/components/Shared/PageHeader";
 import NewActionButton from "@/components/Shared/NewActionButton";
 import { UseGetCompanyById } from "@/hooks/api/lexobot-ai/company/UseGetCompanyById";
 
 export default function Tenant() {
+    const { userProfile } = useAuth()
     const router = useRouter()
     const params = useParams()
     const companyIdRaw = params?.id
+
+    const isAdmin = userProfile?.role.name as Roles === 'Administrator'
 
     useEffect(() => {
         if (!companyIdRaw || isNaN(Number(companyIdRaw))) {
@@ -34,7 +39,7 @@ export default function Tenant() {
             header={
                 <PageHeader
                     title={`Tenants asignados a la compañia: ${isLoading ? '...' : data?.name}`}
-                    actionButton={<NewActionButton path={`/company/${companyId}/tenants/assign`} title="Gestionar tenants" />}
+                    actionButton={isAdmin && <NewActionButton path={`/company/${companyId}/tenants/assign`} title="Gestionar tenants" />}
                 />
             }
         >

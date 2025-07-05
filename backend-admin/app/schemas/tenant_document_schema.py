@@ -6,6 +6,9 @@ class TenantDocumentBase(BaseModel):
     document_name: str = Field(..., max_length=255)
     file_path: str
 
+class TenantDocumentCount(BaseModel):
+    count: int
+
 class TenantDocumentCreate(BaseModel):
     document_name: str = Field(..., max_length=255)
     

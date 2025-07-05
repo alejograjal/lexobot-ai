@@ -1,7 +1,7 @@
 import { ApiError } from "openapi-typescript-fetch";
+import { ErrorDetail, CompanyTenantBulk } from "@/types/lexobot-ai";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
-import { ErrorDetail, CompanyTenantResponse, CompanyTenantBulk } from "@/types/lexobot-ai";
 
 interface UsePutCompanyTenantProps {
     onSuccess?: (
@@ -19,7 +19,7 @@ interface UsePutCompanyTenantProps {
     ) => void
 }
 
-export const UsePostBulkCompanyTenant = ({
+export const UsePutBulkCompanyTenant = ({
     onSuccess,
     onError,
     onSettled

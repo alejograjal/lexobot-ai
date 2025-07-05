@@ -9,6 +9,8 @@ from .role_repository import RoleRepository
 from .plan_repository import PlanRepository
 from .tenant_repository import TenantRepository
 from .company_repository import CompanyRepository
+from .tenant_user_repository import TenantUserRepository
+from .company_user_repository import CompanyUserRepository
 from .plan_category_repository import PlanCategoryRepository
 from .login_attempt_repository import LoginAttemptRepository
 from .company_access_repository import CompanyAccessRepository
@@ -21,26 +23,32 @@ __all__ = [
     
     # Domain Repositories
     "UserRepository",
-    "CompanyRepository"
-    "LoginAttemptRepository"
+    "CompanyRepository",
+    "LoginAttemptRepository",
 
     # Company Access Repository
-    "CompanyAccessRepository"
+    "CompanyAccessRepository",
+
+    # Tenant User Repository
+    "TenantUserRepository",
+
+    # Company User Repository
+    "CompanyUserRepository",
 
     # Plan Category Repository
-    "PlanCategoryRepository"
+    "PlanCategoryRepository",
 
     # Company Tenant Assignment Repository
-    "CompanyTenantAssignmentRepository"
+    "CompanyTenantAssignmentRepository",
 
     # Plan Repository
-    "PlanRepository"
+    "PlanRepository",
 
     # Tenant Repository
-    "TenantRepository"
+    "TenantRepository",
 
     # Tenant Document Repository
-    "TenantDocumentRepository"
+    "TenantDocumentRepository",
 
     # Role Repository
     "RoleRepository"

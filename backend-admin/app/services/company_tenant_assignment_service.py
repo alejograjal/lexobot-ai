@@ -18,8 +18,17 @@ class CompanyTenantAssignmentService:
     async def get_all_by_company(self, db: AsyncSession, company_id: int) -> List[CompanyTenantAssignment]:
         return await self.repository.get_all_by_company(db, company_id)
     
+    async def get_all_by_tenant(self, db: AsyncSession, tenant_id: int) -> List[CompanyTenantAssignment]:
+        return await self.repository.get_all_by_tenant(db, tenant_id)
+    
+    async def get_all_by_tenants_ids(self, db: AsyncSession, tenant_ids: List[int]) -> List[CompanyTenantAssignment]:
+        return await self.repository.get_all_by_tenants_ids(db, tenant_ids)
+    
     async def get_assigned_tenant_ids(self, db: AsyncSession, company_id: int) -> List[int]:
         return await self.repository.get_assigned_tenant_ids(db, company_id)
+    
+    async def get_tenant_by_companies_ids(self, db: AsyncSession, company_ids: List[int]) -> List[CompanyTenantAssignment]:
+        return await self.repository.get_all_by_companies_ids(db, company_ids)
     
     async def get_company_id_by_tenant_id(self, db: AsyncSession, tenant_id: int) -> int | None:
         company_id = await self.repository.get_company_id_by_tenant_id(db, tenant_id)

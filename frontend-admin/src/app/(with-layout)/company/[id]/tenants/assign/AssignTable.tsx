@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { columns } from "./TableColumns";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { useParams, useRouter } from "next/navigation";
 import { DataTable } from "@/components/ui/data-table";
-import { UseGetTenantsAvailableByCompany } from "@/hooks/api/lexobot-ai/tenant/UseGetTenantsAvailableByCompany";
-import { UsePostBulkCompanyTenant } from "@/hooks/api/lexobot-ai/companyTenant/UsePostBulkCompanyTenants";
+import { ButtonLoading } from "@/components/Button/ButtonLoading";
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks";
-import { Button } from "@/components/ui/button";
-import { ButtonLoading } from "@/components/Button/ButonLoading";
 import { UseGetTenants } from "@/hooks/api/lexobot-ai/tenant/UseGetTenants";
 import { UseGetCompanyTenants } from "@/hooks/api/lexobot-ai/companyTenant/UseGetCompanyTenants";
-import Link from "next/link";
+import { UsePutBulkCompanyTenant } from "@/hooks/api/lexobot-ai/companyTenant/UsePutBulkCompanyTenants";
 
 export default function AssignTable() {
     const router = useRouter()
@@ -42,7 +41,7 @@ export default function AssignTable() {
         }
     }, [companyTenants])
 
-    const { mutate: postBulk } = UsePostBulkCompanyTenant(UseMutationCallbacks('Tenants gestionados correctamente', `/company/${companyId}/tenants`, closeLoading))
+    const { mutate: postBulk } = UsePutBulkCompanyTenant(UseMutationCallbacks('Tenants gestionados correctamente', `/company/${companyId}/tenants`, closeLoading))
 
     const handleAssign = () => {
         postBulk({

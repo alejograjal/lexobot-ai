@@ -1,11 +1,17 @@
 "use client"
 
 import Link from "next/link"
+import { Roles } from "@/types/lexobot-ai"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/context/AuthContext"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function ActionsDropDown({ tenantId }: { tenantId: string }) {
+    const { userProfile } = useAuth()
+
+    const isAdminOrCompany = userProfile?.role.name as Roles === 'Administrator' || userProfile?.role.name as Roles === 'Company'
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -22,6 +28,13 @@ export default function ActionsDropDown({ tenantId }: { tenantId: string }) {
                         Documentos
                     </Link>
                 </DropdownMenuItem>
+                {isAdminOrCompany && (
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                        <Link href={`/tenant/${tenantId}/user`}>
+                            Usuarios asignados
+                        </Link>
+                    </DropdownMenuItem>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     )

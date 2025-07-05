@@ -1,5 +1,5 @@
-from sqlalchemy import exists
 from app.db.models import BaseModel
+from sqlalchemy import exists, and_
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -90,6 +90,17 @@ class BaseRepository(Generic[ModelType]):
 
         if not include_inactive:
             stmt = stmt.where(self.model.is_active == True)
+        result = await db.execute(stmt)
+        return result.scalars().all()
+    
+    async def get_all_by_ids(self, db: AsyncSession, ids: List[int]) -> List[ModelType]:
+        stmt = select(self.model).where(
+            and_(
+                self.model.is_active == True,
+                self.model.id.in_(ids))
+            )
+        stmt = self._add_relationships_to_query(stmt)
+
         result = await db.execute(stmt)
         return result.scalars().all()
     
