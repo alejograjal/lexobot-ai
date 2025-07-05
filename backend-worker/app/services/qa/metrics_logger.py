@@ -51,8 +51,9 @@ async def get_metrics_grouped_by_period(
     tenant_id: str,
     period: Literal["day", "week", "month"]
 ) -> List[Dict[str, int]]:
-    now = datetime.now(timezone.utc)
-    today_local = (now - CR_TZ_OFFSET).date()
+    CR_TZ = timezone(CR_TZ_OFFSET)
+    now_local = datetime.now(timezone.utc).astimezone(CR_TZ)
+    today_local = now_local.date()
 
     if period == "day":
         date_str = today_local.strftime("%Y-%m-%d")
@@ -73,7 +74,7 @@ async def get_metrics_grouped_by_period(
 
     elif period == "month":
         results = []
-        for offset in range(29, -1, -3):  # 28 días, de 3 en 3
+        for offset in range(30, -1, -3):
             block_total = 0
             label_date = None
 
