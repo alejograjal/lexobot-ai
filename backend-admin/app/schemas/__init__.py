@@ -101,7 +101,9 @@ from .error_response_schema import (
 )
 
 from .metrics_schema import (
-    MetricsResponse
+    MetricsOverviewResponse,
+    PeriodCount,
+    QuestionCount
 )
 
 __all__ = [
@@ -187,5 +189,7 @@ __all__ = [
     "duplicate_entry_error",
 
     # Metrics
-    "MetricsResponse"
+    "MetricsOverviewResponse",
+    "PeriodCount",
+    "QuestionCount"
 ]

@@ -11,29 +11,30 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 
 export function TenantSwitcher() {
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState<TenantResponse>()
-  const { setTenantId, clearTenantId } = useTenantSelectionStore()
+  const { tenantId, setTenantId, clearTenantId } = useTenantSelectionStore()
+  const [activeTeam, setActiveTeam] = React.useState<TenantResponse | null>(null)
 
   const { data, isLoading, isError } = UseGetTenants()
 
   React.useEffect(() => {
-    if (data) {
-      setActiveTeam(data[0])
-      setTenantId(data[0].id)
+    if (data && data.length > 0) {
+      const foundTenant = data.find(t => t.id === tenantId)
+
+      if (foundTenant) {
+        setActiveTeam(foundTenant)
+      } else {
+        setActiveTeam(data[0])
+        setTenantId(data[0].id)
+      }
     }
-  }, [data, setTenantId])
+  }, [data, tenantId, setTenantId])
 
   React.useEffect(() => {
     if (isError) {
       clearTenantId()
+      setActiveTeam(null)
     }
   }, [isError, clearTenantId])
-
-  React.useEffect(() => {
-    if (!activeTeam) {
-      clearTenantId()
-    }
-  }, [activeTeam, clearTenantId])
 
   if (isError || !activeTeam) return null
 
@@ -67,7 +68,7 @@ export function TenantSwitcher() {
             </DropdownMenuLabel>
             {isLoading || !data ? null : data.map((tenant, index) => (
               <DropdownMenuItem
-                key={tenant.name}
+                key={tenant.id}
                 onClick={() => {
                   setActiveTeam(tenant)
                   setTenantId(tenant.id)

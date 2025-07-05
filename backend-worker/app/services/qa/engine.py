@@ -12,9 +12,9 @@ async def ask_question(tenant_id: str, session_id: str, question: str) -> str:
     if not conf.get("billing_active"):
         raise BillingError(identifier=tenant_id, message="Lamentamos informarte que el servicio está pausado por un retraso en el pago.", error_type="billing_error")
     
-    cached_response, sources = await get_similar_answer_or_none(tenant_id, question)
+    cached_response, sources, cached_question = await get_similar_answer_or_none(tenant_id, question)
     if cached_response:
-        asyncio.create_task(log_question_metrics(tenant_id, question))
+        asyncio.create_task(log_question_metrics(tenant_id, cached_question))
         return cached_response
 
     docs = await retrieve_relevant_docs(tenant_id, question)

@@ -1,15 +1,14 @@
-from typing import Dict, List
+from typing import List
 from pydantic import BaseModel
 
 class QuestionCount(BaseModel):
     question: str
     count: int
 
-class DailyCount(BaseModel):
-    date: str
+class PeriodCount(BaseModel):
+    date: str 
     count: int
 
-class MetricsResponse(BaseModel):
+class MetricsOverviewResponse(BaseModel):
     total: int
-    by_day: List[DailyCount]
     top_questions: List[QuestionCount]

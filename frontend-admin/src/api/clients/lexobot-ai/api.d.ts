@@ -476,6 +476,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/documents/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Document Count
+         * @description Get the number of documents for a tenant
+         */
+        get: operations["get_document_count_api_v1_tenants__tenant_id__documents_count_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}/documents/{document_id}": {
         parameters: {
             query?: never;
@@ -495,26 +515,6 @@ export interface paths {
          * @description Delete a document
          */
         delete: operations["delete_document_api_v1_tenants__tenant_id__documents__document_id__delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/tenants/{tenant_id}/documents/count": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Document Count
-         * @description Get the number of documents for a tenant
-         */
-        get: operations["get_document_count_api_v1_tenants__tenant_id__documents_count_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -591,15 +591,32 @@ export interface paths {
         patch: operations["update_tenant_api_v1_tenants__tenant_id__patch"];
         trace?: never;
     };
-    "/api/v1/tenants/{tenant_id}/metrics": {
+    "/api/v1/tenants/{tenant_id}/metrics/overall": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Tenant Metrics */
-        get: operations["get_tenant_metrics_api_v1_tenants__tenant_id__metrics_get"];
+        /** Get Metrics Overall */
+        get: operations["get_metrics_overall_api_v1_tenants__tenant_id__metrics_overall_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/metrics/by-period/{period}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Metrics Grouped By Period */
+        get: operations["get_metrics_grouped_by_period_api_v1_tenants__tenant_id__metrics_by_period__period__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1000,13 +1017,6 @@ export interface components {
             /** Assign */
             assign: boolean;
         };
-        /** DailyCount */
-        DailyCount: {
-            /** Date */
-            date: string;
-            /** Count */
-            count: number;
-        };
         /** ErrorObject */
         ErrorObject: {
             /** Code */
@@ -1036,14 +1046,19 @@ export interface components {
             /** Password */
             password: string;
         };
-        /** MetricsResponse */
-        MetricsResponse: {
+        /** MetricsOverviewResponse */
+        MetricsOverviewResponse: {
             /** Total */
             total: number;
-            /** By Day */
-            by_day: components["schemas"]["DailyCount"][];
             /** Top Questions */
             top_questions: components["schemas"]["QuestionCount"][];
+        };
+        /** PeriodCount */
+        PeriodCount: {
+            /** Date */
+            date: string;
+            /** Count */
+            count: number;
         };
         /** PlanCategoryCreate */
         PlanCategoryCreate: {
@@ -4144,6 +4159,73 @@ export interface operations {
             };
         };
     };
+    get_document_count_api_v1_tenants__tenant_id__documents_count_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantDocumentCount"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
     get_document_api_v1_tenants__tenant_id__documents__document_id__get: {
         parameters: {
             query?: never;
@@ -4230,73 +4312,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Resource not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Internal server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_document_count_api_v1_tenants__tenant_id__documents_count_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                tenant_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TenantDocumentCount"];
-                };
             };
             /** @description Unauthorized */
             401: {
@@ -4815,12 +4830,9 @@ export interface operations {
             };
         };
     };
-    get_tenant_metrics_api_v1_tenants__tenant_id__metrics_get: {
+    get_metrics_overall_api_v1_tenants__tenant_id__metrics_overall_get: {
         parameters: {
-            query: {
-                start_date: string;
-                end_date: string;
-            };
+            query?: never;
             header?: never;
             path: {
                 tenant_id: number;
@@ -4835,7 +4847,66 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["MetricsResponse"];
+                    "application/json": components["schemas"]["MetricsOverviewResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_metrics_grouped_by_period_api_v1_tenants__tenant_id__metrics_by_period__period__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+                period: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PeriodCount"][];
                 };
             };
             /** @description Unauthorized */

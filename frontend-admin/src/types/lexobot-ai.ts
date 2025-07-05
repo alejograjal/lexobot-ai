@@ -62,9 +62,9 @@ export type TenantUserUpdate = components["schemas"]["TenantUserUpdate"];
 export type TenantUserResponse = components["schemas"]["TenantUserResponse"];
 export type TenantUserBulk = components["schemas"]["TenantUserBulkSync"];
 
-export type MetricsResponse = components["schemas"]["MetricsResponse"];
+export type MetricsOverviewResponse = components["schemas"]["MetricsOverviewResponse"];
+export type MetricsByPeriod = components["schemas"]["PeriodCount"];
+export type TotalQuestions = components["schemas"]["QuestionCount"];
 
-export type DailyResponse = {
-  date: string,
-  count: number
-}
+
+export type PeriodType = "day" | "week" | "month";

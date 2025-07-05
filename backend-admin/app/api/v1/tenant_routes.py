@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status, Query
 from app.core import require_administrator, require_company_or_admin, require_any_role, UserRole
 from app.services import TenantService, TenantUserService, UserService, CompanyUserService, MetricsService
-from app.schemas import TenantCreate, TenantUpdate, TenantResponse, TenantUserCreate, TenantUserUpdate, TenantUserResponse, TenantUserBulkSync, MetricsResponse, common_errors, not_found_error, validation_error, duplicate_entry_error
+from app.schemas import TenantCreate, TenantUpdate, TenantResponse, TenantUserCreate, TenantUserUpdate, TenantUserResponse, TenantUserBulkSync, MetricsOverviewResponse, PeriodCount , common_errors, not_found_error, validation_error, duplicate_entry_error
 
 router = APIRouter(
     prefix="/tenants",
@@ -56,9 +56,23 @@ async def get_available_tenants(company_id: int = Query(...), db: AsyncSession =
 async def get_tenant(tenant_id: int, include_inactive: bool = False, db: AsyncSession = Depends(get_db)):
     return await service.get(db, tenant_id, include_inactive)
 
-@router.get("/{tenant_id}/metrics", response_model=MetricsResponse, dependencies=[Depends(require_administrator)], responses={**common_errors})
-async def get_tenant_metrics(tenant_id: int, start_date: str, end_date: str, db: AsyncSession = Depends(get_db)):
-    return await metrics_service.get_metrics(db, tenant_id, start_date, end_date)
+@router.get(
+    "/{tenant_id}/metrics/overall",
+    response_model=MetricsOverviewResponse,
+    dependencies=[Depends(require_any_role)],
+    responses={**common_errors}
+)
+async def get_metrics_overall(tenant_id: int, db: AsyncSession = Depends(get_db)):
+    return await metrics_service.get_metrics_overall(db, tenant_id)
+
+@router.get(
+    "/{tenant_id}/metrics/by-period/{period}",
+    response_model=List[PeriodCount],
+    dependencies=[Depends(require_any_role)],
+    responses={**common_errors}
+)
+async def get_metrics_grouped_by_period(tenant_id: int, period: str, db: AsyncSession = Depends(get_db)):
+    return await metrics_service.get_metrics_grouped_by_period(db, tenant_id, period)
 
 @router.patch("/{tenant_id}", response_model=TenantResponse, dependencies=[Depends(require_administrator)], responses={
     **common_errors,

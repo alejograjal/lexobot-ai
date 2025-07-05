@@ -4,7 +4,7 @@ import { TenantDocumentCount } from "@/types/lexobot-ai";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { castRequestBody, UseTypedApiClientLA } from "@/hooks/UseTypedApiClientLA";
 
-export const UseGetTenantDocumentCount = (tenantId: string | undefined | null, enabled = false): UseQueryResult<TenantDocumentCount, ApiError> => {
+export const UseGetTenantDocumentCount = (tenantId: number | undefined | null): UseQueryResult<TenantDocumentCount, ApiError> => {
     const path = '/api/v1/tenants/{tenant_id}/documents/count';
     const method = 'get';
 
@@ -17,7 +17,7 @@ export const UseGetTenantDocumentCount = (tenantId: string | undefined | null, e
             return data
         },
         retry: false,
-        enabled: enabled,
+        enabled: isPresent(tenantId),
         staleTime: 0,
     })
 }

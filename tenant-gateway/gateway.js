@@ -54,7 +54,7 @@ app.use('/api', (req, res, next) => {
         return res.status(400).json({ error: `Unknown tenant_id: ${tenantId}` });
     }
 
-     try {
+    try {
         new URL(target);
     } catch {
         return res.status(400).json({ error: `Invalid target URL for tenant_id: ${tenantId}` });

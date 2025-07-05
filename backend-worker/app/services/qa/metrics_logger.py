@@ -1,6 +1,6 @@
-from typing import Dict, Any
 from app.core import redis_client
 from collections import defaultdict
+from typing import Dict, Any, Literal, List
 from datetime import date, datetime, timedelta, timezone
 from app.utils import local_date_to_utc_range, CR_TZ_OFFSET
 
@@ -29,6 +29,66 @@ async def log_question_metrics(tenant_id: str, question: str):
     # 5. Monthly ranking
     await redis_client.zincrby(f"qa:top:{tenant_id}:{month}", 1, question)
     await redis_client.expire(f"qa:top:{tenant_id}:{month}", 60 * 60 * 24 * 180)
+
+async def get_metrics_overall(tenant_id: str, limit: int = 10) -> Dict[str, Any]:
+    key_total = f"qa:top:{tenant_id}"
+    
+    all_questions_with_scores = await redis_client.zrange(key_total, 0, -1, withscores=True)
+    total_questions = sum(int(score) for _, score in all_questions_with_scores)
+
+    top_questions_raw = await redis_client.zrevrange(key_total, 0, limit - 1, withscores=True)
+    top_questions = [
+        {"question": q, "count": int(score)}
+        for q, score in top_questions_raw
+    ]
+
+    return {
+        "total": total_questions,
+        "top_questions": top_questions
+    }
+
+async def get_metrics_grouped_by_period(
+    tenant_id: str,
+    period: Literal["day", "week", "month"]
+) -> List[Dict[str, int]]:
+    now = datetime.now(timezone.utc)
+    today_local = (now - CR_TZ_OFFSET).date()
+
+    if period == "day":
+        date_str = today_local.strftime("%Y-%m-%d")
+        key = f"qa:top:{tenant_id}:{date_str}"
+        items = await redis_client.zrange(key, 0, -1, withscores=True)
+        count = sum(int(score) for _, score in items)
+        return [{"date": today_local.strftime("%d/%m"), "count": count}]
+
+    elif period == "week":
+        results = []
+        for offset in range(6, -1, -1):
+            d = today_local - timedelta(days=offset)
+            key = f"qa:top:{tenant_id}:{d.strftime('%Y-%m-%d')}"
+            items = await redis_client.zrange(key, 0, -1, withscores=True)
+            count = sum(int(score) for _, score in items)
+            results.append({"date": d.strftime("%d/%m"), "count": count})
+        return results
+
+    elif period == "month":
+        results = []
+        for offset in range(29, -1, -3):  # 28 días, de 3 en 3
+            block_total = 0
+            label_date = None
+
+            for day in range(3):
+                d = today_local - timedelta(days=offset - day)
+                key = f"qa:top:{tenant_id}:{d.strftime('%Y-%m-%d')}"
+                items = await redis_client.zrange(key, 0, -1, withscores=True)
+                block_total += sum(int(score) for _, score in items)
+                if label_date is None:
+                    label_date = d.strftime("%d/%m")
+
+            results.append({"date": label_date, "count": block_total})
+        return results
+
+    raise ValueError("Periodo inválido")
 
 async def get_metrics_summary(tenant_id: str, start: date, end: date, limit: int = 10) -> Dict[str, Any]:
     utc_start, _ = local_date_to_utc_range(start)

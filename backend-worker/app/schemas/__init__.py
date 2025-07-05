@@ -1,11 +1,7 @@
-from .QuestionMetrics import (
-    DailyCount,
-    QuestionCount,
-    QuestionMetricsResponse
-)
+from .QuestionMetrics import QuestionCount, PeriodCount, MetricsOverviewResponse
 
 __all__ = [
-    "DailyCount",
     "QuestionCount",
-    "QuestionMetricsResponse"
+    "PeriodCount",
+    "MetricsOverviewResponse"
 ]

@@ -27,11 +27,11 @@ async def get_similar_answer_or_none(tenant_id: str, question: str) -> Tuple[str
                 if isinstance(sources, str):
                     sources = [s.strip() for s in sources.split(",")]
                     
-                return answer, sources
+                return answer, sources, cached_question
     except Exception as e:
         logger.warning(f"Error en caché: {str(e)}")
     
-    return None, None
+    return None, None, None
 
 
 async def store_answer_if_needed(tenant_id: str, question: str, answer: str, docs: list):

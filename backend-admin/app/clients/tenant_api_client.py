@@ -1,5 +1,7 @@
 import httpx
+from typing import List
 from app.core import settings
+from app.schemas import PeriodCount, MetricsOverviewResponse
 
 class TenantApiClient:
     def __init__(self):
@@ -64,7 +66,7 @@ class TenantApiClient:
         response.raise_for_status()
         return response.json()
     
-    async def get_metrics(self, company_access_id: str, external_id: str, start_date: str, end_date: str) -> dict:
+    async def get_metrics_overall(self, company_access_id: str, external_id: str) -> MetricsOverviewResponse:
         token = await self._get_hmac_token(company_access_id, external_id)
         headers = {
             "X-Company-Access-Id": token["company_access_id"],
@@ -72,7 +74,20 @@ class TenantApiClient:
             "X-Signature": token["signature"],
             "X-Tenant-Id": external_id
         }
-        response = await self.client.get(f"/api/metrics/{external_id}", headers=headers, params={"start_date": start_date, "end_date": end_date})
 
+        response = await self.client.get(f"/api/metrics/overview?tenant_id={external_id}", headers=headers)
+        response.raise_for_status()
+        return response.json()
+    
+    async def get_metrics_grouped_by_period(self, company_access_id: str, external_id: str, period: str) -> List[PeriodCount]:
+        token = await self._get_hmac_token(company_access_id, external_id)
+        headers = {
+            "X-Company-Access-Id": token["company_access_id"],
+            "X-Timestamp": token["timestamp"],
+            "X-Signature": token["signature"],
+            "X-Tenant-Id": external_id
+        }
+
+        response = await self.client.get(f"/api/metrics/grouped?tenant_id={external_id}&period={period}", headers=headers)
         response.raise_for_status()
         return response.json()
