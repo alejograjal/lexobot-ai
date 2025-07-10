@@ -47,6 +47,7 @@ export const removePhoneMask = (phone: string): number => {
 };
 
 export const applyPhoneMask = (phone: string): string => {
+    if (!phone) return phone;
     const numericPhone = phone.replace(/\D/g, '');
     if (numericPhone.length !== 8) {
         return phone;

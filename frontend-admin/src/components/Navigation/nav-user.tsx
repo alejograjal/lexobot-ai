@@ -4,12 +4,19 @@ import { getInitials } from "@/lib/utils"
 import { useAuth } from "@/context/AuthContext"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react"
+import { useTenantSelectionStore } from "@/stores/UseTenantSelectionStore"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
   const { userProfile, logout } = useAuth()
+  const { clearTenantId } = useTenantSelectionStore()
+
+  const handleLogout = () => {
+    logout()
+    clearTenantId()
+  }
 
   const generalUserInformation = () => {
     return (
@@ -57,7 +64,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout} className="cursor-pointer">
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <LogOut />
               Cerrar sesión
             </DropdownMenuItem>

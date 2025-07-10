@@ -13,6 +13,8 @@ class Settings:
     POSTGRESQL_DB: str = os.getenv("POSTGRESQL_DB")
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")
     TENANT_WORKER_API_URL: str = os.getenv("TENANT_WORKER_API_URL")
+    BREVO_API_KEY: str = os.getenv("BREVO_API_KEY")
+    AUTH_USER_LINK: str = os.getenv("AUTH_USER_LINK")
 
     @property
     def POSTGRESQL_DATABASE_URL(self):

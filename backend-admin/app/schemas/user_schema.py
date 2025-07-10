@@ -14,8 +14,6 @@ class UserBase(BaseModel):
     first_name: Annotated[str, Field(max_length=100)]
     last_name: Annotated[str, Field(max_length=100)]
     email: EmailStr
-    phone_number: Annotated[str, Field(max_length=20)]
-    username: Annotated[str, Field(min_length=3, max_length=50)]
     role_id: int
 
 class UserCreate(UserBase):
@@ -29,8 +27,19 @@ class UserUpdate(BaseModel):
     username: Optional[Annotated[str, Field(min_length=3, max_length=50)]] = None
     role_id: Optional[int] = None
 
+class UserAccountConfirmation(BaseModel):
+    username: Annotated[str, Field(min_length=3, max_length=50)]
+    phone_number: Annotated[str, Field(max_length=20)]
+    password: Annotated[str, Field(min_length=8, max_length=50)]
+
+class UserChangePassword(BaseModel):
+    old_password: Annotated[str, Field(min_length=8, max_length=50)]
+    new_password: Annotated[str, Field(min_length=8, max_length=50)]
+
 class UserResponse(UserBase):
     id: int
+    username: Optional[str]
+    phone_number: Optional[str]
     is_active: bool
 
     @computed_field

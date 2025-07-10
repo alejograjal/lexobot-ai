@@ -6,11 +6,12 @@ interface FormActionsProps {
     pathCancel: string;
     isSaving: boolean;
     onlyCancel?: boolean;
+    className?: string;
 }
 
-export function FormActions({ pathCancel, isSaving, onlyCancel = false }: FormActionsProps) {
+export function FormActions({ pathCancel, isSaving, onlyCancel = false, className }: FormActionsProps) {
     return (
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-4 pt-4">
+        <div className={`flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-4 pt-4 ${className}`}>
             <Link href={pathCancel}>
                 <Button
                     type="button"
@@ -28,8 +29,6 @@ export function FormActions({ pathCancel, isSaving, onlyCancel = false }: FormAc
                     Guardar
                 </ButtonLoading>
             }
-
-
         </div>
     );
 }

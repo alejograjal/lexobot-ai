@@ -35,6 +35,14 @@ class InvalidCredentialsError(AppAuthException):
     def __init__(self):
         super().__init__(detail="Invalid username or password")
 
+class DuplicatePasswordError(AppException):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            error_code="DUPLICATE_PASSWORD",
+            detail="La contraseña debe ser diferente a las 5 anteriores"
+        )
+
 class ForbiddenError(AppException):
     """Base class for forbidden access errors"""
     def __init__(self, detail: str, error_code: str = "FORBIDDEN"):
@@ -75,6 +83,15 @@ class InvalidTokenError(AppException):
             status_code=status.HTTP_401_UNAUTHORIZED,
             error_code="INVALID_TOKEN",
             detail="Token is invalid or has expired"
+        )
+
+class InvalidAccountTokenError(AppException):
+    """Raised when token is invalid or expired"""
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            error_code="INVALID_ACCOUNT_TOKEN",
+            detail="Token es invalido o ha expirado"
         )
 
 class TenantUploadError(AppException):
