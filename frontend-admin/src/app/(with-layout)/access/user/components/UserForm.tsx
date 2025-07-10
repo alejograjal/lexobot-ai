@@ -49,8 +49,6 @@ export function UserForm({
                 <FormFieldWrapper name="first_name" label="Nombre" />
                 <FormFieldWrapper name="last_name" label="Apellidos" />
                 <FormFieldWrapper name="email" label="Correo electrónico" />
-                <FormPhoneField name="phone_number" label="Teléfono" />
-                <FormFieldWrapper name="username" label="Nombre de usuario" />
                 <FormSelectWrapper name="role_id" label="Rol" options={roleOptions} placeholder={selectPlaceholder} disabled={isLoading || isError || disableRole} />
 
                 <FormActions pathCancel={cancelPath} isSaving={onloading} />

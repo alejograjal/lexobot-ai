@@ -22,7 +22,7 @@ from .user_context_service import get_current_username, get_current_role, get_cu
 from .middleware import AuditMiddleware
 
 # Enums
-from .enums import UserRole
+from .enums import UserRole, TokenPurpose, purpose_labels
 
 # Error Handlers
 from .error_handlers import (
@@ -55,7 +55,9 @@ from .exceptions import (
     ValidationException,
     InvalidTokenError,
     TenantUploadError,
-    UploadToTenantWorkerError
+    UploadToTenantWorkerError,
+    DuplicatePasswordError,
+    InvalidAccountTokenError
 )
 
 __all__ = [
@@ -105,5 +107,7 @@ __all__ = [
     "ValidationException",
     "InvalidTokenError",
     "TenantUploadError",
-    "UploadToTenantWorkerError"
+    "UploadToTenantWorkerError",
+    "DuplicatePasswordError",
+    "InvalidAccountTokenError"
 ]

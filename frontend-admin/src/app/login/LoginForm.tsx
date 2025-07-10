@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from "react"
 import { loginSchema, LoginFormValues } from "./LoginFullSchema"
 import { ButtonLoading } from "@/components/Button/ButtonLoading"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from "next/link"
 
 export function LoginForm({
     className,
@@ -71,12 +72,12 @@ export function LoginForm({
                             <div className="grid gap-3">
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Contraseña</Label>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/auth/user/password/recover"
                                         className="ml-auto text-sm underline-offset-2 hover:underline"
                                     >
-                                        ¿Olvidaste tu contraseña?
-                                    </a>
+                                        ¿Olvidaste tu contraseña?
+                                    </Link>
                                 </div>
                                 <Input
                                     id="password"

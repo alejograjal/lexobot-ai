@@ -7,7 +7,7 @@ from .models import Base
 from .session import AsyncSessionLocal, engine, get_db
 
 __all__ = [
-    "Base"
+    "Base",
     "engine",
     "get_db",
     "AsyncSessionLocal",

@@ -1,5 +1,6 @@
 "use client";
 
+import { type ErrorDetail } from "@/types/lexobot-ai";
 import { Fetcher } from "openapi-typescript-fetch";
 import { UseSnackbar } from "@/stores/UseSnackbar";
 import { ApiError } from "openapi-typescript-fetch";
@@ -17,7 +18,7 @@ export const createAuthMiddleware = (baseUrl: string): Middleware => {
         try {
             return await originalRequest();
         } catch (error) {
-            if (error instanceof ApiError && error.status === 401) {
+            if (error instanceof ApiError && error.status === 401 && (error.data.error as ErrorDetail)?.code == "INVALID_TOKEN") {
                 const refreshToken = tokenStore.getRefreshToken();
 
                 if (!refreshToken) {

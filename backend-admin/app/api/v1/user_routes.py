@@ -32,6 +32,17 @@ async def get_user_companies(user_id: int, db: AsyncSession = Depends(get_db)):
 async def get_user_tenants(user_id: int, db: AsyncSession = Depends(get_db)):
     return await tenant_user.get_all_by_user(db, user_id)
 
+@router.get("/{user_id}", response_model=UserResponse, dependencies=[Depends(require_any_role)], responses={
+    **common_errors,
+    **not_found_error
+})
+async def get_user(
+    user_id: int,
+    db: AsyncSession = Depends(get_db)
+) -> UserResponse:
+    """Get a user by ID"""
+    return await user_service.get_by_id(db, user_id)
+
 @router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED, responses={
     **common_errors,
     **validation_error,
@@ -43,17 +54,6 @@ async def create_user(
 ) -> UserResponse:
     """Create a new user"""
     return await user_service.create_user(db, user_data)
-
-@router.get("/{user_id}", response_model=UserResponse, dependencies=[Depends(require_any_role)], responses={
-    **common_errors,
-    **not_found_error
-})
-async def get_user(
-    user_id: int,
-    db: AsyncSession = Depends(get_db)
-) -> UserResponse:
-    """Get a user by ID"""
-    return await user_service.get_by_id(db, user_id)
 
 @router.patch("/{user_id}", response_model=UserResponse, responses={
     **common_errors,

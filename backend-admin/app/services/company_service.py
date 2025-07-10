@@ -3,15 +3,11 @@ from app.db.models import Company
 from app.repositories import CompanyRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas import CompanyCreate, CompanyUpdate
-from app.core import DuplicateEntryError, NotFoundException, UserRole, get_current_id
+from app.core import DuplicateEntryError, NotFoundException
 
 class CompanyService:
     def __init__(self):
         self.repository = CompanyRepository()
-        # self.user_service = UserService()
-        # self.company_user_service = CompanyUserService()
-        # self.tenant_user_service = TenantUserService()
-        # self.company_tenant_assignment_service = CompanyTenantAssignmentService()
 
     async def _ensure_unique_fields(
         self, db: AsyncSession, company_data: CompanyCreate | CompanyUpdate, company_id: Optional[int] = None
@@ -43,24 +39,6 @@ class CompanyService:
             
     async def get_all_by_ids(self, db: AsyncSession, company_ids: List[int]) -> List[Company]:
         return await self.repository.get_all_by_ids(db, company_ids)
-
-        # user_id = get_current_id()
-        # if self.user_service.is_current_role(UserRole.COMPANY):
-        #     companies_allowed = await self.company_user_service.get_all_by_user(db, user_id)
-        #     companies_ids = {company.id for company in companies_allowed}
-
-        #     return await self.repository.get_all_by_ids(db, list(companies_ids))
-
-        # if self.user_service.is_current_role(UserRole.TENANT):
-        #     tenants_allowed = await self.tenant_user_service.get_all_by_user(db, user_id)
-        #     tenant_ids = [tenant.tenant_id for tenant in tenants_allowed]
-        #     companies_tenants = await self.company_tenant_assignment_service.get_all_by_tenant(db, tenant_ids)
-        #     companies_ids = {company.company_id for company in companies_tenants}
-
-        #     return await self.repository.get_all_by_ids(db, list(companies_ids))
-        
-        # return self.repository.get_all_by_ids(db, [])
-            
 
     async def update_company(self, db: AsyncSession, company_id: int, company_data: CompanyUpdate) -> Company:
         if not await self.repository.exists(db, company_id):

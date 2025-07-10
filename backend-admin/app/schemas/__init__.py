@@ -7,7 +7,8 @@ Provides Pydantic models for request/response validation and serialization.
 from .auth_schema import (
     LoginRequest,
     TokenResponse,
-    RefreshTokenRequest
+    RefreshTokenRequest,
+    ResetPasswordRequest
 )
 
 # Company Schemas
@@ -25,7 +26,9 @@ from .user_schema import (
     UserUpdate,
     UserResponse,
     UserProfile,
-    PasswordValidator
+    PasswordValidator,
+    UserAccountConfirmation,
+    UserChangePassword
 )
 
 from .company_access_schema import (
@@ -106,11 +109,22 @@ from .metrics_schema import (
     QuestionCount
 )
 
+from .user_password_history_schema import (
+    UserPasswordHistoryCreate
+)
+
+from .user_token_schema import (
+    UserTokenCreate,
+    UserTokenUpdate,
+    UserTokenResponse
+)
+
 __all__ = [
     # Authentication
     "LoginRequest",
     "TokenResponse",
     "RefreshTokenRequest",
+    "ResetPasswordRequest",
     
     # Company
     "CompanyBase",
@@ -125,6 +139,8 @@ __all__ = [
     "UserResponse",
     "UserProfile",
     "PasswordValidator",
+    "UserAccountConfirmation",
+    "UserChangePassword",
 
     # Company Access
     "CompanyAccessCreate",
@@ -191,5 +207,13 @@ __all__ = [
     # Metrics
     "MetricsOverviewResponse",
     "PeriodCount",
-    "QuestionCount"
+    "QuestionCount",
+
+    # User Password History
+    "UserPasswordHistoryCreate",
+
+    # User Token
+    "UserTokenCreate",
+    "UserTokenUpdate",
+    "UserTokenResponse"
 ]

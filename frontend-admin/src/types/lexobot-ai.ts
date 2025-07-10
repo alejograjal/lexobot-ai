@@ -66,5 +66,9 @@ export type MetricsOverviewResponse = components["schemas"]["MetricsOverviewResp
 export type MetricsByPeriod = components["schemas"]["PeriodCount"];
 export type TotalQuestions = components["schemas"]["QuestionCount"];
 
+export type UserAccountConfirmation = components["schemas"]["UserAccountConfirmation"];
+export type UserChangePassword = components["schemas"]["UserChangePassword"];
+
+export type ResetPassword = components["schemas"]["ResetPasswordRequest"];
 
 export type PeriodType = "day" | "week" | "month";

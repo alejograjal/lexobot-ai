@@ -22,9 +22,6 @@ export function TenantSwitcher() {
 
       if (foundTenant) {
         setActiveTeam(foundTenant)
-      } else {
-        setActiveTeam(data[0])
-        setTenantId(data[0].id)
       }
     }
   }, [data, tenantId, setTenantId])
@@ -36,7 +33,7 @@ export function TenantSwitcher() {
     }
   }, [isError, clearTenantId])
 
-  if (isError || !activeTeam) return null
+  if (isError) return null
 
   return (
     <SidebarMenu>
@@ -50,10 +47,18 @@ export function TenantSwitcher() {
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                 <GalleryVerticalEnd className="size-4" />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeTeam.name}</span>
-                <span className="truncate text-xs">Asociados: {activeTeam.client_count}</span>
-              </div>
+              {
+                !activeTeam ? (
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">Selecciona un tenant</span>
+                  </div>
+                ) : (
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">{activeTeam.name}</span>
+                    <span className="truncate text-xs">Asociados: {activeTeam.client_count}</span>
+                  </div>
+                )
+              }
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>

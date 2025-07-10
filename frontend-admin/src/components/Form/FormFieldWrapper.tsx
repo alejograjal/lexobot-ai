@@ -3,7 +3,7 @@ import { HTMLAttributes } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useFormContext, FieldPath, FieldValues } from "react-hook-form"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"
 
 type FieldType = "input" | "textarea"
 
@@ -11,6 +11,7 @@ interface CommonProps<T extends FieldValues> {
     name: FieldPath<T>
     label: string
     as?: FieldType
+    description?: string
     placeholder?: string
 }
 
@@ -28,6 +29,7 @@ export function FormFieldWrapper<T extends FieldValues>({
     name,
     label,
     as = "input",
+    description,
     placeholder,
     ...props
 }: FormFieldWrapperProps<T>) {
@@ -63,6 +65,11 @@ export function FormFieldWrapper<T extends FieldValues>({
                             />
                         )}
                     </FormControl>
+                    {description && (
+                        <FormDescription>
+                            {description}
+                        </FormDescription>
+                    )}
                     {form.formState.errors[name] && (
                         <FormMessage>
                             * {(form.formState.errors[name]?.message as string) ?? "Campo inválido"}
