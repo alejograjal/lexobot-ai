@@ -72,6 +72,8 @@ jobs:
             echo "CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}" >> .env
             echo "NEXT_PUBLIC_API_LEXOBOT_URL=${{ secrets.NEXT_PUBLIC_API_LEXOBOT_URL }}" >> .env
             echo "TENANT_WORKER_API_URL=${{ secrets.TENANT_WORKER_API_URL }}" >> .env
+            echo "BREVO_API_KEY=${{ secrets.BREVO_API_KEY }}" >> .env
+            echo "AUTH_USER_LINK=${{ secrets.AUTH_USER_LINK }}" >> .env
 
             chmod 600 .env
 
