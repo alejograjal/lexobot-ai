@@ -11,7 +11,6 @@ import { UsePostResetPassword } from "@/hooks/api/lexobot-ai/authentication/UseP
 
 export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
-    const setSnackbarMessage = UseSnackbar((state) => state.setMessage);
 
     const closeLoading = () => setLoading(false);
 
