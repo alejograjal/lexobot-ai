@@ -16,5 +16,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     if (!authLoaded) return null
 
+    if (!isAuthenticated) return null
+
     return <>{children}</>
 }
