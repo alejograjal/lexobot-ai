@@ -1,11 +1,11 @@
 "use client"
 
-import { applyPhoneMask } from "@/lib/utils"
+import { applyPhoneMask, isPresent } from "@/lib/utils"
 import { Switch } from "@/components/ui/switch"
+import ActionsDropDown from "./ActionsDropDown"
 import { ColumnDef } from "@tanstack/react-table"
 import { TenantUserResponse } from "@/types/lexobot-ai"
 import { SortableColumnHeader } from "@/components/Shared/SortableColumnHeader.tsx"
-import ActionsDropDown from "./ActionsDropDown"
 
 export const columns: ColumnDef<TenantUserResponse>[] = [
     {
@@ -55,7 +55,7 @@ export const columns: ColumnDef<TenantUserResponse>[] = [
         enableHiding: false,
         cell: ({ row }) => (
             <div onClick={(e) => e.stopPropagation()}>
-                <ActionsDropDown tenantId={row.original.tenant_id} tenantUserId={row.original.id} hasAccountCreated={row.original.user.username !== ""} />
+                <ActionsDropDown tenantId={row.original.tenant_id} tenantUserId={row.original.id} hasAccountCreated={isPresent(row.original.user.username)} />
             </div>
         ),
     }
