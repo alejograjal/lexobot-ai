@@ -18,7 +18,8 @@ class TenantUserRepository(BaseRepository[TenantUser]):
                 and_(
                     TenantUser.tenant_id == tenant_id,
                     TenantUser.is_active == True,
-                    User.role_id == 3
+                    User.role_id == 3,
+                    User.is_active == True
                 )
             )
         )
@@ -30,7 +31,8 @@ class TenantUserRepository(BaseRepository[TenantUser]):
         stmt = select(self.model).where(
             and_(
                 TenantUser.user_id == user_id,
-                TenantUser.is_active == True
+                TenantUser.is_active == True,
+                User.is_active == True
             )
         )
         stmt = self._add_relationships_to_query(stmt)

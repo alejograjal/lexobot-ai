@@ -1400,8 +1400,11 @@ export interface components {
         };
         /** UserChangePassword */
         UserChangePassword: {
-            /** Old Password */
-            old_password: string;
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
             /** New Password */
             new_password: string;
         };

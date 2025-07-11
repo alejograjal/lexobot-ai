@@ -43,6 +43,13 @@ class UserService:
         """
         return await self.repository.get_by_username(db, username)
     
+    async def get_by_email(self, db: AsyncSession, email: str) -> Optional[User]:
+        user = await self.repository.get_by_email(db, email)
+        if not user:
+            raise NotFoundException(f"User", email)
+        
+        return user
+    
     async def create_user(self, db: AsyncSession, user_data: UserCreate) -> User:
         if db.in_transaction():
             return await self._create_user_internal(db, user_data)
@@ -184,10 +191,10 @@ class UserService:
         async with db.begin():
             user_token = await self.user_token_service.get_by_token(db, token, expected_purpose=TokenPurpose.RESET_PASSWORD)
 
-            user = await self.get_by_id(db, user_token.user_id)
+            user = await self.get_by_email(db, user_change_password.email)
             
-            if not SecurityHandler.verify_password(user_change_password.old_password, user.password_hash):
-                raise ValidationException("La contraseña antigua es incorrecta.")
+            if(user.id != user_token.user_id):
+                raise AppException(detail="El correo no coincide con el de la cuenta", status_code=404, error_code="USER_NOT_FOUND")
             
             self.validate_password_strength(user_change_password.new_password)
 

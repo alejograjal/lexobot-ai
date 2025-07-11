@@ -42,7 +42,7 @@ export default function AssignTable({ companyId }: { companyId: string | undefin
         <div className="container max-w-lg py-2 mx-auto">
             <DataTable columns={columns} data={companyUsers ?? []} loading={isLoadingCompanyUsers} error={isErrorCompanyUsers} selectable onSelectionChange={setSelectedIds} rowSelection={rowSelection} onRowSelectionChange={setRowSelection} />
 
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="flex flex-col-reverse sm:flex-row justify-center gap-2 sm:gap-4 mt-4">
                 <Link href={`/company/${companyId}/user`}>
                     <Button
                         type="button"

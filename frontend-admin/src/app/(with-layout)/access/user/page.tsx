@@ -9,7 +9,7 @@ export default function User() {
             header={
                 <PageHeader
                     title="Usuarios"
-                    actionButton={<NewActionButton path="/access/user/new" title="Crear usuario" />}
+                    actionButton={<NewActionButton path="/access/user/new" title="Crear usuario" className="sm:w-auto w-full" />}
                 />
             }
         >

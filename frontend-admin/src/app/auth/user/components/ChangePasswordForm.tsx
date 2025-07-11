@@ -16,7 +16,7 @@ export default function ChangePasswordForm({ onSubmit, isLoading = false }: Chan
     const form = useForm<ChangePasswordFormValues>({
         resolver: yupResolver(changePasswordSchema),
         defaultValues: {
-            old_password: '',
+            email: '',
             new_password: '',
             confirm_password: '',
         }
@@ -26,7 +26,7 @@ export default function ChangePasswordForm({ onSubmit, isLoading = false }: Chan
         <div className="max-w-md mx-auto p-6 sm:p-1">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormFieldWrapper name="old_password" type='password' label="Contraseña actual" />
+                    <FormFieldWrapper name="email" label="Correo electrónico" />
                     <FormFieldWrapper name="new_password" type='password' label="Contraseña nueva" />
                     <FormFieldWrapper name="confirm_password" type='password' label="Confirmar contraseña nueva" />
 

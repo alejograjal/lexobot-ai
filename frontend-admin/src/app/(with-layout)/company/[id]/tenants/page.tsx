@@ -39,7 +39,7 @@ export default function Tenant() {
             header={
                 <PageHeader
                     title={`Tenants asignados a la compañia: ${isLoading ? '...' : data?.name}`}
-                    actionButton={isAdmin && <NewActionButton path={`/company/${companyId}/tenants/assign`} title="Gestionar tenants" />}
+                    actionButton={isAdmin && <NewActionButton path={`/company/${companyId}/tenants/assign`} title="Gestionar tenants" className="sm:w-auto w-full" />}
                 />
             }
         >

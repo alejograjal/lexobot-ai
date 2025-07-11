@@ -19,6 +19,7 @@ class CompanyUserRepository(BaseRepository[CompanyUser]):
                     CompanyUser.company_id == company_id,
                     CompanyUser.is_active == True,
                     User.role_id == 2,
+                    User.is_active == True
                 )
             )
         )
@@ -31,7 +32,8 @@ class CompanyUserRepository(BaseRepository[CompanyUser]):
             and_(
                 CompanyUser.user_id == user_id,
                 CompanyUser.is_active == True,
-                CompanyUser.assign == True
+                CompanyUser.assign == True,
+                User.is_active == True
             )
         )
         stmt = self._add_relationships_to_query(stmt)

@@ -34,7 +34,7 @@ export default function TenantDocument() {
             header={
                 <PageHeader
                     title={`Documentos del tenant: ${isLoading ? '...' : data?.name}`}
-                    actionButton={<NewActionButton path={`/tenant/${tenantId}/document/new`} title="Agregar documento" />}
+                    actionButton={<NewActionButton path={`/tenant/${tenantId}/document/new`} title="Agregar documento" className="sm:w-auto w-full" />}
                 />
             }
         >

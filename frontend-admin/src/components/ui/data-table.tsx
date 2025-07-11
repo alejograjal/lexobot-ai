@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
                     placeholder="Buscar en todas las columnas..."
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
-                    className="max-w-sm mb-4"
+                    className="sm:mb-4 max-w-md w-full"
                 />
             </div>
             <div className="rounded-md border">

@@ -17,7 +17,7 @@ export default function Company() {
             header={
                 <PageHeader
                     title="Tenants"
-                    actionButton={isAdmin && <NewActionButton path="/tenant/new" title="Crear tenant" />}
+                    actionButton={isAdmin && <NewActionButton path="/tenant/new" title="Crear tenant" className="sm:w-auto w-full" />}
                 />
             }
         >

@@ -9,7 +9,7 @@ export default function PlanCategory() {
             header={
                 <PageHeader
                     title="Categorias de planes"
-                    actionButton={<NewActionButton path="/configuration/plan-category/new" title="Crear categoría de plan" />}
+                    actionButton={<NewActionButton path="/configuration/plan-category/new" title="Crear categoría de plan" className="sm:w-auto w-full" />}
                 />
             }
         >

@@ -9,7 +9,7 @@ export default function Plan() {
             header={
                 <PageHeader
                     title="Planes"
-                    actionButton={<NewActionButton path="/configuration/plan/new" title="Crear plan" />}
+                    actionButton={<NewActionButton path="/configuration/plan/new" title="Crear plan" className="sm:w-auto w-full" />}
                 />
             }
         >

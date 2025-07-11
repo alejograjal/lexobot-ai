@@ -41,7 +41,7 @@ export function SidePanel({
                 </div>
 
                 {(onSubmit || showCloseButton) && (
-                    <SheetFooter className="px-4 pb-4">
+                    <SheetFooter className="px-4 pb-4 gap-2">
                         {showCloseButton && (
                             <SheetClose asChild>
                                 <Button ref={closeRef} variant="outline">Cancelar</Button>

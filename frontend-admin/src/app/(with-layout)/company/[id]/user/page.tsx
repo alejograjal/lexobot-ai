@@ -32,8 +32,8 @@ export default function CompanyUsers() {
     const actionButtonCreateAssign = () => {
         return (
             <div className="flex flex-col gap-1 justify-end sm:flex-row sm:w-full">
-                <NewActionButton path={`/company/${companyId}/user/new`} title="Agregar" showIcon={false} className="min-w-[150px]" />
-                <NewActionButton path={`/company/${companyId}/user/assign`} title="Gestionar" showIcon={false} className="min-w-[150px]" />
+                <NewActionButton path={`/company/${companyId}/user/new`} title="Agregar" showIcon={false} className="sm:w-auto w-full" />
+                <NewActionButton path={`/company/${companyId}/user/assign`} title="Gestionar" showIcon={false} className="sm:w-auto w-full" />
             </div>
         )
     }

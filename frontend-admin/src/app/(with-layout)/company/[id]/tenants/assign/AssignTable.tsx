@@ -54,7 +54,7 @@ export default function AssignTable() {
         <div className="container max-w-lg py-2 mx-auto">
             <DataTable columns={columns} data={availableTenants ?? []} loading={isLoadingTenants || isLoadingCompanyTenants} error={isErrorTenants || isErrorCompanyTenants} selectable onSelectionChange={setSelectedIds} rowSelection={rowSelection} onRowSelectionChange={setRowSelection} />
 
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="flex flex-col justify-center gap-4 mt-4 sm:flex-row">
                 <Link href={`/company/${companyId}/tenants`}>
                     <Button
                         type="button"

@@ -1,10 +1,10 @@
 import * as yup from 'yup'
 
 export const changePasswordSchema = yup.object({
-    old_password: yup
+    email: yup
         .string()
-        .required('La contraseña actual es requerida')
-        .min(8, 'Debe tener al menos 8 caracteres'),
+        .required('El correo es requerido')
+        .email('El correo es inválido'),
     new_password: yup
         .string()
         .required('La contraseña es requerida')

@@ -33,7 +33,7 @@ class UserAccountConfirmation(BaseModel):
     password: Annotated[str, Field(min_length=8, max_length=50)]
 
 class UserChangePassword(BaseModel):
-    old_password: Annotated[str, Field(min_length=8, max_length=50)]
+    email: EmailStr
     new_password: Annotated[str, Field(min_length=8, max_length=50)]
 
 class UserResponse(UserBase):
