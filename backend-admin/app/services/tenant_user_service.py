@@ -135,6 +135,18 @@ class TenantUserService:
 
         return True
     
+    async def resend_invite(self, db: AsyncSession, tenant_id: int, tenant_user_id: int):
+        async with db.begin():
+            if not await self.repository.exists(db, tenant_user_id):
+                raise NotFoundException("Tenant user", tenant_user_id)
+            
+            tenant_user = await self.repository.get_by_id(db, tenant_user_id)
+            
+            if tenant_user.tenant_id != tenant_id:
+                raise NotFoundException("Tenant user", tenant_user_id)
+
+            await self.user_service.resend_invite(db, tenant_user.user_id)
+    
     async def bulk_sync(self, db: AsyncSession, tenant_id: int, dto: TenantUserBulkSync):
         async with db.begin():
             await self.tenant_service.get(db, tenant_id)

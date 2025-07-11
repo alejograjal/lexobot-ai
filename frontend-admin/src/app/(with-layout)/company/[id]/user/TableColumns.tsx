@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch"
 import { ColumnDef } from "@tanstack/react-table"
 import { CompanyUserResponse } from "@/types/lexobot-ai"
 import { SortableColumnHeader } from "@/components/Shared/SortableColumnHeader.tsx"
+import ActionsDropDown from "./ActionsDropDown"
 
 export const columns: ColumnDef<CompanyUserResponse>[] = [
     {
@@ -49,4 +50,13 @@ export const columns: ColumnDef<CompanyUserResponse>[] = [
         },
         enableSorting: false,
     },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => (
+            <div onClick={(e) => e.stopPropagation()}>
+                <ActionsDropDown companyId={row.original.company_id} companyUserId={row.original.id} hasAccountCreated={row.original.user.username !== ""} />
+            </div>
+        ),
+    }
 ]

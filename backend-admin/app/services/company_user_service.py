@@ -89,6 +89,20 @@ class CompanyUserService:
         
         return True
     
+    async def resend_invite(self, db: AsyncSession, company_id: int, company_user_id: int):
+        async with db.begin():
+            if not await self.repository.exists(db, company_user_id):
+                raise NotFoundException("Company user", company_user_id)
+            
+            company_user = await self.repository.get_by_id(db, company_user_id)
+            
+            if company_user.company_id != company_id:
+                raise NotFoundException("Company user", company_user_id)
+
+            await self.user_service.resend_invite(db, company_user.user_id)
+        
+        return True
+    
     async def bulk_sync(self, db: AsyncSession, company_id: int, dto: CompanyUserBulkSync):
         async with db.begin():
             await self.company_service.get_company(db, company_id)

@@ -121,6 +121,15 @@ async def delete_company_user(company_id: int, company_user_id: int, db: AsyncSe
     await company_user_service.delete(db, company_id, company_user_id)
     return None
 
+@router.post("/{company_id}/users/{company_user_id}/resend-invite", response_model=bool, dependencies=[Depends(require_administrator)], responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
+async def resend_invite(company_id: int, company_user_id: int, db: AsyncSession = Depends(get_db)):
+    await company_user_service.resend_invite(db, company_id, company_user_id)
+    return True
+
 @router.put("/{company_id}/users/bulk-sync", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_administrator)], responses={
     **common_errors,
     **validation_error

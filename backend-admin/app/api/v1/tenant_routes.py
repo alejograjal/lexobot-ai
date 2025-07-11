@@ -132,6 +132,15 @@ async def delete_tenant_user(tenant_id: int ,tenant_user_id: int, db: AsyncSessi
     await tenant_user_service.delete(db, tenant_id, tenant_user_id)
     return None
 
+@router.post("/{tenant_id}/users/{tenant_user_id}/resend-invite", response_model=bool, dependencies=[Depends(require_company_or_admin)], responses={
+    **common_errors,
+    **not_found_error,
+    **validation_error
+})
+async def resend_invite(tenant_id: int, tenant_user_id: int, db: AsyncSession = Depends(get_db)):
+    await tenant_user_service.resend_invite(db, tenant_id, tenant_user_id)
+    return True
+
 @router.put("/{tenant_id}/users/bulk-sync", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_company_or_admin)], responses={
     **common_errors,
     **validation_error

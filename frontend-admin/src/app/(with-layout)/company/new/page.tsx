@@ -13,7 +13,7 @@ export default function CreateCompanyPage() {
 
     const closeLoading = () => setLoading(false);
 
-    const { mutate: postCompany } = UsePostCompany(UseMutationCallbacks('Compañia creada correctamente', '/company', closeLoading));
+    const { mutate: postCompany } = UsePostCompany(UseMutationCallbacks('Compañía creada correctamente', '/company', closeLoading));
 
     const handleSubmit = (data: Company) => {
         postCompany({ ...data });

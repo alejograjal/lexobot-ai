@@ -74,7 +74,7 @@ class UserService:
         await self.email_service.send_account_confirmation(user_data.email, f"{user_data.first_name} {user_data.last_name}", confirmation_link)
 
         return user
-
+    
     async def update_user(
         self, 
         db: AsyncSession, 
@@ -121,6 +121,22 @@ class UserService:
             raise ValidationException("You cannot delete a company user.")
         
         await self.repository.delete(db, user_id)
+
+    async def resend_invite(self, db: AsyncSession, user_id: int) -> None:
+        if db.in_transaction():
+            return await self._resend_invite_internal(db, user_id)
+        else:
+            async with db.begin():
+                return await self._resend_invite_internal(db, user_id)
+    
+    async def _resend_invite_internal(self, db: AsyncSession, user_id: int):
+        user = await self.get_by_id(db, user_id)
+        
+        user_token = await self.user_token_service.create(db, user.id, TokenPurpose.CONFIRM_ACCOUNT)
+
+        confirmation_link = f"{settings.AUTH_USER_LINK}/confirm?token={user_token.token}"
+
+        await self.email_service.send_account_confirmation(user.email, f"{user.first_name} {user.last_name}", confirmation_link)
 
     def is_current_role(self,role: str) -> bool:
         """
