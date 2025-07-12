@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation"
 
 export function NavUser() {
   const router = useRouter()
-  const { isMobile } = useSidebar()
+  const { isMobile, toggleSidebar } = useSidebar()
   const { userProfile, logout } = useAuth()
   const { clearTenantId } = useTenantSelectionStore()
 
@@ -22,6 +22,7 @@ export function NavUser() {
 
   const handleAccountRedirect = () => {
     router.push("/account")
+    toggleSidebar()
   }
 
   const generalUserInformation = () => {
