@@ -15,8 +15,8 @@ export default function CreateTenantPage() {
 
     const { mutate: postTenant } = UsePostTenant(UseMutationCallbacks('Tenant creado correctamente', '/tenant', closeLoading));
 
-    const handleSubmit = (data: Tenant) => {
-        postTenant({ ...data });
+    const handleSubmit = async (data: Tenant) => {
+        await postTenant({ ...data });
     }
 
     return (

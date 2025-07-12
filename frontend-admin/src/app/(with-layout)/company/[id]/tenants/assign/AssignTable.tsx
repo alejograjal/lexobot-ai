@@ -43,8 +43,8 @@ export default function AssignTable() {
 
     const { mutate: postBulk } = UsePutBulkCompanyTenant(UseMutationCallbacks('Tenants gestionados correctamente', `/company/${companyId}/tenants`, closeLoading))
 
-    const handleAssign = () => {
-        postBulk({
+    const handleAssign = async () => {
+        await postBulk({
             company_id: parseInt(companyId!),
             tenant_ids: selectedIds
         })

@@ -15,8 +15,8 @@ export default function CreateCompanyPage() {
 
     const { mutate: postCompany } = UsePostPlan(UseMutationCallbacks('Plan creado correctamente', '/configuration/plan', closeLoading));
 
-    const handleSubmit = (data: Plan) => {
-        postCompany({ ...data });
+    const handleSubmit = async (data: Plan) => {
+        await postCompany({ ...data });
     }
 
     return (

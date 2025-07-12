@@ -15,8 +15,8 @@ export default function CreateCompanyPage() {
 
     const { mutate: postCompany } = UsePostPlanCategory(UseMutationCallbacks('Categoría de plan creada correctamente', '/configuration/plan-category', closeLoading));
 
-    const handleSubmit = (data: PlanCategory) => {
-        postCompany({ ...data });
+    const handleSubmit = async (data: PlanCategory) => {
+        await postCompany({ ...data });
     }
 
     return (

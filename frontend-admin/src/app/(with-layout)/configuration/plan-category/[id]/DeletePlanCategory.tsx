@@ -16,9 +16,9 @@ export function DeletePlanCategory({ planCategoryId, planCategoryName }: DeleteP
 
     const { mutate: deleteCompany } = UseDeletePlanCategory(UseMutationCallbacks("Categoría de plan eliminada correctamente", "/configuration/plan-category", closeLoading));
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setIsLoading(true);
-        deleteCompany(planCategoryId);
+        await deleteCompany(planCategoryId);
     };
 
     return (

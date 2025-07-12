@@ -59,9 +59,9 @@ export default function UpdateCompanyUserPage() {
         }
     }, [isErrorCompany, isErrorCompanyUser, errorCompany, errorCompanyUser, companyId, router, setSnackbarMessage])
 
-    const handleSubmit = (data: User) => {
+    const handleSubmit = async (data: User) => {
         setLoading(true)
-        putCompanyUser({ assign: companyUser?.assign!, user: data })
+        await putCompanyUser({ assign: companyUser?.assign!, user: data })
     }
 
     return (

@@ -62,7 +62,7 @@ export default function CompanyAccess() {
         ...UseMutationCallbacks('Acceso de compañía actualizado correctamente', '/company', closeLoading)
     })
 
-    const handleSubmit = (data: CompanyAccessSchema) => {
+    const handleSubmit = async (data: CompanyAccessSchema) => {
 
         setLoading(true)
         const payload = mapCompanyAccessToDto(data)
@@ -72,7 +72,7 @@ export default function CompanyAccess() {
             return;
         }
 
-        putCompanyAccess(payload)
+        await putCompanyAccess(payload)
     }
 
     useEffect(() => {

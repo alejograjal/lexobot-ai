@@ -38,8 +38,8 @@ export default function CreateTenantUserPage() {
 
     const { mutate: postTenant } = UsePostTenantUser({ tenantId: Number(tenantId), ...UseMutationCallbacks('Usuario creado y asignado correctamente', `/tenant/${tenantId}/user`, closeLoading) });
 
-    const handleSubmit = (data: User) => {
-        postTenant({ user: data, assign: true });
+    const handleSubmit = async (data: User) => {
+        await postTenant({ user: data, assign: true });
     }
 
     return (

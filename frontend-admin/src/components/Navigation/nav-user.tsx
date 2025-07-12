@@ -7,8 +7,10 @@ import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react"
 import { useTenantSelectionStore } from "@/stores/UseTenantSelectionStore"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useRouter } from "next/navigation"
 
 export function NavUser() {
+  const router = useRouter()
   const { isMobile } = useSidebar()
   const { userProfile, logout } = useAuth()
   const { clearTenantId } = useTenantSelectionStore()
@@ -16,6 +18,10 @@ export function NavUser() {
   const handleLogout = () => {
     logout()
     clearTenantId()
+  }
+
+  const handleAccountRedirect = () => {
+    router.push("/account")
   }
 
   const generalUserInformation = () => {
@@ -58,7 +64,7 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem onClick={handleAccountRedirect} className="cursor-pointer">
                 <BadgeCheck />
                 Cuenta
               </DropdownMenuItem>

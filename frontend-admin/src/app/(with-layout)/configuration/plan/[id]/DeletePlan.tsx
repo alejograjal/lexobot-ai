@@ -16,9 +16,9 @@ export function DeletePlan({ planId, planName }: DeletePlanProps) {
 
     const { mutate: deleteCompany } = UseDeletePlan(UseMutationCallbacks("Plan eliminado correctamente", "/configuration/plan", closeLoading));
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setIsLoading(true);
-        deleteCompany(planId);
+        await deleteCompany(planId);
     };
 
     return (

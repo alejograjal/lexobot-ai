@@ -59,9 +59,9 @@ export default function UpdateTenantUserPage() {
         }
     }, [isErrorTenant, isErrorTenantUser, errorTenant, errorTenantUser, tenantId, router, setSnackbarMessage])
 
-    const handleSubmit = (data: User) => {
+    const handleSubmit = async (data: User) => {
         setLoading(true)
-        putTenantUser({ assign: tenantUser?.assign!, user: data })
+        await putTenantUser({ assign: tenantUser?.assign!, user: data })
     }
 
     return (

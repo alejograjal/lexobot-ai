@@ -48,9 +48,9 @@ export default function UpdateUserPage() {
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: User) => {
+    const handleSubmit = async (data: User) => {
         setLoading(true)
-        putUser({ ...data })
+        await putUser({ ...data })
     }
 
     return (

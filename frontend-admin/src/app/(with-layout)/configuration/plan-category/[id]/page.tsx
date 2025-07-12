@@ -48,9 +48,9 @@ export default function UpdatePlanCategoryPage() {
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: PlanCategory) => {
+    const handleSubmit = async (data: PlanCategory) => {
         setLoading(true)
-        putPlanCategory({ ...data })
+        await putPlanCategory({ ...data })
     }
 
     return (

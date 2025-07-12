@@ -1,7 +1,7 @@
 import re
 from typing import Optional, Annotated
 from .role_schema import RoleResponseProfile
-from pydantic import BaseModel, EmailStr, Field, computed_field
+from pydantic import BaseModel, EmailStr, Field, computed_field, validator
 
 PASSWORD_PATTERN = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$"
 
@@ -30,11 +30,39 @@ class UserUpdate(BaseModel):
 class UserAccountConfirmation(BaseModel):
     username: Annotated[str, Field(min_length=3, max_length=50)]
     phone_number: Annotated[str, Field(max_length=20)]
-    password: Annotated[str, Field(min_length=8, max_length=50)]
+    password: str = Field(min_length=8, max_length=50)
+
+    @validator('password')
+    def validate_password_strength(cls, v):
+        if not PasswordValidator.validate_password_pattern(v):
+            raise ValueError(
+                'La contraseña debe tener una mayúscula, una minúscula, un número y un carácter especial.'
+            )
+        return v
 
 class UserChangePassword(BaseModel):
     email: EmailStr
-    new_password: Annotated[str, Field(min_length=8, max_length=50)]
+    new_password: str = Field(min_length=8, max_length=50)
+
+    @validator('new_password')
+    def validate_password_strength(cls, v):
+        if not PasswordValidator.validate_password_pattern(v):
+            raise ValueError(
+                'La contraseña debe tener una mayúscula, una minúscula, un número y un carácter especial.'
+            )
+        return v
+
+class ChangePasswordRequest(BaseModel):
+    current_password: Annotated[str, Field(min_length=8, max_length=50)]
+    new_password: str = Field(min_length=8, max_length=50)
+
+    @validator('new_password')
+    def validate_password_strength(cls, v):
+        if not PasswordValidator.validate_password_pattern(v):
+            raise ValueError(
+                'La contraseña debe tener una mayúscula, una minúscula, un número y un carácter especial.'
+            )
+        return v
 
 class UserResponse(UserBase):
     id: int

@@ -48,9 +48,9 @@ export default function UpdatePlanPage() {
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: Plan) => {
+    const handleSubmit = async (data: Plan) => {
         setLoading(true)
-        putPlan({ ...data })
+        await putPlan({ ...data })
     }
 
     return (

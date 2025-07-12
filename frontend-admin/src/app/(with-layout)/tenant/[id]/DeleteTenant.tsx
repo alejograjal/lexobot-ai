@@ -16,9 +16,9 @@ export function DeleteTenant({ tenantId, tenantName }: DeleteTenantProps) {
 
     const { mutate: deleteTenant } = UseDeleteTenant(UseMutationCallbacks("Tenant eliminado correctamente", "/tenant", closeLoading));
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setIsLoading(true);
-        deleteTenant(tenantId);
+        await deleteTenant(tenantId);
     };
 
     return (

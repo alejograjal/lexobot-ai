@@ -70,5 +70,6 @@ export type UserAccountConfirmation = components["schemas"]["UserAccountConfirma
 export type UserChangePassword = components["schemas"]["UserChangePassword"];
 
 export type ResetPassword = components["schemas"]["ResetPasswordRequest"];
+export type ChangePassword = components["schemas"]["ChangePasswordRequest"];
 
 export type PeriodType = "day" | "week" | "month";

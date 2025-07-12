@@ -48,9 +48,9 @@ export default function UpdateRolePage() {
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: Role) => {
+    const handleSubmit = async (data: Role) => {
         setLoading(true)
-        putRole({ ...data })
+        await putRole({ ...data })
     }
 
     return (

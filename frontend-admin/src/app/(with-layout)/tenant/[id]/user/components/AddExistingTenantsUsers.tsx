@@ -26,9 +26,9 @@ export default function AddExistingTenantsUsers({ tenantId }: AddExistingTenants
 
     const { mutate: postBulk } = UsePostBulkTenantUsers({ tenantId: Number(tenantId), ...UseMutationCallbacks('Usuarios asignados correctamente', `/tenant/${tenantId}/user`, closeLoading) })
 
-    const handleAssign = () => {
+    const handleAssign = async () => {
         setLoading(true);
-        postBulk({
+        await postBulk({
             assign: true,
             user_ids: selectedIds
         })

@@ -35,8 +35,8 @@ export default function AssignTable({ tenantId }: { tenantId: string | undefined
 
     const { mutate: postBulk } = UsePutBulkTenantUsers({ tenantId: Number(tenantId), ...UseMutationCallbacks('Usuarios asignados correctamente', `/tenant/${tenantId}/user`, closeLoading) })
 
-    const handleAssign = () => {
-        postBulk({
+    const handleAssign = async () => {
+        await postBulk({
             assign: true,
             user_ids: selectedIds
         })

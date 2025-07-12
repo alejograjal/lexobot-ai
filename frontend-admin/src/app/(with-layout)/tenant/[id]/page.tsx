@@ -49,9 +49,9 @@ export default function UpdateTenantPage() {
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: Tenant) => {
+    const handleSubmit = async (data: Tenant) => {
         setLoading(true)
-        putTenant({ ...data })
+        await putTenant({ ...data })
     }
 
     return (

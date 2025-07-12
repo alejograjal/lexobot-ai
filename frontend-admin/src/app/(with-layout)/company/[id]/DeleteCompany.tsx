@@ -16,9 +16,9 @@ export function DeleteCompany({ companyId, companyName }: DeleteCompanyProps) {
 
     const { mutate: deleteCompany } = UseDeleteCompany(UseMutationCallbacks("Compañía eliminada correctamente", "/company", closeLoading));
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setIsLoading(true);
-        deleteCompany(companyId);
+        await deleteCompany(companyId);
     };
 
     return (

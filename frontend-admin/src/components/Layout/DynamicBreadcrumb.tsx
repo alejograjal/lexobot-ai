@@ -29,6 +29,7 @@ export function DynamicBreadcrumb() {
             access: "Accesos",
             role: "Roles",
             user: "Usuarios",
+            account: "Cuenta",
 
         }
         return map[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)

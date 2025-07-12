@@ -21,9 +21,9 @@ export function BuildVectorstoreDialog({ assignmentId }: BuildVectorstoreDialogP
     }
     const { mutate: postCompanyTenantBuildVectorStore } = UsePostCompanyTenantBuildVectorStore(UseMutationCallbacks('Modelo construido correctamente', undefined, closeLoading))
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setLoading(true)
-        postCompanyTenantBuildVectorStore(assignmentId)
+        await postCompanyTenantBuildVectorStore(assignmentId)
     }
 
     return (

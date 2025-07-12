@@ -19,9 +19,9 @@ export function DeleteTenantUser({ tenantId, tenantUserId, userId, userName }: D
 
     const { mutate: deleteTenantUser } = UseDeleteTenantUser({ tenantId, ...UseMutationCallbacks("Usuario eliminado correctamente", `/tenant/${tenantId}/user`, closeLoading) });
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setIsLoading(true);
-        deleteTenantUser(tenantUserId);
+        await deleteTenantUser(tenantUserId);
     };
 
     return (

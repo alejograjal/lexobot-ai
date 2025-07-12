@@ -58,9 +58,9 @@ export default function UpdateCompanyPage() {
         }
     }, [isError, errorAPI, router, setSnackbarMessage])
 
-    const handleSubmit = (data: Company) => {
+    const handleSubmit = async (data: Company) => {
         setLoading(true)
-        putCompany({ ...data })
+        await putCompany({ ...data })
     }
 
     return (

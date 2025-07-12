@@ -15,8 +15,8 @@ export default function CreateCompanyPage() {
 
     const { mutate: postCompany } = UsePostCompany(UseMutationCallbacks('Compañía creada correctamente', '/company', closeLoading));
 
-    const handleSubmit = (data: Company) => {
-        postCompany({ ...data });
+    const handleSubmit = async (data: Company) => {
+        await postCompany({ ...data });
     }
 
     return (

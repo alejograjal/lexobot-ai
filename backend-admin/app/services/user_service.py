@@ -7,9 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .user_token_service import UserTokenService
 from app.core import UserRole, settings, TokenPurpose
 from app.core import get_current_role, SecurityHandler
+from app.core.user_context_service import get_current_id
 from .user_password_history_service import UserPasswordHistoryService
-from app.core import DuplicateEntryError, NotFoundException, ValidationException, DuplicatePasswordError, AppException
-from app.schemas import UserCreate, UserUpdate, UserAccountConfirmation, UserChangePassword, UserPasswordHistoryCreate, ResetPasswordRequest
+from app.core import DuplicateEntryError, NotFoundException, ValidationException, AppException
+from app.schemas import UserCreate, UserUpdate, UserAccountConfirmation, UserChangePassword, UserPasswordHistoryCreate, ResetPasswordRequest, ChangePasswordRequest
 
 class UserService:
     ROLE_ID_TO_ENUM = {
@@ -107,6 +108,30 @@ class UserService:
             if existing and existing.id != user_id:
                 raise DuplicateEntryError("User", "phone_number")
         
+        return await self.repository.update(db, user_id, update_data)
+    
+    async def update_user_account(
+        self, 
+        db: AsyncSession, 
+        user_data: UserUpdate
+    ) -> Optional[User]:
+        user_id = get_current_id()
+        current_user = await self.repository.get_by_id(db, user_id)
+        if not current_user:
+            raise NotFoundException("User", user_id)
+        
+        allowed_fields = {"first_name", "last_name", "phone_number"}
+        update_data = {
+            key: value
+            for key, value in user_data.dict(exclude_unset=True).items()
+            if key in allowed_fields
+        }
+
+        if "phone_number" in update_data:
+            existing = await self.repository.get_by_phoneNumber(db, update_data["phone_number"])
+            if existing and existing.id != user_id:
+                raise DuplicateEntryError("User", "phone_number")
+
         return await self.repository.update(db, user_id, update_data)
     
     async def delete_user(self, db: AsyncSession, user_id: int) -> None:
@@ -212,8 +237,6 @@ class UserService:
             if(user.id != user_token.user_id):
                 raise AppException(detail="El correo no coincide con el de la cuenta", status_code=404, error_code="USER_NOT_FOUND")
             
-            self.validate_password_strength(user_change_password.new_password)
-
             hashed = SecurityHandler.hash_password(user_change_password.new_password)
             await self.repository.update(db, user.id, {"password_hash": hashed})
 
@@ -227,23 +250,27 @@ class UserService:
 
             await self.user_password_history_service.create(db, user_password_history)
 
-    def validate_password_strength(self, password: str) -> None:
-        """
-        Validates password strength and raises ValidationError with a list of errors if not valid.
-        """
-        errors = []
+    async def change_user_password(
+        self,
+        db: AsyncSession,
+        data: ChangePasswordRequest
+    ) -> None:
+        async with db.begin():
+            user_id = get_current_id()
+            user = await self.get_by_id(db, user_id)
+            if not user:
+                raise AppException("Usuario no encontrado", status_code=404)
 
-        if len(password) < 8:
-            errors.append("La contraseña debe tener al menos 8 caracteres.")
+            if not SecurityHandler.verify_password(data.current_password, user.password_hash):
+                raise AppException("La contraseña actual es incorrecta", status_code=400)
 
-        if not re.search(r'[A-Z]', password):
-            errors.append("La contraseña debe contener al menos una letra mayúscula.")
+            new_hashed = SecurityHandler.hash_password(data.new_password)
 
-        if not re.search(r'\d', password):
-            errors.append("La contraseña debe contener al menos un número.")
+            await self.repository.update(db, user.id, {"password_hash": new_hashed})
 
-        if not re.search(r'[^A-Za-z0-9]', password):
-            errors.append("La contraseña debe contener al menos un carácter especial.")
-
-        if errors:
-            raise ValidationException("\n".join(errors))
+            user_password_history = UserPasswordHistoryCreate(
+                user_id=user.id,
+                plain_password=data.current_password,
+                password_hash=user.password_hash
+            )
+            await self.user_password_history_service.create(db, user_password_history)

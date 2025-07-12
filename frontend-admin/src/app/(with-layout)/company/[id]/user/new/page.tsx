@@ -38,8 +38,8 @@ export default function CreateCompanyUserPage() {
 
     const { mutate: postCompany } = UsePostCompanyUser({ companyId: Number(companyId), ...UseMutationCallbacks('Usuario creado y asignado correctamente', `/company/${companyId}/user`, closeLoading) });
 
-    const handleSubmit = (data: User) => {
-        postCompany({ user: data, assign: true });
+    const handleSubmit = async (data: User) => {
+        await postCompany({ user: data, assign: true });
     }
 
     return (

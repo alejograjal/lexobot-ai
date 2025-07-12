@@ -28,7 +28,8 @@ from .user_schema import (
     UserProfile,
     PasswordValidator,
     UserAccountConfirmation,
-    UserChangePassword
+    UserChangePassword,
+    ChangePasswordRequest
 )
 
 from .company_access_schema import (
@@ -141,6 +142,7 @@ __all__ = [
     "PasswordValidator",
     "UserAccountConfirmation",
     "UserChangePassword",
+    "ChangePasswordRequest",
 
     # Company Access
     "CompanyAccessCreate",

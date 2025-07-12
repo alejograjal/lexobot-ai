@@ -16,9 +16,9 @@ export function DeleteUser({ userId, userName }: DeleteUserProps) {
 
     const { mutate: deleteCompany } = UseDeleteUser(UseMutationCallbacks("Usuario eliminado correctamente", "/access/user", closeLoading));
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setIsLoading(true);
-        deleteCompany(userId);
+        await deleteCompany(userId);
     };
 
     return (
