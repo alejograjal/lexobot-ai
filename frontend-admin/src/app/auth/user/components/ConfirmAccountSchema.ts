@@ -4,7 +4,8 @@ export const confirmAccountSchema = yup.object({
     username: yup
         .string()
         .required('El nombre de usuario es requerido')
-        .min(6, 'Debe tener al menos 6 caracteres'),
+        .min(6, 'Debe tener al menos 6 caracteres')
+        .matches(/^[a-zA-Z0-9_-]+$/, 'Solo letras, números, guion y guion bajo'),
     phone_number: yup
         .string()
         .required('El número de teléfono es requerido')

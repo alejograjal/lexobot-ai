@@ -1,14 +1,15 @@
 'use client'
 
-import { useEffect } from 'react'
+import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
+import { useEffect, useMemo } from 'react'
 import { Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Loader2, Check, X } from 'lucide-react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ButtonLoading } from '@/components/Button/ButtonLoading'
 import { FormPhoneField } from '@/components/Form/FormInputPhone'
-import { FormFieldWrapper } from '@/components/Form/FormFieldWrapper'
+import { FormPasswordFieldWrapper } from '@/components/Form/FormPasswordFieldWrapper'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
 import { UseGetAvailabilityUserName } from '@/hooks/api/lexobot-ai/authentication/UseGetAvailabilityUserName'
 import { confirmAccountSchema, ConfirmAccountFormValues } from '@/app/auth/user/components/ConfirmAccountSchema'
@@ -30,7 +31,18 @@ export default function ConfirmAccountForm({ onSubmit, isLoading = false }: Conf
     })
 
     const username = form.watch('username')
-    const { data: usernameAvailable, isFetching: checkingUsername } = UseGetAvailabilityUserName(username)
+
+    const usernameSchema = confirmAccountSchema.fields.username as yup.StringSchema
+    const isValidUsername = useMemo(() => {
+        try {
+            usernameSchema.validateSync(username)
+            return true
+        } catch {
+            return false
+        }
+    }, [username, usernameSchema])
+
+    const { data: usernameAvailable, isFetching: checkingUsername } = UseGetAvailabilityUserName(username, { enabled: isValidUsername })
 
     useEffect(() => {
         if (usernameAvailable === false) {
@@ -74,9 +86,8 @@ export default function ConfirmAccountForm({ onSubmit, isLoading = false }: Conf
 
                     <FormPhoneField name="phone_number" label="Teléfono" />
 
-                    <FormFieldWrapper name="password" type='password' label="Contraseña" />
-                    <FormFieldWrapper name="confirm_password" type='password' label="Confirmar contraseña" />
-
+                    <FormPasswordFieldWrapper name="password" label="Contraseña" showRules />
+                    <FormPasswordFieldWrapper name="confirm_password" label="Confirmar contraseña" />
 
                     <ButtonLoading loading={isLoading} type="submit" className="w-full">
                         Confirmar cuenta

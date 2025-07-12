@@ -1,11 +1,12 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { ChangePasswordFormValues, changePasswordSchema } from "./ChangePasswordSchema"
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Form } from "@/components/ui/form";
-import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { FormActions } from "@/components/Form/FormActions";
+import { FormFieldWrapper } from "@/components/Form/FormFieldWrapper";
+import { FormPasswordFieldWrapper } from "@/components/Form/FormPasswordFieldWrapper";
+import { ChangePasswordFormValues, changePasswordSchema } from "./ChangePasswordSchema"
 
 type ChangePasswordFormProps = {
     onSubmit: (data: ChangePasswordFormValues) => void
@@ -27,8 +28,8 @@ export default function ChangePasswordForm({ onSubmit, isLoading = false }: Chan
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormFieldWrapper name="email" label="Correo electrónico" />
-                    <FormFieldWrapper name="new_password" type='password' label="Contraseña nueva" />
-                    <FormFieldWrapper name="confirm_password" type='password' label="Confirmar contraseña nueva" />
+                    <FormPasswordFieldWrapper name="new_password" label="Contraseña nueva" showRules />
+                    <FormPasswordFieldWrapper name="confirm_password" label="Confirmar contraseña nueva" />
 
                     <FormActions pathCancel="/login" isSaving={isLoading} />
                 </form>
