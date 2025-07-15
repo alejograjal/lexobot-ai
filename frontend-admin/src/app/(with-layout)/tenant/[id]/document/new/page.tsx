@@ -42,7 +42,10 @@ export default function CreateDocument() {
 
     const handleSubmit = (data: TenantDocument) => {
         setLoading(true);
-        postTenant({ ...data });
+        postTenant({
+            ...data,
+            effective_date: data.effective_date.toISOString(),
+        });
     }
 
     return (

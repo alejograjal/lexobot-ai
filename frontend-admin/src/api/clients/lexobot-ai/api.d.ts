@@ -1369,6 +1369,11 @@ export interface components {
         };
         /** TenantDocumentCreate */
         TenantDocumentCreate: {
+            /**
+             * Effective Date
+             * Format: date-time
+             */
+            effective_date: string;
             /** Document Name */
             document_name: string;
         };
@@ -1376,6 +1381,11 @@ export interface components {
         TenantDocumentResponse: {
             /** Tenant Id */
             tenant_id: number;
+            /**
+             * Effective Date
+             * Format: date-time
+             */
+            effective_date: string;
             /** Document Name */
             document_name: string;
             /** File Path */

@@ -25,18 +25,12 @@ export function CompanyAccessForm({
         defaultValues,
     })
 
-    // const { data: plans, isLoading, isError } = UseGetPlans()
-    // const planOptions = createSelectOptions(plans, { valueField: 'id', labelField: 'name' });
-    // const selectPlaceholder = isError ? "Error al cargar los planes" : isLoading ? "Cargando..." : "Seleccione un plan"
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-md">
                 <FormFieldWrapper name="lexobot_worker_api_key" label="API Key" disabled />
-                {/* <FormSelectWrapper name="plan_id" label="Plan" options={planOptions} placeholder={selectPlaceholder} disabled={isLoading || isError} /> */}
                 <FormDatePicker name="issue_at" label="Fecha de adquisición" />
                 <FormDatePicker name="expires_at" label="Fecha de vencimiento" />
-                {/* <FormSwitch name="auto_renewal" label="Renovación automática" /> */}
 
                 <FormActions pathCancel="/company" isSaving={onloading} />
             </form>

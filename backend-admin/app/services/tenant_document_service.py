@@ -35,7 +35,9 @@ class TenantDocumentService:
     async def create_document(self, db: AsyncSession, tenant_id: int, document_data: TenantDocumentCreate, file: UploadFile) -> TenantDocument:
         async with db.begin():
             tenant = await self.tenant_service.get(db, tenant_id)
-            document_name = f"{document_data.document_name}.pdf";
+
+            formatted_date = document_data.effective_date.strftime("%Y-%m-%d")
+            document_name = f"{document_data.document_name}_{formatted_date}.pdf";
 
             existing = await self.repository.get_by_name(db, tenant_id, document_name)
             if existing:
@@ -45,13 +47,13 @@ class TenantDocumentService:
             company_worker_id = await self.company_access_service.get_company_worker_id(db, company_access_id)
 
             file_bytes = await file.read()
-            file_path = f"/tenants/{tenant.external_id}/docs/{document_data.document_name}.pdf"
+            file_path = f"/tenants/{tenant.external_id}/docs/{document_name}"
 
             create_data = document_data.dict()
             create_data.update({
                 "tenant_id": tenant_id,
                 "file_path": file_path,
-                "document_name": f"{document_data.document_name}.pdf"
+                "document_name": f"{document_name}"
             })
             
             created = await self.repository.create(db, create_data)
