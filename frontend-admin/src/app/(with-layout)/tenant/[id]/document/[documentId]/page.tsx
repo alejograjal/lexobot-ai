@@ -8,10 +8,18 @@ import { formatErrorMessage } from "@/lib/utils"
 import { DeleteDocument } from "./DeleteDocument"
 import { UseSnackbar } from "@/stores/UseSnackbar"
 import { PageHeader } from "@/components/Shared/PageHeader"
+import { TenantDocumentResponse } from "@/types/lexobot-ai"
 import { TenantDocumentForm } from "../components/TenantDocumentForm"
 import { UseGetTenantById } from "@/hooks/api/lexobot-ai/tenant/UseGetTenantById"
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress"
 import { UseGetTenantDocumentById } from "@/hooks/api/lexobot-ai/tenantDocument/UseGetTenantDocumentById"
+
+const mapTenantDocument = (document: TenantDocumentResponse) => {
+    return {
+        document_name: document.document_name,
+        effective_date: document.effective_date ? new Date(document.effective_date) : undefined,
+    }
+}
 
 export default function UpdateDocument() {
     const router = useRouter()
@@ -62,7 +70,7 @@ export default function UpdateDocument() {
             ) : (
                 <TenantDocumentForm
                     tenantId={Number(tenantId)}
-                    defaultValues={document ?? undefined}
+                    defaultValues={mapTenantDocument(document!) ?? undefined}
                     onSubmit={() => { }}
                     onloading={false}
                     onEdit={true}
