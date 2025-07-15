@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 class CompanyAccessRepository(BaseRepository[CompanyAccess]):
     def __init__(self):
-        super().__init__(CompanyAccess, relationships=["company", "plan", "plan.plan_category"])
+        super().__init__(CompanyAccess, relationships=["company"])
 
     async def get_all_by_company(self, db: AsyncSession, company_id: int) -> List[CompanyAccess]:
         """

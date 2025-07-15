@@ -7,9 +7,10 @@ interface FormActionsProps {
     isSaving: boolean;
     onlyCancel?: boolean;
     className?: string;
+    disabled?: boolean;
 }
 
-export function FormActions({ pathCancel, isSaving, onlyCancel = false, className }: FormActionsProps) {
+export function FormActions({ pathCancel, isSaving, onlyCancel = false, className, disabled = false }: FormActionsProps) {
     return (
         <div className={`flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-4 pt-4 ${className}`}>
             <Link href={pathCancel}>
@@ -17,7 +18,7 @@ export function FormActions({ pathCancel, isSaving, onlyCancel = false, classNam
                     type="button"
                     variant="outline"
                     className="w-full sm:w-auto"
-                    disabled={isSaving}
+                    disabled={isSaving || disabled}
                 >
                     Cancelar
                 </Button>
@@ -25,7 +26,7 @@ export function FormActions({ pathCancel, isSaving, onlyCancel = false, classNam
 
             {
                 !onlyCancel &&
-                <ButtonLoading type="submit" loading={isSaving} className="w-full sm:w-auto">
+                <ButtonLoading type="submit" loading={isSaving} className="w-full sm:w-auto" disabled={disabled}>
                     Guardar
                 </ButtonLoading>
             }

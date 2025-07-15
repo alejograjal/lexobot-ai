@@ -120,6 +120,12 @@ from .user_token_schema import (
     UserTokenResponse
 )
 
+from .tenant_plan_assignment_schema import (
+    TenantPlanAssignmentCreate,
+    TenantPlanAssignmentUpdate,
+    TenantPlanAssignmentResponse
+)
+
 __all__ = [
     # Authentication
     "LoginRequest",
@@ -217,5 +223,10 @@ __all__ = [
     # User Token
     "UserTokenCreate",
     "UserTokenUpdate",
-    "UserTokenResponse"
+    "UserTokenResponse",
+
+    # Tenant Plan Assignment
+    "TenantPlanAssignmentCreate",
+    "TenantPlanAssignmentUpdate",
+    "TenantPlanAssignmentResponse"
 ]

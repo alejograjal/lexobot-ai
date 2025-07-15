@@ -3,7 +3,8 @@ import { InferType } from "yup";
 
 export const initialValues = {
     document_name: "",
-    file: undefined
+    file: undefined,
+    effective_date: new Date(),
 };
 
 export const tenantDocumentSchema = yup.object({
@@ -16,7 +17,9 @@ export const tenantDocumentSchema = yup.object({
         .required("Archivo requerido")
         .test("fileType", "Solo se permiten archivos PDF", (value) => {
             return value && value.type === "application/pdf";
-        })
+        }),
+    effective_date: yup.date().required("Fecha de vigencia requerida").typeError("Fecha inválida"),
+
 });
 
 export type TenantDocument = InferType<typeof tenantDocumentSchema>;

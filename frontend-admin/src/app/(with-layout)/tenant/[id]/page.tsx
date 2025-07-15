@@ -15,6 +15,7 @@ import { UsePutTenant } from "@/hooks/api/lexobot-ai/tenant/UsePutTenant"
 import { TenantForm } from "@/app/(with-layout)/tenant/components/TenantForm"
 import { UseGetTenantById } from "@/hooks/api/lexobot-ai/tenant/UseGetTenantById"
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress"
+import TenantPlanAssignment from "./plan-assignment/page"
 
 export default function UpdateTenantPage() {
     const router = useRouter()
@@ -68,11 +69,15 @@ export default function UpdateTenantPage() {
             {isLoading ? (
                 <CircularLoadingProgress />
             ) : (
-                <TenantForm
-                    defaultValues={data ?? undefined}
-                    onSubmit={handleSubmit}
-                    onloading={loading}
-                />
+                <>
+                    <TenantForm
+                        defaultValues={data ?? undefined}
+                        onSubmit={handleSubmit}
+                        onloading={loading}
+                    />
+                    <TenantPlanAssignment />
+                </>
+
             )}
 
         </Page>

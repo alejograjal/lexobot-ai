@@ -17,6 +17,7 @@ from .login_attempt import LoginAttempt
 from .company_access import CompanyAccess
 from .tenant_document import TenantDocument
 from .user_password_history import UserPasswordHistory
+from .tenant_plan_assignment import TenantPlanAssignment
 from .company_tenant_assignment import CompanyTenantAssignment
 
 __all__ = [
@@ -35,5 +36,6 @@ __all__ = [
     "CompanyAccess",
     "TenantDocument",
     "UserPasswordHistory",
+    "TenantPlanAssignment",
     "CompanyTenantAssignment",
 ]

@@ -17,6 +17,7 @@ from .login_attempt_repository import LoginAttemptRepository
 from .company_access_repository import CompanyAccessRepository
 from .tenant_document_repository import TenantDocumentRepository
 from .user_password_history_repository import UserPasswordHistoryRepository
+from .tenant_plan_assignment_repository import TenantPlanAssignmentRepository
 from .company_tenant_assignment_repository import CompanyTenantAssignmentRepository
 
 __all__ = [
@@ -59,5 +60,8 @@ __all__ = [
     "TenantDocumentRepository",
 
     # Role Repository
-    "RoleRepository"
+    "RoleRepository",
+
+    # Tenant Plan Assignment Repository
+    "TenantPlanAssignmentRepository"
 ]

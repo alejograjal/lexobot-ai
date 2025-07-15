@@ -904,6 +904,43 @@ export interface paths {
         patch: operations["update_user_api_v1_users__user_id__patch"];
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plan Assignments */
+        get: operations["list_plan_assignments_api_v1_tenants__tenant_id__plans_get"];
+        put?: never;
+        /** Create Plan Assignment */
+        post: operations["create_plan_assignment_api_v1_tenants__tenant_id__plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/plans/{assignment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Plan Assignment */
+        get: operations["get_plan_assignment_api_v1_tenants__tenant_id__plans__assignment_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Plan Assignment */
+        delete: operations["delete_plan_assignment_api_v1_tenants__tenant_id__plans__assignment_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Plan Assignment */
+        patch: operations["update_plan_assignment_api_v1_tenants__tenant_id__plans__assignment_id__patch"];
+        trace?: never;
+    };
     "/api/v1/accounts": {
         parameters: {
             query?: never;
@@ -981,47 +1018,6 @@ export interface components {
         };
         /** CompanyAccessCreate */
         CompanyAccessCreate: {
-            /** Plan Id */
-            plan_id: number;
-            /**
-             * Plan Acquisition Date
-             * Format: date-time
-             */
-            plan_acquisition_date: string;
-            /**
-             * Plan Expiration Date
-             * Format: date-time
-             */
-            plan_expiration_date: string;
-            /**
-             * Auto Renewal
-             * @default false
-             */
-            auto_renewal: boolean;
-        };
-        /** CompanyAccessResponse */
-        CompanyAccessResponse: {
-            /** Plan Id */
-            plan_id: number;
-            /**
-             * Plan Acquisition Date
-             * Format: date-time
-             */
-            plan_acquisition_date: string;
-            /**
-             * Plan Expiration Date
-             * Format: date-time
-             */
-            plan_expiration_date: string;
-            /**
-             * Auto Renewal
-             * @default false
-             */
-            auto_renewal: boolean;
-            /** Id */
-            id: number;
-            /** Lexobot Worker Api Key */
-            lexobot_worker_api_key: string;
             /**
              * Issue At
              * Format: date-time
@@ -1032,20 +1028,28 @@ export interface components {
              * Format: date-time
              */
             expires_at: string;
-            /** Is Active */
-            is_active: boolean;
-            plan: components["schemas"]["PlanResponse"];
+        };
+        /** CompanyAccessResponse */
+        CompanyAccessResponse: {
+            /**
+             * Issue At
+             * Format: date-time
+             */
+            issue_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Id */
+            id: number;
+            /** Lexobot Worker Api Key */
+            lexobot_worker_api_key: string;
         };
         /** CompanyAccessUpdate */
         CompanyAccessUpdate: {
-            /** Plan Id */
-            plan_id: number | null;
-            /** Plan Acquisition Date */
-            plan_acquisition_date: string | null;
-            /** Plan Expiration Date */
-            plan_expiration_date: string | null;
-            /** Auto Renewal */
-            auto_renewal: boolean | null;
+            /** Expires At */
+            expires_at: string | null;
         };
         /** CompanyCreate */
         CompanyCreate: {
@@ -1251,8 +1255,8 @@ export interface components {
             plan_category_id: number;
             /** Name */
             name: string;
-            /** Max Tenants */
-            max_tenants: number;
+            /** Max Associates */
+            max_associates: number;
             /** Base Price */
             base_price: number | string;
         };
@@ -1262,8 +1266,8 @@ export interface components {
             plan_category_id: number;
             /** Name */
             name: string;
-            /** Max Tenants */
-            max_tenants: number;
+            /** Max Associates */
+            max_associates: number;
             /** Base Price */
             base_price: string;
             /** Id */
@@ -1278,8 +1282,8 @@ export interface components {
             plan_category_id?: number | null;
             /** Name */
             name?: string | null;
-            /** Max Tenants */
-            max_tenants?: number | null;
+            /** Max Associates */
+            max_associates?: number | null;
             /** Base Price */
             base_price?: number | string | null;
         };
@@ -1365,6 +1369,11 @@ export interface components {
         };
         /** TenantDocumentCreate */
         TenantDocumentCreate: {
+            /**
+             * Effective Date
+             * Format: date-time
+             */
+            effective_date: string;
             /** Document Name */
             document_name: string;
         };
@@ -1372,6 +1381,11 @@ export interface components {
         TenantDocumentResponse: {
             /** Tenant Id */
             tenant_id: number;
+            /**
+             * Effective Date
+             * Format: date-time
+             */
+            effective_date: string;
             /** Document Name */
             document_name: string;
             /** File Path */
@@ -1380,6 +1394,57 @@ export interface components {
             id: number;
             /** Is Active */
             is_active: boolean;
+        };
+        /** TenantPlanAssignmentCreate */
+        TenantPlanAssignmentCreate: {
+            /** Plan Id */
+            plan_id: number;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Auto Renewal */
+            auto_renewal: boolean;
+            /**
+             * Assigned At
+             * Format: date-time
+             */
+            assigned_at: string;
+        };
+        /** TenantPlanAssignmentResponse */
+        TenantPlanAssignmentResponse: {
+            /** Plan Id */
+            plan_id: number;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Auto Renewal */
+            auto_renewal: boolean;
+            /** Id */
+            id: number;
+            /** Tenant Id */
+            tenant_id: number;
+            /**
+             * Assigned At
+             * Format: date-time
+             */
+            assigned_at: string;
+            plan: components["schemas"]["PlanResponse"];
+        };
+        /** TenantPlanAssignmentUpdate */
+        TenantPlanAssignmentUpdate: {
+            /** Plan Id */
+            plan_id: number;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            /** Auto Renewal */
+            auto_renewal: boolean;
         };
         /** TenantResponse */
         TenantResponse: {
@@ -6469,6 +6534,350 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    list_plan_assignments_api_v1_tenants__tenant_id__plans_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantPlanAssignmentResponse"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    create_plan_assignment_api_v1_tenants__tenant_id__plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TenantPlanAssignmentCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantPlanAssignmentResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_plan_assignment_api_v1_tenants__tenant_id__plans__assignment_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+                assignment_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantPlanAssignmentResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    delete_plan_assignment_api_v1_tenants__tenant_id__plans__assignment_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+                assignment_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Resource not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update_plan_assignment_api_v1_tenants__tenant_id__plans__assignment_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tenant_id: number;
+                assignment_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TenantPlanAssignmentUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantPlanAssignmentResponse"];
                 };
             };
             /** @description Unauthorized */

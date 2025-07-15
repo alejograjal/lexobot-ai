@@ -33,11 +33,12 @@ async def list_documents(
 async def create_document(
     tenant_id: int,
     document_name: str = Form(...),
+    effective_date: str = Form(...),
     file: UploadFile = File(...),
     db: AsyncSession = Depends(get_db)
 ) -> TenantDocumentResponse:
     """Create a new document for a tenant"""
-    document_data = TenantDocumentCreate(document_name=document_name)
+    document_data = TenantDocumentCreate(document_name=document_name, effective_date=effective_date)
     return await document_service.create_document(db, tenant_id, document_data, file)
 
 @router.put(

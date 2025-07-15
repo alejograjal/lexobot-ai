@@ -2,9 +2,8 @@ import * as yup from "yup"
 import { InferType } from "yup";
 
 export const companyAccessSchema = yup.object({
-    plan_id: yup.number().required("Plan requerido").min(1, "Plan requerido"),
-    plan_acquisition_date: yup.date().required("Fecha de adquisición del plan requerida").typeError("Fecha inválida"),
-    plan_expiration_date: yup.date().required("Fecha de vencimiento del plan requerida").typeError("Fecha inválida").test(
+    issue_at: yup.date().required("Fecha de generación de acceso requerida").typeError("Fecha inválida"),
+    expires_at: yup.date().required("Fecha de vencimiento del acceso requerida").typeError("Fecha inválida").test(
         "is-after-acquisition",
         "La fecha de vencimiento debe ser posterior a la de adquisición",
         function (value) {
@@ -13,14 +12,11 @@ export const companyAccessSchema = yup.object({
             return value > plan_acquisition_date
         }
     ),
-    auto_renewal: yup.boolean().required("Renovación automática requerida"),
 })
 
 export type CompanyAccess = InferType<typeof companyAccessSchema>
 
 export const initialValues: CompanyAccess = {
-    plan_id: undefined as unknown as number,
-    plan_acquisition_date: new Date(),
-    plan_expiration_date: new Date(),
-    auto_renewal: false
+    issue_at: new Date(),
+    expires_at: new Date()
 };

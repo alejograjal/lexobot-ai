@@ -4,28 +4,27 @@ import { useEffect, useState } from "react";
 import { formatErrorMessage } from "@/lib/utils";
 import { UseSnackbar } from "@/stores/UseSnackbar";
 import { useParams, useRouter } from "next/navigation";
+import { CompanyAccessResponse } from "@/types/lexobot-ai";
 import { CompanyAccessForm } from "./components/CompanyAccessForm";
 import { UseMutationCallbacks } from "@/hooks/UseMutationCallbacks";
 import { CircularLoadingProgress } from "@/components/Shared/CircularLoadingProgress";
-import { CompanyAccess as CompanyAccessSchema, initialValues } from "./components/CompanyAccessSchema";
 import { UsePutCompanyAccess } from "@/hooks/api/lexobot-ai/companyAccess/UsePutCompanyAccess";
 import { UsePostCompanyAccess } from "@/hooks/api/lexobot-ai/companyAccess/UsePostCompanyAccess";
 import { UseGetCompanyAccesses } from "@/hooks/api/lexobot-ai/companyAccess/UseGetCompanyAccesses";
-import { init } from "next/dist/compiled/webpack/webpack";
+import { CompanyAccess as CompanyAccessSchema, initialValues } from "./components/CompanyAccessSchema";
 
 function mapCompanyAccessToDto(data: CompanyAccessSchema) {
     return {
-        ...data,
-        plan_acquisition_date: data.plan_acquisition_date.toISOString(),
-        plan_expiration_date: data.plan_expiration_date.toISOString(),
+        issue_at: data.issue_at.toISOString(),
+        expires_at: data.expires_at.toISOString(),
     }
 }
 
-function mapCompanyAccessToForm(data: any) {
+function mapCompanyAccessToForm(data: CompanyAccessResponse) {
     return {
         ...data,
-        plan_acquisition_date: data.plan_acquisition_date ? new Date(data.plan_acquisition_date) : undefined,
-        plan_expiration_date: data.plan_expiration_date ? new Date(data.plan_expiration_date) : undefined,
+        issue_at: data.issue_at ? new Date(data.issue_at) : undefined,
+        expires_at: data.expires_at ? new Date(data.expires_at) : undefined,
     }
 }
 

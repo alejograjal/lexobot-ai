@@ -72,4 +72,8 @@ export type UserChangePassword = components["schemas"]["UserChangePassword"];
 export type ResetPassword = components["schemas"]["ResetPasswordRequest"];
 export type ChangePassword = components["schemas"]["ChangePasswordRequest"];
 
+export type TenantPlanAssignmentResponse = components["schemas"]["TenantPlanAssignmentResponse"];
+export type TenantPlanAssignmentCreate = components["schemas"]["TenantPlanAssignmentCreate"];
+export type TenantPlanAssignmentUpdate = components["schemas"]["TenantPlanAssignmentUpdate"];
+
 export type PeriodType = "day" | "week" | "month";
