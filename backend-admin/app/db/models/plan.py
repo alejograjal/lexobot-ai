@@ -7,7 +7,7 @@ class Plan(BaseModel):
 
     plan_category_id = Column(Integer, ForeignKey('plan_categories.id'), nullable=False)
     name = Column(String(100), nullable=False)
-    max_tenants = Column(Integer, nullable=False) 
+    max_associates = Column(Integer, nullable=False) 
     base_price = Column(Numeric(10, 2), nullable=False)
 
     plan_category = relationship("PlanCategory", backref="plans", lazy="selectin")

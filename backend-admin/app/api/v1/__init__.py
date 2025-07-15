@@ -15,6 +15,7 @@ from .account_routes import router as account_router
 from .plan_category_routes import router as plan_category_router
 from .company_access_routes import router as company_access_router
 from .tenant_document_routes import router as tenant_document_router
+from .tenant_plan_assignment_routes import router as tenant_plan_assignment_router
 from .company_tenant_assignment_routes import router as company_tenant_assignment_router
 
 v1_router = APIRouter(prefix="/v1")
@@ -30,6 +31,7 @@ v1_router.include_router(role_router)
 v1_router.include_router(tenant_document_router)
 v1_router.include_router(tenant_router)
 v1_router.include_router(user_router)
+v1_router.include_router(tenant_plan_assignment_router)
 v1_router.include_router(account_router)
 
 __all__ = ["v1_router"]

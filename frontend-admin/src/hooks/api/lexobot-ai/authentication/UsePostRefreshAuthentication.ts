@@ -32,8 +32,9 @@ export const UsePostRefreshAuthentication = ({
             return data;
         },
         onSuccess,
-        onError: (error: ApiError, _) => {
-            onError?.(error.data as ErrorDetail, _)
+        onError: (errorAPI: ApiError, _) => {
+            const errorDetail = (errorAPI?.data as any)?.error;
+            onError?.(errorDetail as ErrorDetail, _);
         }
     })
 }

@@ -6,7 +6,7 @@ from .plan_category_schema import PlanCategoryResponse
 class PlanBase(BaseModel):
     plan_category_id: int
     name: str
-    max_tenants: int
+    max_associates: int
     base_price: Decimal = Field(..., max_digits=10, decimal_places=2)
 
 class PlanCreate(PlanBase):
@@ -15,7 +15,7 @@ class PlanCreate(PlanBase):
 class PlanUpdate(BaseModel):
     plan_category_id: Optional[int] = None
     name: Optional[str] = None
-    max_tenants: Optional[int] = None
+    max_associates: Optional[int] = None
     base_price: Optional[Decimal] = Field(default=None, max_digits=10, decimal_places=2)
 
 class PlanResponse(PlanBase):

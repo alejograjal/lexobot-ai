@@ -16,7 +16,7 @@ export default function Company() {
         <Page
             header={
                 <PageHeader
-                    title="Compañias"
+                    title="Compañías"
                     actionButton={isAdmin && <NewActionButton path="/company/new" title="Crear compañia" className="sm:w-auto w-full" />}
                 />
             }

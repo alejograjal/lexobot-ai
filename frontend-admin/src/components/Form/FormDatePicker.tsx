@@ -16,6 +16,7 @@ interface FormDatePickerProps<T extends FieldValues> {
     name: FieldPath<T>
     label: string
     placeholder?: string
+    disabled?: boolean
 }
 
 function isValidDateInstance(val: unknown): val is Date {
@@ -26,6 +27,7 @@ export function FormDatePicker<T extends FieldValues>({
     name,
     label,
     placeholder = "dd/MM/yyyy",
+    disabled = false
 }: FormDatePickerProps<T>) {
     const form = useFormContext<T>()
 
@@ -78,6 +80,7 @@ export function FormDatePicker<T extends FieldValues>({
                                     "pr-10",
                                     form.formState.errors[name] && "border-red-500 focus-visible:ring-red-500"
                                 )}
+                                disabled={disabled}
                             />
                             <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger asChild>
@@ -86,6 +89,7 @@ export function FormDatePicker<T extends FieldValues>({
                                         variant="ghost"
                                         className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
                                         tabIndex={-1}
+                                        disabled={disabled}
                                     >
                                         <CalendarIcon className="size-4" />
                                         <span className="sr-only">Seleccione una fecha</span>
@@ -107,6 +111,7 @@ export function FormDatePicker<T extends FieldValues>({
                                         captionLayout="dropdown"
                                         month={month}
                                         onMonthChange={setMonth}
+                                        disabled={disabled}
                                     />
                                 </PopoverContent>
                             </Popover>

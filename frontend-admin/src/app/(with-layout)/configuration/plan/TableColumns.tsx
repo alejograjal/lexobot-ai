@@ -24,11 +24,11 @@ export const columns: ColumnDef<PlanResponse>[] = [
         ),
     },
     {
-        accessorKey: "max_tenants",
-        header: ({ column }) => <SortableColumnHeader column={column} title="Cantidad máxima de tenants" />,
+        accessorKey: "max_associates",
+        header: ({ column }) => <SortableColumnHeader column={column} title="Cantidad máxima de asociados" />,
         cell: ({ row }) => (
             <div className="text-right">
-                {row.original.max_tenants}
+                {row.original.max_associates}
             </div>
         ),
     },

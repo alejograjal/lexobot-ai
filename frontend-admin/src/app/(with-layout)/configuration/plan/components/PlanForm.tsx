@@ -38,7 +38,7 @@ export function PlanForm({
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-md">
                 <FormFieldWrapper name="name" label="Nombre" />
                 <FormCurrencyInput name="base_price" label="Precio base" />
-                <FormFieldNumberWrapper name="max_tenants" label="Cantidad máxima de tenants" />
+                <FormFieldNumberWrapper name="max_associates" label="Cantidad máxima de asociados" />
                 <FormSelectWrapper name="plan_category_id" label="Categoría de plan" options={planCategoryOptions} placeholder={selectPlaceholder} disabled={isLoading || isError} />
 
                 <FormActions pathCancel="/configuration/plan" isSaving={onloading} />

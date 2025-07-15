@@ -5,9 +5,10 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, } from "@/com
 interface FormSwitchProps<T extends FieldValues> {
     name: FieldPath<T>
     label: string
+    disabled?: boolean
 }
 
-export function FormSwitch<T extends FieldValues>({ name, label }: FormSwitchProps<T>) {
+export function FormSwitch<T extends FieldValues>({ name, label, disabled }: FormSwitchProps<T>) {
     const form = useFormContext<T>()
 
     return (
@@ -24,6 +25,7 @@ export function FormSwitch<T extends FieldValues>({ name, label }: FormSwitchPro
                             checked={field.value}
                             onCheckedChange={field.onChange}
                             id={name}
+                            disabled={disabled}
                         />
                     </FormControl>
                     <FormMessage />

@@ -44,12 +44,15 @@ export const UsePostPlan = ({
             onSuccess?.(data, variables)
         },
         onError: (errorAPI: ApiError, _) => {
-            const { error } = errorAPI.data
-            onError?.(error as ErrorDetail, _)
+            const errorDetail = (errorAPI?.data as any)?.error;
+            onError?.(errorDetail as ErrorDetail, _);
         },
         onSettled: (data, errorAPI, variables) => {
-            const { error } = errorAPI?.data ?? null
-            onSettled?.(data, error, variables)
+            const errorDetail = typeof errorAPI?.data === 'object' && 'error' in errorAPI.data
+                ? (errorAPI.data as any).error as ErrorDetail
+                : null;
+
+            onSettled?.(data, errorDetail, variables);
         }
     })
 

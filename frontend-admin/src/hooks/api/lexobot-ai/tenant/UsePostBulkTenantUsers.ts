@@ -55,14 +55,14 @@ export const UsePostBulkTenantUsers = ({
         },
         onError: (errorAPI: ApiError, _) => {
             const errorDetail = (errorAPI?.data as any)?.error;
-
-            if (errorDetail) {
-                onError?.(errorDetail as ErrorDetail, _);
-            }
+            onError?.(errorDetail as ErrorDetail, _);
         },
         onSettled: (data, errorAPI, variables) => {
-            const { error } = errorAPI?.data ?? null
-            onSettled?.(data, error, variables)
+            const errorDetail = typeof errorAPI?.data === 'object' && 'error' in errorAPI.data
+                ? (errorAPI.data as any).error as ErrorDetail
+                : null;
+
+            onSettled?.(data, errorDetail, variables);
         }
     })
 

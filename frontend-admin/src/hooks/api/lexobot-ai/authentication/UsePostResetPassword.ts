@@ -40,8 +40,8 @@ export const UsePostResetPassword = ({
             onSuccess?.(data, variables)
         },
         onError: (errorAPI: ApiError, _) => {
-            const { error } = errorAPI.data
-            onError?.(error as ErrorDetail, _)
+            const errorDetail = (errorAPI?.data as any)?.error;
+            onError?.(errorDetail as ErrorDetail, _);
         },
         onSettled: (data, errorAPI, variables) => {
             const errorDetail = typeof errorAPI?.data === 'object' && 'error' in errorAPI.data
