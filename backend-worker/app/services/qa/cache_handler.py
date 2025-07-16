@@ -8,7 +8,7 @@ from .trace_store import compute_docs_hash, store_docs_if_needed, store_trace_en
 
 logger = logging.getLogger(__name__)
 
-async def get_similar_answer_or_none(tenant_id: str, question: str) -> Tuple[str, list[str]] | Tuple[None, None]:
+async def get_similar_answer_or_none(tenant_id: str, question: str) -> Tuple[str, list[str], str] | Tuple[None, None, None]:
     try:
         query_embedding = await get_or_embed(tenant_id, question) 
         qa_cache_store = await get_qa_cache_store(tenant_id)
@@ -17,9 +17,11 @@ async def get_similar_answer_or_none(tenant_id: str, question: str) -> Tuple[str
             query_embedding,
             k=1
         )
-        
+
         if similar_docs:
             cached_doc = similar_docs[0]
+            if not cached_doc.page_content:
+                return None, None, None
             cached_question = cached_doc.metadata.get("question", "")
             if await are_questions_semantically_similar(tenant_id, question, cached_question):
                 answer = cached_doc.page_content

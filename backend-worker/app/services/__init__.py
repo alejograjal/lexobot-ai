@@ -9,7 +9,7 @@ Provides centralized access to core services including:
 from .qa import ask_question
 from .embedder import get_embedding_model, get_chat_model
 from .loader import load_all_pdfs_and_split_with_metadata
-from .cache_engine import get_qa_cache_store, clean_cache_controlled, run_periodic_cleanup
+from .cache_engine import get_qa_cache_store, clean_cache_controlled, run_periodic_cleanup, clear_chroma_cache
 
 __all__ = [
     # Model Services
@@ -20,6 +20,7 @@ __all__ = [
     "get_qa_cache_store",
     "clean_cache_controlled",
     "run_periodic_cleanup",
+    "clear_chroma_cache",
     
     # QA Services
     "ask_question",
