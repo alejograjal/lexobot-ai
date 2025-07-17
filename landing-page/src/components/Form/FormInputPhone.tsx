@@ -35,19 +35,19 @@ export function FormPhoneField<T extends FieldValues>({ name, label }: FormPhone
                                 onChange={(e) => handleChange(e)}
                                 onBlur={field.onBlur}
                                 name={field.name}
+                                className="w-full max-w-full overflow-hidden"
                             >
                                 <InputOTPGroup>
-                                    <InputOTPSlot index={0} />
-                                    <InputOTPSlot index={1} />
-                                    <InputOTPSlot index={2} />
-                                    <InputOTPSlot index={3} />
+                                    <InputOTPSlot index={0} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
+                                    <InputOTPSlot index={1} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
+                                    <InputOTPSlot index={2} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
+                                    <InputOTPSlot index={3} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
                                 </InputOTPGroup>
-                                <InputOTPSeparator>-</InputOTPSeparator>
                                 <InputOTPGroup>
-                                    <InputOTPSlot index={4} />
-                                    <InputOTPSlot index={5} />
-                                    <InputOTPSlot index={6} />
-                                    <InputOTPSlot index={7} />
+                                    <InputOTPSlot index={4} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
+                                    <InputOTPSlot index={5} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
+                                    <InputOTPSlot index={6} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
+                                    <InputOTPSlot index={7} className="w-8 h-8 sm:w-10 sm:h-10 text-center" />
                                 </InputOTPGroup>
                             </InputOTP>
                         </FormControl>
