@@ -18,7 +18,7 @@ export const Footer = () => {
                         <div className="space-y-2">
                             <div className="flex items-center space-x-3 text-gray-300">
                                 <Mail className="h-4 w-4" />
-                                <span>info@lexobot-ai.com</span>
+                                <span>alejandro.grajal.s@gmail.com</span>
                             </div>
                             <div className="flex items-center space-x-3 text-gray-300">
                                 <Phone className="h-4 w-4" />
